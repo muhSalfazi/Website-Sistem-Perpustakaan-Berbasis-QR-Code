@@ -9,16 +9,19 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+   public function up()
     {
         Schema::create('book_stock', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('book_id');
-            $table->foreign('book_id')->references('id')->on('books')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->integer('quantity');
+            $table->unsignedInteger('stok_buku');
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
         });
     }
+
 
     /**
      * Reverse the migrations.

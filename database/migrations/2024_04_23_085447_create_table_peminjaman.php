@@ -9,26 +9,26 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+     public function up()
     {
-        Schema::create('table_peminjaman', function (Blueprint $table) {
+        Schema::create('tbl_peminjaman', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('nim')->unique();
-            // FK book id
-           $table->unsignedBigInteger('book_id');
-            $table->foreign('book_id')->references('id')->on('books')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->integer('quantity');
-            // FK member id
+            $table->string('resi_pjmn')->unique();
+            $table->unsignedBigInteger('book_id');
+            $table->unsignedInteger('stok_buku')->default(1);
             $table->unsignedBigInteger('member_id');
-            $table->foreign('member_id')->references('id')->on('members')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->date('tanggal_pinjam');
-            $table->date('tanggal_kembali');
-            $table->date('tanggal_pengembalian')->nullable();
-            $table->boolean('status_pengembalian')->default(false);
-            $table->String('qr_code');
+            $table->dateTime('tgl_pinjam');
+            $table->date('tgl_kembali');
+            $table->dateTime('return_date')->nullable();
+            $table->string('qr_code', 255)->nullable();
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
+            $table->foreign('member_id')->references('id')->on('members')->onDelete('cascade');
         });
     }
+
 
     /**
      * Reverse the migrations.

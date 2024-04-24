@@ -10,24 +10,24 @@ return new class extends Migration {
      */
      public function up()
     {
-        Schema::create('books', function (Blueprint $table) {
-            $table->bigIncrements('id');
+     Schema::create('books', function (Blueprint $table) {
+            $table->id();
             $table->string('slug')->unique();
-            $table->string('title', 150);
-            $table->string('author', 70);
-            $table->string('publisher', 70);
-            $table->string('isbn', 20);
+            $table->string('title', 127);
+            $table->string('author', 64);
+            $table->string('publisher', 64);
+            $table->string('isbn', 13);
             $table->year('year');
-            // FK rack id
             $table->unsignedBigInteger('rack_id');
-            $table->foreign('rack_id')->references('id')->on('rack')->cascadeOnUpdate()->cascadeOnDelete();
-            // FK category id
             $table->unsignedBigInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('categories')->cascadeOnUpdate()->cascadeOnDelete();
-            // 
-            $table->string('book_cover', 255);
+            $table->string('book_cover')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('rack_id')->references('id')->on('racks')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
+        
     }
     /**
      * Reverse the migrations.

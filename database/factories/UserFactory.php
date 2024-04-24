@@ -1,13 +1,12 @@
 <?php
 
+// database/factories/UserFactory.php
+
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
- */
 class UserFactory extends Factory
 {
     /**
@@ -18,11 +17,17 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'nim' => $this->faker->unique()->regexify('[0-9]{14}'), // Generate a unique NIM with 8 digits
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'email' => $this->faker->unique()->safeEmail,
+            'phone' => $this->faker->phoneNumber,
+            'address' => $this->faker->address,
+            'date_of_birth' => $this->faker->date,
+            'gender' => $this->faker->randomElement(['Male', 'Female']),
+            // 'qr_code' => $this->faker->imageUrl(), // Generating a random image URL for QR code
+            'created_at' => $this->faker->dateTimeBetween('-2 years', 'now'),
+            'updated_at' => $this->faker->dateTimeBetween('-2 years', 'now'),
         ];
     }
 
@@ -33,8 +38,10 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
+        return $this->state(function (array $attributes) {
+            return [
+                'email_verified_at' => null,
+            ];
+        });
     }
 }

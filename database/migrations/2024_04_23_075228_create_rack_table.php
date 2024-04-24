@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rack', function (Blueprint $table) {
-          $table->bigIncrements('id');
-            $table->string('name');
-            $table->integer('lantai');
+       Schema::create('racks', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 8);
+            $table->string('lantai', 16)->default(1);
             $table->timestamps();
-            
+            $table->softDeletes();
         });
         
         
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rack');
+        Schema::dropIfExists('racks');
     }
 };

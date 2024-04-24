@@ -9,19 +9,21 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+   public function up()
     {
-        Schema::create('table_denda', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            // fk pinjaman
-            $table->unsignedBigInteger('id_pinjaman');
-            $table->foreign('id_pinjaman')->references('id')->on('table_peminjaman')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->integer('jumlah_yg_dibyr');
-            $table->integer('denda_yg_hrs_byr');
-            $table->dateTime('tgl_bayar');
+        Schema::create('tbl_denda', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('id_member')->nullable();
+            $table->unsignedInteger('amount_paid')->nullable();
+            $table->unsignedInteger('fine_amount');
+            $table->dateTime('paid_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('id_member')->references('id')->on('tbl_peminjaman')->onDelete('set null');
         });
     }
+
 
     /**
      * Reverse the migrations.
