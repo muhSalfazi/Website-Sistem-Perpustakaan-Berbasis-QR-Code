@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
             KategoriSeeder::class,
             RackSeeder::class,
             BookSeeder::class,
-            PinjamBukuSeeder ::class
+            PinjamBukuSeeder ::class,
+          
         ]);
         
         // User:factory(10)>create();

@@ -32,6 +32,8 @@ class PeminjamanFactory extends Factory
             'tgl_pinjam' => $this->faker->dateTimeBetween('-1 month', 'now'),
             'tgl_kembali' => $this->faker->dateTimeBetween('now', '+1 month'),
             'return_date' => $this->faker->dateTimeBetween('now', '+2 days'),
+             'created_at' => null, // Set created_at menjadi NULL
+            'updated_at' => null, // Set updated_at menjadi NULL
         ];
     }
 }

@@ -24,7 +24,7 @@ class BookSeeder extends Seeder
         $files = Storage::files($imagePath);
 
         // Membuat 10 buku acak
-        for ($i = 0; $i < 2; $i++) {
+        
             // Pilih file gambar secara acak dari daftar file
             $randomFile = $files[array_rand($files)];
 
@@ -32,19 +32,19 @@ class BookSeeder extends Seeder
             $uploadedFile = basename($randomFile);
             Storage::copy($randomFile, 'public/img/book_cover/' . $uploadedFile);
 
-            Book::create([
-                'slug' => 'book-' . $i,
-                'title' => 'Book Title ' . $i,
-                'author' => 'Author ' . $i,
-                'publisher' => 'Publisher ' . $i,
-                'isbn' => 'ISBN-' . $i,
-                'year' => random_int(2000, 2022), // Tahun acak antara 2000 dan 2022
-                'rack_id' => $racks->random(),
-                'category_id' => $categories->random(),
-                'book_cover' => 'img/book_cover/' . $uploadedFile, // Simpan path file gambar ke dalam basis data
-            ]);
+            // Book::create([
+            //     'slug' => 'book-',
+            //     'title' => 'Book Title ' ,
+            //     'author' => 'Author ' ,
+            //     'publisher' => 'Publisher ' ,
+            //     'isbn' => 'ISBN-' ,
+            //     'year' => random_int(2000, 2022), // Tahun acak antara 2000 dan 2022
+            //     'rack_id' => $racks->random(),
+            //     'category_id' => $categories->random(),
+            //     'book_cover' => 'img/book_cover/' . $uploadedFile, // Simpan path file gambar ke dalam basis data
+            // ]);
 
-            Book::factory()->count(50)->create();
-        }
+            Book::factory()->count(20)->create();
+        
     }
 }

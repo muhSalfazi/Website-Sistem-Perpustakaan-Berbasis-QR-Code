@@ -17,16 +17,16 @@ class UserSeeder extends Seeder
    public function run()
     {
         // Memasukkan data pengguna manual
-        User::create([
-            'nim' => '22416255201083',
-            'first_name' => 'salman',
-            'last_name' => 'fauzi',
-            'email' => 'salmanfauzi@gmail.com',
-            'phone' => '93523512',
-            'address' => 'karawang',
-            'date_of_birth' => Carbon::createFromFormat('d-m-Y', '05-12-2003')->format('Y-m-d'), // Memformat tanggal ke format 'YYYY-MM-DD'
-            'gender' => 'male'
-        ]);
+        // User::create([
+        //     'nim' => '22416255201083',
+        //     'first_name' => 'salman',
+        //     'last_name' => 'fauzi',
+        //     'email' => 'salmanfauzi@gmail.com',
+        //     'phone' => '93523512',
+        //     'address' => 'karawang',
+        //     'date_of_birth' => Carbon::createFromFormat('d-m-Y', '05-12-2003')->format('Y-m-d'), // Memformat tanggal ke format 'YYYY-MM-DD'
+        //     'gender' => 'male'
+        // ]);
 
         // Memasukkan data pengguna menggunakan factory
         User::factory()->count(50)->create();

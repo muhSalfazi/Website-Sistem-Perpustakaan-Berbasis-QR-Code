@@ -26,8 +26,10 @@ class UserFactory extends Factory
             'date_of_birth' => $this->faker->date,
             'gender' => $this->faker->randomElement(['Male', 'Female']),
             // 'qr_code' => $this->faker->imageUrl(), // Generating a random image URL for QR code
-            'created_at' => $this->faker->dateTimeBetween('-2 years', 'now'),
-            'updated_at' => $this->faker->dateTimeBetween('-2 years', 'now'),
+            // 'created_at' => $this->faker->dateTimeBetween('-2 years', 'now'),
+            // 'updated_at' => $this->faker->dateTimeBetween('-2 years', 'now'),
+             'created_at' => null, // Set created_at menjadi NULL
+            'updated_at' => null, // Set updated_at menjadi NULL
         ];
     }
 
