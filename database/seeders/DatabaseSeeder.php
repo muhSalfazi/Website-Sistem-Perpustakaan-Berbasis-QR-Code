@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+
 use Database\Seeders\UserSeeder;
 
 
@@ -21,6 +22,8 @@ class DatabaseSeeder extends Seeder
             RackSeeder::class,
             BookSeeder::class,
             PinjamBukuSeeder ::class,
+             BookstockSeeder::class,
+            DendaPinjaman::class
           
         ]);
         

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Database\Factories\DendaPnjmnFactory;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory; // Import trait HasFactory
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Book;
@@ -24,13 +26,14 @@ class Peminjaman extends Model
      * @var array
      */
     protected $fillable = [
+        'id',
         'resi_pjmn', 
         'book_id', 
-        'stok_buku', 
+        'jmlh_buku', 
         'member_id', 
         'tgl_pinjam',    
-        'tgl_kembali', 
-        'return_date'
+        'tengat_waktu', 
+        'tgl_kembali'
     ];
 
     /**

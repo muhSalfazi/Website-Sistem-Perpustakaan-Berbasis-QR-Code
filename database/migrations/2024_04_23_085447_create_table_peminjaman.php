@@ -15,11 +15,11 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('resi_pjmn')->unique();
             $table->unsignedBigInteger('book_id');
-            $table->unsignedInteger('stok_buku')->default(1);
+            $table->unsignedInteger('jmlh_book')->default(1);
             $table->unsignedBigInteger('member_id');
             $table->dateTime('tgl_pinjam');
-            $table->date('tgl_kembali');
-            $table->dateTime('return_date')->nullable();
+            $table->date('tengat_wktu');
+            $table->dateTime('tgl_kembali')->nullable();
             $table->string('qr_code', 255)->nullable();
             $table->timestamps();
             $table->softDeletes();

@@ -2,18 +2,20 @@
 
 namespace Database\Seeders;
 
-use Database\Factories\PeminjamanFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Peminjaman;
+use Database\Factories\DendaPnjmnFactory;
 
-class PinjamBukuSeeder extends Seeder
+
+use App\Models\Denda;
+class DendaPinjaman extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Peminjaman ::factory()->count(10)->create();
+        //
+         Denda::factory()->count(5)->create();
     }
 }

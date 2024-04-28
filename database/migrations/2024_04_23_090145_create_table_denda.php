@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('tbl_denda', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_member')->nullable();
-            $table->unsignedInteger('amount_paid')->nullable();
-            $table->unsignedInteger('fine_amount');
-            $table->dateTime('paid_at')->nullable();
+            $table->unsignedInteger('denda_yg_diberikan')->nullable();
+            $table->unsignedInteger('uang_yg_dibyrkn');
+            $table->unsignedInteger('kembalian');
+            $table->unsignedInteger('total_days');
+            // $table->dateTime('create_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
