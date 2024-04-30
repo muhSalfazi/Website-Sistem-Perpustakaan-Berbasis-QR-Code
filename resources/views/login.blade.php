@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Animated Glassmorphism Login Page | @codingstella</title>
+    <title>Libration Perpustakaan</title>
+    <link href="{{ asset('img/logo.png') }}" rel="icon" />
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
