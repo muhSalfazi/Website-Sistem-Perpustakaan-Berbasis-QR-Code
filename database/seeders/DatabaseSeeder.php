@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
             BookSeeder::class,
             PinjamBukuSeeder ::class,
              BookstockSeeder::class,
-            DendaPinjaman::class
+            DendaPinjaman::class,
+            AdminSeeder::class
           
         ]);
         
