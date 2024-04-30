@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -21,6 +20,8 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        // Remove AuthenticateUser from global middleware
+        // \App\Http\Middleware\AuthenticateUser::class,
     ];
 
     /**
@@ -36,6 +37,8 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            // Add AuthenticateUser to web middleware group
+            // \App\Http\Middleware\AuthenticateUser::class,
         ],
 
         'api' => [
