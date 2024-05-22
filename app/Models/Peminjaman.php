@@ -27,13 +27,13 @@ class Peminjaman extends Model
      */
     protected $fillable = [
         'id',
-        'resi_pjmn', 
-        'book_id', 
-        'jmlh_buku', 
-        'member_id', 
-        'tgl_pinjam',    
-        'tengat_waktu', 
-        'tgl_kembali'
+        'resi_pjmn',
+        'book_id',
+        'jmlh_buku',
+        'member_id',
+        'tgl_pinjam',
+        'tgl_kembali',
+        'create_at'
     ];
 
     /**

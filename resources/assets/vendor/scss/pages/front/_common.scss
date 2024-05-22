@@ -1,0 +1,59 @@
+// scss
+.section-py {
+  padding: 5rem 0;
+  @include light.media-breakpoint-down(xl) {
+    padding: 4rem 0;
+  }
+  @include light.media-breakpoint-down(md) {
+    padding: 3rem 0;
+  }
+}
+
+.first-section-pt {
+  padding-top: 8.84rem;
+  @include light.media-breakpoint-down(xl) {
+    padding-top: 7.5rem;
+  }
+}
+
+.card {
+  // card hover border color
+  &[class*='card-hover-border-'] {
+    transition: light.$card-transition;
+  }
+}
+
+.banner-bg-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: left;
+}
+
+.section-title-img {
+  height: 100%;
+  width: 120%;
+  inset-inline-start: -12%;
+  top: 10px;
+}
+
+// Light style
+@if $enable-light-style {
+  .light-style {
+    body {
+      background-color: light.$card-bg;
+    }
+  }
+}
+
+// Dark style
+@if $enable-dark-style {
+  .dark-style {
+    body {
+      background-color: dark.$card-bg;
+    }
+  }
+}

@@ -17,7 +17,7 @@ class BookStockFactory extends Factory
      */
     public function definition(): array
     {
-         $currentMonth = Carbon::now()->month;
+        $currentMonth = Carbon::now()->month;
         $randomDay = $this->faker->numberBetween(1, Carbon::now()->daysInMonth);
         $randomHour = $this->faker->numberBetween(0, 23);
         $randomMinute = $this->faker->numberBetween(0, 59);

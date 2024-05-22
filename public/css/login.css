@@ -76,8 +76,10 @@ section .girl {
   padding: 50px;
   background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(10px);
+
+  
   border: 1px solid #fff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
   border-right: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 20px;
   width: 500px;

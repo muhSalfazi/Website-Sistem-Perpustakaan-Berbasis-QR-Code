@@ -20,7 +20,7 @@ use App\Http\Controllers\LoginController;
 // });
 
 // Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [LoginController::class, 'login']);
+// Route::post('/login', [LoginController::class, 'login']);
 // Route::post('/logout', [AuthController::class, 'logout']);
 // Route::post('/refresh', [AuthController::class, 'refresh']);
 // Route::post('/me', [AuthController::class, 'me']);

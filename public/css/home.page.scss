@@ -1,0 +1,100 @@
+.avatar {
+  display: flex;
+  justify-content: space-between;
+  margin-top: -1.3rem;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.avatar .logo,
+.avatar .profile {
+  width: 50px;
+  height: 50px;
+}
+
+.card-info1,
+.card-info2,
+.card-info3 {
+  display: flex;
+  height: 100px;
+}
+
+.card-info1 ion-img,
+.card-info2 ion-img,
+.card-info3 ion-img {
+  height: 30px;
+  width: 30px;
+}
+
+.button .button1 {
+  --background: #3E8CB8;
+  --border-radius: 10px;
+  font-size: 10px;
+  margin-left: 10px;
+  width: 22vh;
+  height: 30px;
+}
+
+.button .button2,
+.button .button3 {
+  --border-radius: 10px;
+  font-size: 10px;
+  margin-left: 12px;
+  width: 22vh;
+  height: 30px;
+}
+
+.button .button2 {
+  --border-color: #54B3E9;
+  color: #54B3E9;
+}
+
+.button .button3 {
+  --border-color: #FF4F4F;
+  color: #FF4F4F;
+}
+
+.card-info3 ion-img {
+  height: 30px;
+  width: 30px;
+}
+
+.text {
+  margin-left: 12px;
+  margin-top: -1px;
+}
+
+.tgl {
+  color: #878787;
+  font-size: 12px;
+  margin-left: 12px;
+  margin-top: -6px;
+}
+
+ion-col {
+  font-size: 10px;
+  border: solid 1px #fff;
+  text-align: center;
+}
+
+.color1 {
+  color: #00FFC2;
+}
+
+.color2,
+.color3 {
+  color: #3E8CB8;
+}
+
+.color4 {
+  color: #FF4F4F;
+}
+
+.list {
+  margin-top: -12px;
+}
+
+.list ion-col {
+  font-size: 18px;
+  color: black;
+}
