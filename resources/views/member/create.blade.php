@@ -1,6 +1,6 @@
 <!-- resources/views/create_member.blade.php -->
 @extends('layouts.app')
-
+<title>Tambah Anggota</title>
 @section('content')
     <a href="{{ route('member') }}" class="btn btn-outline-primary mb-3">
         <i class="ti ti-arrow-left"></i>

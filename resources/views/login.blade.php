@@ -4,104 +4,83 @@
 <head>
     <meta charset="UTF-8">
     <title>Libration Perpustakaan</title>
-    <link href="{{ asset('img/logo.png') }}" rel="icon" />
+    <link href="{{ asset('img/logoTitle.png') }}" rel="icon" />
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .swal2-popup {
+            font-size: 0.8rem !important;
+            width: auto !important;
+            max-width: 250px !important;
+            padding: 1.5rem !important;
+        }
+
+        .swal2-title {
+            font-size: 1.1rem !important;
+        }
+
+        .swal2-content {
+            font-size: 0.9rem !important;
+        }
+
+        /* Prevent page from shifting when SweetAlert is active */
+        body.swal2-active {
+            overflow: hidden;
+        }
+    </style>
 </head>
-<style>
-    .swal2-popup {
-        font-size: 1rem;
-        width: auto !important;
-        max-width: 300px;
-    }
+<script>
+    function validateForm() {
+        const username = document.querySelector('input[name="username"]').value;
+        const password = document.querySelector('input[name="password"]').value;
 
-    .swal2-title {
-        font-size: 1.3rem;
+        if (!username || !password) {
+            document.body.classList.add('swal2-active'); // Add class to body
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Username and Password are required!',
+                customClass: {
+                    popup: 'swal2-popup',
+                    title: 'swal2-title',
+                    content: 'swal2-content'
+                },
+                didClose: () => {
+                    document.body.classList.remove(
+                    'swal2-active'); // Remove class when SweetAlert is closed
+                }
+            });
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
     }
-
-    .swal2-content {
-        font-size: 1rem;
-    }
-
-    /* Gaya untuk pesan error */
-    .error-message {
-        background-color: #ffe6e6;
-        /* Warna latar belakang */
-        border: 1px solid #ff4d4d;
-        /* Warna border */
-        color: #cc0000;
-        /* Warna teks */
-        padding: 10px;
-        /* Padding */
-        border-radius: 5px;
-        /* Border radius */
-        margin-bottom: 10px;
-        /* Margin bawah */
-        font-size: 14px;
-        /* Ukuran font */
-    }
-
-    /* Gaya untuk tanda seru */
-    .exclamation {
-        color: red;
-        /* Warna merah */
-        font-size: 20px;
-        /* Ukuran font */
-        margin-right: 5px;
-        /* Margin kanan */
-    }
-
-    /* Gaya untuk border merah */
-    input.error {
-        border: 1px solid #ff4d4d !important;
-    }
-</style>
+</script>
 
 <body>
-    <section>
-        <img src="{{ asset('img/bg.jpg') }}" class="bg">
-        <div class="login">
-            <form action="{{ route('login') }}" method="POST">
+    <div class="login">
+        <h2>Login</h2>
+    </div>
+    <div class="container">
+        <div class="login-box">
+            <form id="login-form" action="{{ route('login') }}" method="POST" onsubmit="return validateForm()">
                 @csrf
-                @if (session('error'))
-                    <script>
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: '{{ session('error') }}',
-                            customClass: {
-                                popup: 'swal2-popup',
-                                title: 'swal2-title',
-                                content: 'swal2-content'
-                            }
-                        });
-                    </script>
-                @endif
-
-                <div class="logo-container">
-                    <img src="{{ asset('img/logo.png') }}" class="logo">
+                <div class="input-group">
+                    <input type="email" name="email" placeholder="email">
                 </div>
-                <h2>Sign In</h2>
-                <div class="inputBox">
-                    <input type="text" placeholder="email" name="email" value="{{ old('email') }}"
-                        class="@error('password') error @enderror">
-                    {{-- @error('email')
-                        <div class="error-message"><span class="exclamation">!</span>The email field is required.</div>
-                    @enderror --}}
+                <div class="input-group">
+                    <input type="password" name="password" placeholder="password">
                 </div>
-                <div class="inputBox">
-                    <input type="password" placeholder="Password" name="password"
-                        class="@error('password') error @enderror">
-                    @error('password')
-                        <div class="error-message"><span class="exclamation">!</span>email & password wajib di isi.</div>
-                    @enderror
-                </div>
-                <div class="inputBox">
-                    <input type="submit" value="Login" id="btn">
+                <div class="input-group">
+                    <button type="submit">Login</button>
                 </div>
             </form>
         </div>
-    </section>
+        <div class="logo">
+            <img src="{{ asset('img/logo.png') }}">
+        </div>
+    </div>
+
+
 </body>
 
 </html>

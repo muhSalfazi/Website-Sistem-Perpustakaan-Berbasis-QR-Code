@@ -12,11 +12,11 @@
                 <div class="card-body">
                     <div class="row text-center">
                         <div class="col-6 col-md-3">
-                            <h4 class="text-success"><b>Anggota Baru</b></h4>
+                            <h4 class="text-success"><b>New members</b></h4>
                             <h3>90</h3>
                         </div>
                         <div class="col-6 col-md-3">
-                            <h4 class="text-info"><b>Peminjaman</b></h4>
+                            <h4 class="text-info"><b>borrowing books</b></h4>
                             <h3>90</h3>
                         </div>
                         <div class="col-6 col-md-3">

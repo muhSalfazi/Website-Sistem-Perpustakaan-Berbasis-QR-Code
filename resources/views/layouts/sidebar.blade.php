@@ -33,7 +33,7 @@
                     <span class="hide-menu">Transaksi</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="/admin/loans" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('peminjaman') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-arrows-exchange"></i>
                         </span>
@@ -41,7 +41,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="/admin/returns" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('pengembalian') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-check"></i>
                         </span>
