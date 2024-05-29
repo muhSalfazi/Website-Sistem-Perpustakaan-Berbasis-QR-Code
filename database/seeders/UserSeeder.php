@@ -29,6 +29,6 @@ class UserSeeder extends Seeder
         // ]);
 
         // Memasukkan data pengguna menggunakan factory
-        User::factory()->count(50)->create();
+        User::factory()->count(4)->create();
     }
 }

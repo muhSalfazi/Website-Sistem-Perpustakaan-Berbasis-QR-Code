@@ -6,7 +6,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "endroid/qr-code": "*",
+        "endroid/qr-code": "^5.0",
+        "firebase/php-jwt": "^6.10",
         "guzzlehttp/guzzle": "^7.2",
         "illuminate/database": "*",
         "laravel/framework": "^10.0",

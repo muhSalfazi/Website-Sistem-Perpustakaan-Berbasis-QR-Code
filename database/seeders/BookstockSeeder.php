@@ -13,6 +13,6 @@ class BookstockSeeder extends Seeder
     public function run(): void
     {
         //
-        BookStock::factory()->count(50)->create();
+        BookStock::factory()->count(10)->create();
     }
 }

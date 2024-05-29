@@ -17,7 +17,6 @@ return new class extends Migration
             $table->unsignedBigInteger('book_id');
             $table->unsignedInteger('jmlh_book')->default(1);
             $table->unsignedBigInteger('member_id');
-            $table->dateTime('tgl_pinjam');
             // $table->date('tengat_wktu');
             $table->dateTime('tgl_kembali')->nullable();
             $table->string('qr_code', 255)->nullable();

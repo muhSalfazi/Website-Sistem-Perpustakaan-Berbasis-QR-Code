@@ -21,7 +21,7 @@
                     <span class="hide-menu">Home</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('welcome') }}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('dashboard') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
@@ -69,7 +69,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="/admin/books" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('daftarbook') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-book"></i>
                         </span>
@@ -93,18 +93,18 @@
                     </a>
                 </li>
                 <!-- If user is superadmin -->
-                <li class="nav-small-cap">
+                {{-- <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">Manajemen Akun</span>
-                </li>
-                <li class="sidebar-item">
+                </li> --}}
+                {{-- <li class="sidebar-item">
                     <a class="sidebar-link" href="/admin/users" aria-expanded="false">
                         <span>
                             <i class="ti ti-user-cog"></i>
                         </span>
                         <span class="hide-menu">Admin</span>
                     </a>
-                </li>
+                </li> --}}
                 <!-- End if -->
             </ul>
         </nav>

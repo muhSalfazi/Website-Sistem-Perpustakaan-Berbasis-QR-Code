@@ -1,25 +1,34 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
+
 class Book extends Model
 {
-    use HasFactory, Notifiable;
-    protected $table = 'books';
-    
-    protected $fillable = [
-    'slug',
-    'title',
-    'author',
-    'publisher',
-    'isbn',
-    'year',
-    'rack_id',
-    'category_id',
-    'book_cover',
-];
+    use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'author',
+        'category_id',
+        'rack_id',
+        'year',
+        'book_cover',
+    ];
+
+    public function category()
+    {
+        return $this->belongsTo(Kategori::class);
+    }
+
+    public function rack()
+    {
+        return $this->belongsTo(Rack::class);
+    }
+
+    public function stock()
+    {
+        return $this->hasOne(BookStock::class);
+    }
 }

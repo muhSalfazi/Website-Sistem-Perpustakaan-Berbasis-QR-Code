@@ -5,6 +5,11 @@ use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PengembalianController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\BookController;
+
+// Route::resource('books', BookController::class);
+
 
 
 /*
@@ -17,8 +22,7 @@ use App\Http\Controllers\PengembalianController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::middleware([RedirectIfAuthenticated::class])->group(function () {
+Route::middleware('guest')->group(function () {
     // Rute untuk menampilkan halaman login
     Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 
@@ -26,10 +30,14 @@ Route::middleware([RedirectIfAuthenticated::class])->group(function () {
     Route::post('/', [AuthController::class, 'login']);
 });
 
-Route::middleware(['auth'])->group(function () {
-    // Halaman selamat datang hanya dapat diakses setelah login
-    Route::get('/dashboard', [AuthController::class, 'index'])->name('welcome');
 
+Route::middleware('auth')->group(function () {
+    // Logout
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    // Halaman dashboard hanya dapat diakses setelah login
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
     //route member
     Route::get('/member', [MemberController::class, 'index'])->name('member');
     Route::get('/members/create', [MemberController::class, 'create'])->name('members.create');
@@ -41,7 +49,10 @@ Route::middleware(['auth'])->group(function () {
 
     // pengembalian buku
     Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian');
-
-
-
+    
+    
+    // books
+    Route::get('/book', [BookController::class, 'index'])->name('daftarbook');
+    Route::get('book/create', [BookController::class, 'create'])->name('books.create');
+    Route::delete('books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
 });

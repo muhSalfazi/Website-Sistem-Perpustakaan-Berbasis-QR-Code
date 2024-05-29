@@ -13,14 +13,13 @@ return new class extends Migration
     {
         Schema::create('members', function (Blueprint $table) {
               $table->bigIncrements('id');
-            $table->string('nim')->unique();
+            $table->string('nim');
             $table->string('first_name', 100);
-            $table->string('last_name', 100)->nullable();
-            $table->string('email', 255);
+            $table->string('last_name', 100);
+            $table->string('email', 255)->unique();
             $table->string('phone', 20);
             $table->text('address')->nullable();
             $table->date('date_of_birth')->nullable();
-            $table->enum('gender', ['Male', 'Female']);
             $table->string('qr_code', 255)->nullable();
             $table->timestamps();
             $table->softDeletes();

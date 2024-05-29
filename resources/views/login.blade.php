@@ -29,17 +29,44 @@
         }
     </style>
 </head>
+
+<body>
+    <div class="login">
+        <h2>Login</h2>
+    </div>
+    <div class="container">
+        <div class="login-box">
+            <form id="login-form" action="{{ route('login') }}" method="POST" onsubmit="return validateForm(event)">
+                @csrf
+                <div class="input-group">
+                    <input type="email" name="email" placeholder="Email">
+                </div>
+                <div class="input-group">
+                    <input type="password" name="password" placeholder="Password">
+                </div>
+                <div class="input-group">
+                    <button type="submit">Login</button>
+                </div>
+            </form>
+        </div>
+        <div class="logo">
+            <img src="{{ asset('img/logo.png') }}">
+        </div>
+    </div>
+
+</body>
 <script>
-    function validateForm() {
-        const username = document.querySelector('input[name="username"]').value;
+    function validateForm(event) {
+        const email = document.querySelector('input[name="email"]').value;
         const password = document.querySelector('input[name="password"]').value;
 
-        if (!username || !password) {
+        if (!email || !password) {
+            event.preventDefault(); // Prevent form submission
             document.body.classList.add('swal2-active'); // Add class to body
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Username and Password are required!',
+                text: 'Email atau Kata Sandi diperlukan!',
                 customClass: {
                     popup: 'swal2-popup',
                     title: 'swal2-title',
@@ -55,32 +82,5 @@
         return true; // Allow form submission
     }
 </script>
-
-<body>
-    <div class="login">
-        <h2>Login</h2>
-    </div>
-    <div class="container">
-        <div class="login-box">
-            <form id="login-form" action="{{ route('login') }}" method="POST" onsubmit="return validateForm()">
-                @csrf
-                <div class="input-group">
-                    <input type="email" name="email" placeholder="email">
-                </div>
-                <div class="input-group">
-                    <input type="password" name="password" placeholder="password">
-                </div>
-                <div class="input-group">
-                    <button type="submit">Login</button>
-                </div>
-            </form>
-        </div>
-        <div class="logo">
-            <img src="{{ asset('img/logo.png') }}">
-        </div>
-    </div>
-
-
-</body>
 
 </html>

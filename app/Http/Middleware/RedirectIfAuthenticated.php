@@ -21,7 +21,7 @@ class RedirectIfAuthenticated
     {
         if (Auth::guard($guard)->check()) {
             // Sesuaikan dengan rute yang ingin diarahkan setelah login
-            return redirect()->route('welcome'); // Ubah 'welcome' sesuai dengan rute halaman utama setelah login
+            return redirect()->route('dashboard'); // Ubah 'welcome' sesuai dengan rute halaman utama setelah login
         }
 
         return $next($request);

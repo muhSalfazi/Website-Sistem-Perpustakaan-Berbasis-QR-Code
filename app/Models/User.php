@@ -14,6 +14,7 @@ class User extends Authenticatable
     protected $table = 'members';
 
     protected $fillable = [
+        'id',
         'nim',
         'first_name',
         'last_name',
@@ -22,5 +23,6 @@ class User extends Authenticatable
         'address',
         'date_of_birth',
         'gender',
+        'qr_code'
     ];
 }

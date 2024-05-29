@@ -55,7 +55,6 @@
                                 <td>Laki-laki</td>
                                 <td>
                                     <div class="d-flex justify-content-center gap-2">
-                                        <a href="#" class="btn btn-primary mb-2">Edit</a>
                                         <form action="#" method="post">
                                             <button type="submit" class="btn btn-danger"
                                                 onclick="return confirm('Are you sure?');">Delete</button>

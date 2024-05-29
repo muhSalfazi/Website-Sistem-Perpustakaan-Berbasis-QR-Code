@@ -26,14 +26,14 @@ class UserFactory extends Factory
         $randomDate = Carbon::create(null, $currentMonth, $randomDay, $randomHour, $randomMinute, $randomSecond);
 
         return [
-            'nim' => $this->faker->unique()->regexify('[0-9]{14}'), // Generate a unique NIM with 8 digits
+            'nim' => $this->faker->regexify('[0-9]{14}'), // Generate a unique NIM with 8 digits
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'email' => $this->faker->unique()->safeEmail,
             'phone' => $this->faker->phoneNumber,
             'address' => $this->faker->address,
             'date_of_birth' => $this->faker->date,
-            'gender' => $this->faker->randomElement(['Male', 'Female']),
+            // 'gender' => $this->faker->randomElement(['Male', 'Female']),
             // 'qr_code' => $this->faker->imageUrl(), // Generating a random image URL for QR code
             // 'created_at' => $this->faker->dateTimeBetween('-2 years', 'now'),
             // 'updated_at' => $this->faker->dateTimeBetween('-2 years', 'now'),

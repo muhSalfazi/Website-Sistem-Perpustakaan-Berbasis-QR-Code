@@ -12,6 +12,7 @@
     "dependencies": {
         "@tabler/icons": "^3.2.0",
         "apexcharts": "^3.49.0",
+        "bootstrap": "^5.3.3",
         "chart.js": "^4.4.2",
         "ean13-lib": "^0.0.5",
         "html5-qrcode": "^2.3.8"

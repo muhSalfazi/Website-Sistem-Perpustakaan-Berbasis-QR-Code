@@ -7,19 +7,20 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
 use App\Models\AdminModels;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
     public function index()
     {
-        return view('welcome');
+        return view('dashboard');
     }
 
     public function showLoginForm()
     {
         // Pengecekan apakah pengguna sudah login
         if (Auth::check()) {
-            return redirect()->route('welcome'); // Alihkan ke halaman selamat datang jika sudah login
+            return redirect()->route('dashboard'); // Alihkan ke halaman dashboard jika sudah login
         }
         return view('login');
     }
@@ -42,17 +43,30 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-       if (Auth::attempt($credentials)) {
-    // Jika berhasil login
-    // Update last_login
-    $user = Auth::user();
-    AdminModels::where('id', $user->id)->update(['last_login' => Carbon::now()]);
+        if (Auth::attempt($credentials)) {
+            // Jika berhasil login
+            // Update last_login
+            $user = Auth::user();
+            AdminModels::where('id', $user->id)->update(['last_login' => Carbon::now()]);
 
-    // Redirect langsung ke halaman selamat datang setelah login berhasil
-    // return redirect()->route('welcome')->with('success', 'Login successful!');
-            return response()->view('welcome')->header('Cache-Control', 'no-cache, no-store, must-revalidate');
-}
+            // Set session timeout to 1 hour
+            Session::put('lastActivityTime', Carbon::now());
+
+            // Redirect langsung ke halaman dashboard setelah login berhasil
+            return redirect()->route('dashboard');
+        }
+
         // Jika gagal login, redirect kembali ke halaman login dengan parameter error=true
         return redirect()->route('login')->withInput()->with('error', 'Email atau password salah');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // Redirect ke halaman login setelah logout
+        return redirect()->route('login')->with('success', 'Logout berhasil');
     }
 }

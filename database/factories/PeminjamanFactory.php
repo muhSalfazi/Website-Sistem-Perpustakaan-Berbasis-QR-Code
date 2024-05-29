@@ -38,7 +38,7 @@ class PeminjamanFactory extends Factory
             'book_id' => $this->faker->numberBetween(1, 10),
            'jmlh_book' => $this->faker->numberBetween(1, 5),
             'member_id' => $member->id, // Gunakan ID member
-            'tgl_pinjam' => $randomDate,
+            // 'tgl_pinjam' => $randomDate,
             // 'tengat_wktu' => $this->faker->dateTimeBetween('now', '+3 days'),
             'tgl_kembali' => $this->faker->dateTimeBetween('now', '+10 days'),
             'created_at' =>  $randomDate, // Set created_at menjadi NULL

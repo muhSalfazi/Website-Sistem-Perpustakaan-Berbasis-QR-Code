@@ -44,7 +44,7 @@ class BookSeeder extends Seeder
             //     'book_cover' => 'img/book_cover/' . $uploadedFile, // Simpan path file gambar ke dalam basis data
             // ]);
 
-            Book::factory()->count(20)->create();
+            Book::factory()->count(10)->create();
         
     }
 }
