@@ -14,21 +14,17 @@ class UserSeeder extends Seeder
      *
      * @return void
      */
-   public function run()
+    public function run()
     {
-        // Memasukkan data pengguna manual
-        // User::create([
-        //     'nim' => '22416255201083',
-        //     'first_name' => 'salman',
-        //     'last_name' => 'fauzi',
-        //     'email' => 'salmanfauzi@gmail.com',
-        //     'phone' => '93523512',
-        //     'address' => 'karawang',
-        //     'date_of_birth' => Carbon::createFromFormat('d-m-Y', '05-12-2003')->format('Y-m-d'), // Memformat tanggal ke format 'YYYY-MM-DD'
-        //     'gender' => 'male'
-        // ]);
-
-        // Memasukkan data pengguna menggunakan factory
-        User::factory()->count(4)->create();
+        User::create([
+            'nim' => '12902852238040',
+            'first_name' => 'Mala',
+            'last_name' => 'Agustina',
+            'email' => 'jessica.putra@example.net',
+            'phone' => '0678 7397 0743',
+            'address' => 'Jln. Zamrud No. 464, Pekanbaru 61948, Kalsel',
+            'date_of_birth' => '2003-09-26',
+            'password' => Hash::make('user'), // Ensure password is hashed
+        ]);
     }
 }

@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\MemberController;
+use App\Http\Controllers\API\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,10 +19,12 @@ use App\Http\Controllers\API\MemberController;
 
 Route::post('/register', [MemberController::class, 'register']);
 
+Route::post('/login', [AuthController::class, 'login']);
 // Protected Routes
 Route::middleware(['jwt.auth'])->group(function () {
     Route::get('/members', [MemberController::class, 'index']);
     Route::get('/members/{id}', [MemberController::class, 'show']);
     Route::put('/members/{id}', [MemberController::class, 'update']);
     Route::delete('/members/{id}', [MemberController::class, 'destroy']);
+    
 });
