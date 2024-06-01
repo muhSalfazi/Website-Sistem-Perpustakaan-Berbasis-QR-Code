@@ -1,11 +1,12 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
-use App\Models\AdminModels;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Session;
 
@@ -45,9 +46,16 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             // Jika berhasil login
-            // Update last_login
             $user = Auth::user();
-            AdminModels::where('id', $user->id)->update(['last_login' => Carbon::now()]);
+
+            // Cek apakah pengguna adalah admin
+            if ($user->role !== 'admin') {
+                Auth::logout();
+                return redirect()->route('login')->with('error', 'Hanya admin yang dapat mengakses halaman ini.');
+            }
+
+            // Update last_login
+            User::where('id', $user->id)->update(['last_login' => Carbon::now()]);
 
             // Set session timeout to 1 hour
             Session::put('lastActivityTime', Carbon::now());

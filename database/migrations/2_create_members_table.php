@@ -9,18 +9,21 @@ return new class extends Migration {
     {
         Schema::create('tbl_members', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nim');
+            $table->unsignedBigInteger('user_id');
+            // $table->string('nim')->nullable();
             $table->string('first_name', 100);
             $table->string('last_name', 100);
             $table->string('email', 255)->unique();
-            $table->string('phone', 20);
-            $table->string('password');
-            $table->text('address');
-            $table->date('date_of_birth');
-            $table->datetime('last_login')->nullable(   );
-            $table->string('qr_code', 255)->nullable();
+            // $table->string('password');
+            $table->string('imageProfile')->nullable();
+            $table->string('phone', 20)->nullable();
+            $table->text('address')->nullable();
+            $table->date('tgl_lahir')->nullable();
+            $table->string('qr_code', 255)->nullable()->unique();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('user_id')->references('id')->on('tbl_users')->onDelete('cascade');
         });
     }
 

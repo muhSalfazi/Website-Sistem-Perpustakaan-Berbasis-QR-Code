@@ -10,13 +10,12 @@ return new class extends Migration {
      */
      public function up()
     {
-     Schema::create('books', function (Blueprint $table) {
+     Schema::create('tbl_books', function (Blueprint $table) {
             $table->id();
-            $table->string('slug')->unique();
-            $table->string('title', 127);
-            $table->string('author', 64);
-            $table->string('publisher', 64);
-            $table->string('isbn', 13);
+            $table->string('title', 157);
+            $table->string('author', 80);
+            $table->string('publisher', 80);
+            $table->string('isbn', 100)->uniqe();
             $table->year('year');
             $table->unsignedBigInteger('rack_id');
             $table->unsignedBigInteger('category_id');
@@ -24,8 +23,8 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('rack_id')->references('id')->on('racks')->onDelete('cascade');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('rack_id')->references('id')->on('tbl_racks')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('tbl_categories')->onDelete('cascade');
         });
         
     }
@@ -34,6 +33,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('books');
+        Schema::dropIfExists('tbl_books');
     }
 };

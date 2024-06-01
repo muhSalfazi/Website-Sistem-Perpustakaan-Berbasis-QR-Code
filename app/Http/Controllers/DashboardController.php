@@ -1,8 +1,9 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Member;
 use App\Models\Denda;
+use App\Models\Pengembalian;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -12,13 +13,13 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         // Menghitung jumlah anggota baru yang dibuat hari ini
-        $newMembersCount = User::whereDate('created_at', today())->count();
+        $newMembersCount = Member::whereDate('created_at', today())->count();
 
         // Menghitung jumlah buku yang sedang dipinjam
         $borrowingBooksCount = Peminjaman::whereDate('created_at', today())->count();
 
         // Menghitung jumlah buku yang telah dikembalikan
-        $returnBooksCount = Peminjaman::whereDate('tgl_kembali', today())->count();
+        $returnBooksCount = Pengembalian::whereDate('tgl_kembali', today())->count();
 
         // Menghitung jumlah buku yang terlambat dikembalikan (denda)
         $overdueBooksCount = Peminjaman::where('created_at', '<', Carbon::now()->subDays(7))->count();
@@ -31,13 +32,13 @@ class DashboardController extends Controller
         $totalDenda = Denda::sum('uang_yg_dibyrkn');
 
         // Total Tunggakan
-        $totalTunggakan = Denda::sum('denda_yg_diberikan');
+        $totalTunggakan = Denda::sum('denda_yg_dibyr');
 
         // Total Pendapatan Denda Tahun Lalu
         $lastYearTotalDenda = Denda::whereYear('created_at', now()->year - 1)->sum('uang_yg_dibyrkn');
 
         // Total Tunggakan Tahun Lalu
-        $lastYearTotalTunggakan = Denda::whereYear('created_at', now()->year - 1)->sum('denda_yg_diberikan');
+        $lastYearTotalTunggakan = Denda::whereYear('created_at', now()->year - 1)->sum('denda_yg_dibyr');
 
         return view('dashboard', compact(
             'newMembersCount',
@@ -50,6 +51,7 @@ class DashboardController extends Controller
             'lastYearTotalDenda',
             'lastYearTotalTunggakan',
             'ikhtisarDays'
-        ));
+        )
+        );
     }
 }

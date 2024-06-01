@@ -10,7 +10,7 @@ class Kategori extends Model
 {
      use HasFactory, Notifiable;
 
-    protected $table = 'categories';
+    protected $table = 'tbl_categories';
     
     protected $fillable = [
     'name',

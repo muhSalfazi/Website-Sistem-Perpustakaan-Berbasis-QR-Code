@@ -29,7 +29,7 @@ class BookStockFactory extends Factory
             'book_id' => function () {
                 return \App\Models\Book::factory()->create()->id;
             },
-            'stok_buku' => $this->faker->numberBetween(1, 100),
+            'jmlh_tersedia' => $this->faker->numberBetween(1, 100),
             'created_at' => $randomDate,
             'updated_at' => $randomDate,
         ];

@@ -5,26 +5,27 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB; // Tambahkan use statement untuk DB
-use Carbon\Carbon;
+
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
+        // Membuat admin
         User::create([
-            'nim' => '12902852238040',
-            'first_name' => 'Mala',
-            'last_name' => 'Agustina',
-            'email' => 'jessica.putra@example.net',
-            'phone' => '0678 7397 0743',
-            'address' => 'Jln. Zamrud No. 464, Pekanbaru 61948, Kalsel',
-            'date_of_birth' => '2003-09-26',
-            'password' => Hash::make('user'), // Ensure password is hashed
+            'first_name'=>'jonn',
+            'last_name'=>'udin',
+            'email' => 'admin@mail.com',
+            'password' => Hash::make('admin'),
+            'role' => 'admin',
+        ]);
+
+        // Membuat member
+        User::create([
+            'first_name' => 'salman',
+            'last_name' => 'fauzi',
+            'email' => 'member@mail.com',
+            'password' => Hash::make('member'),
+            'role' => 'member',
         ]);
     }
 }

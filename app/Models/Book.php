@@ -8,6 +8,7 @@ class Book extends Model
 {
     use HasFactory;
 
+    protected $table = 'tbl_books';
     protected $fillable = [
         'title',
         'author',
@@ -27,8 +28,9 @@ class Book extends Model
         return $this->belongsTo(Rack::class);
     }
 
-    public function stock()
+    public function bookStock()
     {
         return $this->hasOne(BookStock::class);
     }
+
 }

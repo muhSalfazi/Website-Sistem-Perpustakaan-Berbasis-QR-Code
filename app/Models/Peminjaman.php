@@ -7,7 +7,7 @@ use Database\Factories\DendaPnjmnFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory; // Import trait HasFactory
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Book;
-use App\Models\User;
+use App\Models\Member;
 
 class Peminjaman extends Model
 {
@@ -26,12 +26,11 @@ class Peminjaman extends Model
      * @var array
      */
     protected $fillable = [
-    
+        'id',
         'resi_pjmn',
         'book_id',
         'jmlh_buku',
         'member_id',
-        'tgl_kembali',
         'create_at'
     ];
 
@@ -48,6 +47,6 @@ class Peminjaman extends Model
      */
     public function member()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Member::class);
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Member;
 
 class MemberController extends Controller
 {
@@ -11,7 +11,7 @@ class MemberController extends Controller
     public function index()
     {
         // Fetch members data from the database
-        $members = User::all(); // Mengambil semua data anggota dari database
+        $members = Member::all(); // Mengambil semua data anggota dari database
 
         return view('member');
     }
@@ -37,7 +37,7 @@ class MemberController extends Controller
         ]);
 
         // Contoh penyimpanan data ke dalam database
-        User::create($request->all());
+        Member::create($request->all());
 
         return redirect()->route('members.index')->with('msg', 'Anggota berhasil ditambahkan!');
     }

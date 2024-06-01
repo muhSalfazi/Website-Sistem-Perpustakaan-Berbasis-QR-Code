@@ -15,44 +15,44 @@ class RackSeeder extends Seeder
         Rack::insert([
             [
                 'name' => '1A',
-                'lantai' => '1',
+                'rak' => '1',
             ],
             [
                 'name' => '1B',
-                'lantai' => '1',
+                'rak' => '1',
             ],
             [
                 'name' => '1C',
-                'lantai' => '1',
+                'rak' => '1',
             ],
             [
                 'name' => '2A',
-                'floor' => '2',
+                'rak' => '2',
             ],
             [
                 'name' => '2B',
-                'lantai' => '2',
+                'rak' => '2',
             ],
             [
                 'name' => '2C',
-                'lantai' => '2',
+                'rak' => '2',
             ],
             [
                 'name' => '3A',
-                'lantai' => '3',
+                'rak' => '3',
             ],
             [
                 'name' => '3B',
-                'floor' => '3',
+                'rak' => '3',
             ],
             [
                 'name' => '3C',
-                'lantai' => '3',
+                'rak' => '3',
             ],
-            [
-                'name' => '3D',
-                'lantai' => '3',
-            ],
+            // [
+            //     'name' => '3D',
+            //     'rak' => '3',
+            // ],
         ]);
     }
 }

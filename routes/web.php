@@ -7,6 +7,10 @@ use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\DendaController;
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Controllers\RakbukuController;
+
 
 // Route::resource('books', BookController::class);
 
@@ -31,13 +35,13 @@ Route::middleware('guest')->group(function () {
 });
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // Halaman dashboard hanya dapat diakses setelah login
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
+
     //route member
     Route::get('/member', [MemberController::class, 'index'])->name('member');
     Route::get('/members/create', [MemberController::class, 'create'])->name('members.create');
@@ -49,10 +53,28 @@ Route::middleware('auth')->group(function () {
 
     // pengembalian buku
     Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian');
-    
-    
+
+
     // books
     Route::get('/book', [BookController::class, 'index'])->name('daftarbook');
     Route::get('book/create', [BookController::class, 'create'])->name('books.create');
     Route::delete('books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
+    Route::delete('books/{book}/edit', [BookController::class, 'edit'])->name('books.update');
+
+
+    // rakbuku
+    Route::get('/rak', [RakbukuController::class, 'index'])->name('Rak.showdata');
+    Route::get('/rak/create', [RakbukuController::class, 'create'])->name('Rak.createRak');
+    Route::post('/rak/create', [RakbukuController::class, 'store'])->name('Rak.storeRak');
+    Route::put('/rak/{id}', [RakbukuController::class, 'update'])->name('racks.update');
+    Route::delete('/rak/{id}', [RakbukuController::class, 'destroy'])->name('racks.destroy');
+
+
+    Route::delete('/racks/{rack}', [RakbukuController::class, 'destroy'])->name('racks.destroy');
+    Route::put('/racks/{rack}', [RakbukuController::class, 'update'])->name('racks.update');
+
+
+    // denda
+    Route::get('/denda', [DendaController::class, 'index'])->name('denda');
+
 });

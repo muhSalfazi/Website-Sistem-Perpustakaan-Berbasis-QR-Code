@@ -13,16 +13,13 @@ return new class extends Migration
     {
         Schema::create('tbl_denda', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_member')->nullable();
-            $table->unsignedInteger('denda_yg_diberikan')->nullable();
-            $table->unsignedInteger('uang_yg_dibyrkn');
-            $table->unsignedInteger('kembalian');
-            $table->unsignedInteger('total_days');
-            // $table->dateTime('create_at')->nullable();
+            $table->unsignedBigInteger('id_pengembalian')->nullable();
+            $table->unsignedInteger('denda_yg_dibyr')->nullable();
+            $table->unsignedInteger('uang_yg_dibyrkn')->nulllable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('id_member')->references('id')->on('tbl_peminjaman')->onDelete('set null');
+            $table->foreign('id_pengembalian')->references('id')->on('tbl_pengembalian')->onDelete('cascade');
         });
     }
 
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('table_denda');
+        Schema::dropIfExists('tbl_denda');
     }
 };

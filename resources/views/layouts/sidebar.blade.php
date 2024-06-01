@@ -49,7 +49,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="/admin/fines" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('denda') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-report-money"></i>
                         </span>
@@ -85,7 +85,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="/admin/racks" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('Rak.showdata') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-columns"></i>
                         </span>

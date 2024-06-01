@@ -9,10 +9,14 @@ class BookStock extends Model
 {
     use HasFactory;
 
-    protected $table = 'book_stock';
-    
+    protected $table = 'tbl_book_stock';
+
     protected $fillable = [
-    'book_id',
-    'stok_buku'
-];
+        'book_id',
+        'jmlh_tersedia'
+    ];
+    public function book()
+    {
+        return $this->belongsTo(Book::class, 'book_id');
+    }
 }
