@@ -50,6 +50,10 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     // peminjaman buku
     Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman');
     Route::get('/peminjaman/search', [PeminjamanController::class, 'search'])->name('Peminjaman.search');
+    Route::get('/search-member-by-email', [PeminjamanController::class, 'searchMemberByEmail'])->name('search.member.by.email');
+    Route::get('/scan/member', [PeminjamanController::class, 'scanMemberByQRCode'])->name('scan.member.by.qrcode');
+
+
 
     // pengembalian buku
     Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian');

@@ -4,15 +4,16 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Member;
+use App\Models\Member; // Tambahkan impor untuk Member model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Str; // Tambahkan impor Str
+use Illuminate\Support\Str;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
+use Illuminate\Support\Facades\Response;
 
 class MemberController extends Controller
 {
@@ -35,7 +36,7 @@ class MemberController extends Controller
 
         // Create the user with hashed password
         $user = User::create([
-            'first_name' => $request->first_name, // Gunakan first_name dari inputan
+            'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => $hashedPassword,
@@ -73,7 +74,7 @@ class MemberController extends Controller
             'phone' => 'sometimes|string|max:20',
             'address' => 'sometimes|string',
             'tgl_lahir' => 'sometimes|date',
-            'imageProfile' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120', // Maksimum 5 MB
+            'imageProfile' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:5120', // Maksimum 5 MB
         ]);
 
         if ($validator->fails()) {
@@ -84,7 +85,7 @@ class MemberController extends Controller
             $imageFile = $request->file('imageProfile');
 
             // Memeriksa apakah file gambar terlalu besar
-            if ($imageFile->getSize() > 5120 * 1024) { // 5120 * 1024 adalah ukuran maksimum dalam bytes (di sini 5 MB)
+            if ($imageFile->getSize() > 5120 * 1024) {
                 return response()->json(['message' => 'Ukuran gambar terlalu besar. Ukuran maksimalnya adalah 5MB.'], 400);
             }
 
@@ -105,13 +106,11 @@ class MemberController extends Controller
             info('Tidak ada file gambar yang diunggah.');
         }
 
-        // Cek apakah QR code untuk pengguna sudah ada
-        if (!$member->qr_code) {
-            // Generate and save QR code
-            $qrCodeData = $this->generateEncryptedQRCodeData($member->location, $member->id);
+        // Generate and save QR code if necessary
+        if (!$member->qr_code || $request->has('first_name') || $request->has('last_name') || $request->has('email')) {
+            $qrCodeData = $this->generateEncryptedQRCodeData($member->id);
             $member->qr_code = $qrCodeData;
         }
-
 
         // Update other fields...
         if ($request->has('password')) {
@@ -127,9 +126,10 @@ class MemberController extends Controller
             $member->tgl_lahir = $request->tgl_lahir;
         }
 
-        $qrCodeUrl = Storage::url('qrcodes/' . $member->qr_code);
-        $imageProfileUrl = Storage::url('profiles/' . $member->imageProfile); // URL untuk image profile
         $member->save();
+
+        $qrCodeUrl = asset('qrcodes/' . $member->qr_code); // Mengubah path untuk bisa diakses secara publik
+        $imageProfileUrl = asset('storage/profiles/' . $member->imageProfile); // URL untuk image profile
 
         return response()->json([
             'message' => 'Member updated successfully',
@@ -138,17 +138,34 @@ class MemberController extends Controller
             'image_profile_url' => $imageProfileUrl, // Tambahkan URL untuk image profile
         ], 200);
     }
-    private function generateEncryptedQRCodeData($data, $memberId)
-    {
-        $encryptedData = Crypt::encryptString($data);
-        $qrCode = new QrCode($encryptedData);
-        $writer = new PngWriter();
-        // Buat nama file QR code acak dengan menggunakan Str::random()
-        $qrCodeFileName = Str::random(40) . '.png';
-        $qrCodePath = 'qrcodes/' . $qrCodeFileName;
-        $qrCodeData = $writer->write($qrCode)->getString();
-        Storage::disk('public')->put($qrCodePath, $qrCodeData);
 
-        return $qrCodeFileName;
-    }
+
+ private function generateEncryptedQRCodeData($memberId)
+{
+    $member = Member::find($memberId);
+
+    $data = [
+        'first_name' => $member->first_name,
+        'last_name' => $member->last_name,
+        'email' => $member->email,
+        'imageProfile' => $member->imageProfile ? asset('storage/profiles/' . $member->imageProfile) : null,
+    ];
+
+    $encryptedData = Crypt::encryptString(json_encode($data));
+    $qrCode = new QrCode($encryptedData);
+    $writer = new PngWriter();
+
+    // Ubah format nama file QR code menjadi sesuai dengan data anggota
+    $qrCodeFileName = $member->first_name . '-' . $member->last_name . '.png';
+
+    $qrCodePath = 'qrcodes/' . $qrCodeFileName; // Mengubah lokasi penyimpanan QR code
+
+    $qrCodeData = $writer->write($qrCode)->getString();
+
+    file_put_contents(public_path($qrCodePath), $qrCodeData);
+
+    return $qrCodeFileName;
+}
+
+
 }

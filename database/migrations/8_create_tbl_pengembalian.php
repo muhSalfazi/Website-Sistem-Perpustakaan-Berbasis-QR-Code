@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tbl_pengembalian', function (Blueprint $table) {
             $table->id();
              $table->unsignedBigInteger('id_pnjmn')->nullable();
-            $table->unsignedInteger('tgl_kembali')->nullable();
+            $table->dateTime('tgl_kembali')->nullable();
             // $table->timestamps();
             $table->softDeletes();
 

@@ -13,12 +13,6 @@ class PeminjamanFactory extends Factory
 
     public function definition()
     {
-        $currentMonth = Carbon::now()->month;
-        $randomDay = $this->faker->numberBetween(1, Carbon::now()->daysInMonth);
-        $randomHour = $this->faker->numberBetween(0, 23);
-        $randomMinute = $this->faker->numberBetween(0, 59);
-        $randomSecond = $this->faker->numberBetween(0, 59);
-        $randomDate = Carbon::create(null, $currentMonth, $randomDay, $randomHour, $randomMinute, $randomSecond);
 
         // Ambil satu baris acak dari tabel 'members'
         $member = Member::inRandomOrder()->first();
@@ -31,7 +25,7 @@ class PeminjamanFactory extends Factory
             'book_id' => $book->id ?? null,
             'jmlh_buku' => $this->faker->numberBetween(1, 5), // Perbaikan disini, pastikan nilai adalah angka
             'member_id' => $member->id ?? null,
-            'created_at' => $randomDate,
+           'created_at' => Carbon::now(),
             'updated_at' => null,
         ];
     }
