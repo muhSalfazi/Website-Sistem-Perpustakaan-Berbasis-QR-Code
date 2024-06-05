@@ -58,15 +58,15 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     // pengembalian buku
     Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian');
 
-
-    // books
+    //daftar buku
     Route::get('/books', [BookController::class, 'index'])->name('books.index');
     Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
+    Route::get('/book/{id}', [BookController::class, 'showDetail'])->name('Books.showDetail');
+
+    Route::get('/books/{id}update', [BookController::class, 'getBook'])->name('books.getBook'); // Adjusted this route
     Route::post('/books', [BookController::class, 'store'])->name('books.store');
     Route::put('/books/{id}', [BookController::class, 'update'])->name('books.update');
     Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
-    Route::get('/books/{id}/getBook', [BookController::class, 'getBook']);
-
 
     // rakbuku
     Route::get('/rak', [RakbukuController::class, 'index'])->name('Rak.showdata');
@@ -74,7 +74,6 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::post('/rak/create', [RakbukuController::class, 'store'])->name('Rak.storeRak');
     Route::delete('/racks/{rack}', [RakbukuController::class, 'destroy'])->name('racks.destroy');
     Route::get('/books/{id}', [BookController::class, 'getBook']);
-    // Mengupdate rak yang diubah
     Route::put('/racks/{rack}', [RakbukuController::class, 'update'])->name('racks.update');
 
 
@@ -83,7 +82,6 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/categories', [KategoriController::class, 'index'])->name('categories.index');
     Route::get('/categories/create', [KategoriController::class, 'create'])->name('categories.create');
     Route::post('/categories/create', [KategoriController::class, 'store'])->name('categories.store');
-    // Route::get('/categories/{category}/edit', [KategoriController::class, 'edit'])->name('categories.edit');
     Route::put('/categories/{category}', [KategoriController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{category}', [KategoriController::class, 'destroy'])->name('categories.destroy');
 

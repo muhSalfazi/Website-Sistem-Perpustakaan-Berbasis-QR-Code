@@ -3,21 +3,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Book extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'tbl_books';
     protected $fillable = [
         'title',
         'author',
-        'category_id',
-        'rack_id',
-        'year',
-        'book_cover',
         'publisher',
-        
+        'isbn',
+        'year',
+        'rack_id',
+        'category_id',
+        'description'
+
     ];
 
     public function category()

@@ -56,60 +56,57 @@ class BookController extends Controller
         return redirect()->route('books.index')->with('msg', 'Book added successfully')->with('error', false);
     }
 
-
-    // BookController.php
-    public function getBook($id)
-    {
-        $book = Book::with(['category', 'rack', 'bookStock'])->findOrFail($id);
-        return response()->json([
-            'id' => $book->id,
-            'title' => $book->title,
-            'isbn' => $book->isbn,
-            'author' => $book->author,
-            'publisher' => $book->publisher,
-            'year' => $book->year,
-            'category_id' => $book->category_id,
-            'rack_id' => $book->rack_id,
-            'bookStock' => [
-                'jmlh_tersedia' => optional($book->bookStock)->jmlh_tersedia
-            ]
-        ]);
-    }
-
-
     public function update(Request $request, $id)
     {
-        $book = Book::findOrFail($id);
-
         $request->validate([
-            'title' => 'required|string|max:157',
-            'author' => 'required|string|max:80',
-            'publisher' => 'required|string|max:80',
-            'isbn' => 'nullable|string|max:100|unique:tbl_books,isbn,' . $id,
-            'year' => 'required|integer',
-            'rack_id' => 'required|exists:tbl_racks,id',
+            'title' => 'required|string|max:255',
+            'isbn' => 'required|string|max:255',
             'category_id' => 'required|exists:tbl_categories,id',
-            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'description' => 'required|string',
-            'jmlh_tersedia' => 'required|integer',
+            'rack_id' => 'required|exists:tbl_racks,id',
+            'jumlah' => 'required|integer|min:1',
+            'author' => 'required|string|max:255',
+            'publisher' => 'required|string|max:255',
+            'year' => 'required|integer|min:1900|max:' . date('Y'),
+            'book_cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
-        $data = $request->except(['cover']);
+        $book = Book::findOrFail($id);
+        $book->title = $request->input('title');
+        $book->isbn = $request->input('isbn');
+        $book->category_id = $request->input('category_id');
+        $book->rack_id = $request->input('rack_id');
+        $book->author = $request->input('author');
+        $book->publisher = $request->input('publisher');
+        $book->year = $request->input('year');
 
-        if ($request->hasFile('cover')) {
-            $coverPath = $request->file('cover')->store('cover_book', 'public');
-            Storage::disk('public')->delete($book->book_cover); // Delete old cover
-            $data['book_cover'] = $coverPath;
+        if ($request->hasFile('book_cover')) {
+            $book->book_cover = $request->file('book_cover')->store('book_covers', 'public');
         }
 
-        $book->update($data);
+        $book->save();
 
-        return redirect()->route('books.index')->with('msg', 'Book updated successfully')->with('error', false);
+        // Update the book stock
+        $bookStock = BookStock::firstOrCreate(['book_id' => $book->id]);
+        $bookStock->jmlh_tersedia = $request->input('jumlah');
+        $bookStock->save();
+
+        return redirect()->route('books.index')->with('msg', 'Book updated successfully');
     }
 
+    public function showDetail($id)
+    {
+        $book = Book::findOrFail($id);
+        $categories = Kategori::all();
+        $racks = Rack::all();
 
+        return view('Books.showDetail', compact('book', 'categories', 'racks'));
+    }
 
-
+    public function getBook($id)
+    {
+        $book = Book::with('category', 'rack', 'bookStock')->findOrFail($id);
+        return response()->json(['book' => $book]);
+    }
     public function destroy($id)
     {
         $book = Book::findOrFail($id);
@@ -117,5 +114,4 @@ class BookController extends Controller
 
         return redirect()->route('books.index')->with('msg', 'Book deleted successfully')->with('error', false);
     }
-
 }

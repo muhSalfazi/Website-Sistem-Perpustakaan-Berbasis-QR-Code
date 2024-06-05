@@ -52,13 +52,15 @@
 
                                     <a href="#" class="btn btn-sm btn-primary edit-rack mt-1" data-bs-toggle="modal"
                                         data-bs-target="#editRackModal" data-id="{{ $rack->id }}"
-                                        data-name="{{ $rack->name }}" data-rak="{{ $rack->rak }}">Edit</a>
+                                        data-name="{{ $rack->name }}" data-rak="{{ $rack->rak }}">
+                                        <i class="ti ti-pencil"></i>Edit </a>
+
 
                                     <form action="{{ route('racks.destroy', $rack->id) }}" method="post" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger mt-1"
-                                            onclick="return confirm('Are you sure you want to delete this rack?')">Delete</button>
+                                            onclick="return confirm('Are you sure you want to delete this rack?')">  <i class="ti ti-trash"></i> Delete</button>
                                     </form>
                                 </td>
                             </tr>
@@ -118,4 +120,3 @@
         });
     </script>
 @endsection
-    

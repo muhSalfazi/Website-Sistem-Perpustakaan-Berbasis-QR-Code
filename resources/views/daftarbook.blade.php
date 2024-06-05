@@ -52,27 +52,26 @@
                             <tr>
                                 <th scope="row">{{ $index + 1 }}</th>
                                 <td>
-                                    <a href="#">
-                                        <div class="d-flex justify-content-center align-items-center"
-                                            style="max-width: 130px; height: 80px; border-radius=10%">
-                                            <img class="mx-auto mh-100" src="{{ asset('storage/' . $book->book_cover) }}"
-                                                alt="{{ $book->title }}">
-                                        </div>
-                                    </a>
+                                    <div class="d-flex justify-content-center align-items-center"
+                                        style="max-width: 130px; height: 80px; border-radius=10%">
+                                        <img class="mx-auto mh-100" src="{{ asset('storage/' . $book->book_cover) }}"
+                                            alt="{{ $book->title }}">
+                                    </div>
                                 </td>
                                 <td>
-                                    <a href="#">
-                                        <p class="text-primary-emphasis text-decoration-underline">
-                                            <b>{{ $book->title }} ({{ $book->year }})</b>
-                                        </p>
-                                        <p class="text-body">Author: {{ $book->author }}</p>
-                                    </a>
+                                    <p class="text-primary-emphasis text-decoration-underline">
+                                        <b>{{ $book->title }} ({{ $book->year }})</b>
+                                    </p>
+                                    <p class="text-body">Author: {{ $book->author }}</p>
                                 </td>
                                 <td>{{ optional($book->category)->name ?? '0' }}</td>
                                 <td>{{ optional($book->rack)->name ?? '0' }}</td>
                                 <td>{{ optional($book->bookStock)->jmlh_tersedia ?? '0' }}</td>
                                 <td>
-                                    <a class="d-block btn btn-primary w-80 mb-2" data-bs-toggle="modal"
+                                    <a href="{{ route('Books.showDetail', $book->id) }}" class="btn btn-sm btn-info mt-1">
+                                        <i class="ti ti-eye"></i> Detail
+                                    </a>
+                                    <a class=" btn btn-sm btn-primary mt-1" data-bs-toggle="modal"
                                         data-bs-target="#editBookModal" data-id="{{ $book->id }}">
                                         <i class="ti ti-pencil"></i> Edit
                                     </a>
@@ -80,7 +79,7 @@
                                         onsubmit="return confirm('Are you sure?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger w-100">
+                                        <button type="submit" class="btn  btn-sm btn-danger mt-1 w-50 ">
                                             <i class="ti ti-trash"></i> Delete
                                         </button>
                                     </form>
@@ -105,8 +104,7 @@
         <div class="modal fade" id="editBookModal" tabindex="-1" aria-labelledby="editBookModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form id="editBookForm" action="{{ route('books.update', $book) }}" method="post"
-                        enctype="multipart/form-data">
+                    <form id="editBookForm" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="id" id="id">
@@ -118,61 +116,48 @@
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label for="title" class="form-label">Judul</label>
-                                <input type="text" class="form-control" id="title" name="title"
-                                    value="{{ $book->title }}" required>
+                                <input type="text" class="form-control" id="title" name="title" required>
                             </div>
                             <div class="mb-3">
-                                <label for="isbn" class="form-label">isbn</label>
-                                <input type="text" class="form-control" id="isbn" name="isbn"
-                                    value="{{ $book->isbn }}" required>
+                                <label for="isbn" class="form-label">ISBN</label>
+                                <input type="text" class="form-control" id="isbn" name="isbn" required>
                             </div>
                             <div class="mb-3">
                                 <label for="category" class="form-label">Kategori</label>
-                                <select class="form-select" id="category" name="category" required>
+                                <select class="form-select" id="category" name="category_id" required>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}"
-                                            {{ $book->category_id == $category->id ? 'selected' : '' }}>
-                                            {{ $category->name }}
-                                        </option>
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="mb-3">
                                 <label for="rack" class="form-label">Rak</label>
-                                <select class="form-select" id="rack" name="rack" required>
+                                <select class="form-select" id="rack" name="rack_id" required>
                                     @foreach ($racks as $rack)
-                                        <option value="{{ $rack->id }}"
-                                            {{ $book->rack_id == $rack->id ? 'selected' : '' }}>
-                                            {{ $rack->name }}
-                                        </option>
+                                        <option value="{{ $rack->id }}">{{ $rack->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="mb-3">
                                 <label for="jumlah" class="form-label">Jumlah</label>
-                                <input type="number" class="form-control" id="jumlah" name="jumlah"
-                                    value="{{ optional($book->bookStock)->jmlh_tersedia }}" required>
+                                <input type="number" class="form-control" id="jumlah" name="jumlah" required>
                             </div>
                             <div class="mb-3">
                                 <label for="author" class="form-label">Author</label>
-                                <input type="text" class="form-control" id="author" name="author"
-                                    value="{{ $book->author }}" required>
+                                <input type="text" class="form-control" id="author" name="author" required>
                             </div>
                             <div class="mb-3">
                                 <label for="publisher" class="form-label">Publisher</label>
-                                <input type="text" class="form-control" id="publisher" name="publisher"
-                                    value="{{ $book->publisher }}" required>
+                                <input type="text" class="form-control" id="publisher" name="publisher" required>
                             </div>
                             <div class="mb-3">
                                 <label for="year" class="form-label">Year</label>
-                                <input type="number" class="form-control" id="year" name="year"
-                                    value="{{ $book->year }}" required>
+                                <input type="number" class="form-control" id="year" name="year" required>
                             </div>
                             <div class="mb-3">
                                 <label for="book_cover" class="form-label">Cover Buku</label>
                                 <input type="file" class="form-control" id="book_cover" name="book_cover">
                             </div>
-
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -203,19 +188,21 @@
                         })
                         .then(data => {
                             console.log('Fetched data:', data); // Log fetched data for debugging
-                            editBookForm.action = `/books/${bookId}`;
-                            editBookForm.querySelector('#title').value = data.title;
-                            editBookForm.querySelector('#isbn').value = data.isbn;
-                            editBookForm.querySelector('#jumlah').value = data.bookStock.jmlh_tersedia;
-                            editBookForm.querySelector('#author').value = data.author;
-                            editBookForm.querySelector('#category').value = data.category_id;
-                            editBookForm.querySelector('#rack').value = data.rack_id;
-                            editBookForm.querySelector('#publisher').value = data.publisher ??
-                                ''; // Set default value to empty string if undefined
-                            editBookForm.querySelector('#year').value = data.year ??
-                                ''; // Set default value to empty string if undefined
+                            editBookForm.action = `/books/${data.book.id}`;
+                            editBookForm.querySelector('#id').value = data.book.id;
+                            editBookForm.querySelector('#title').value = data.book.title;
+                            editBookForm.querySelector('#isbn').value = data.book.isbn;
+                            editBookForm.querySelector('#category').value = data.book.category_id;
+                            editBookForm.querySelector('#rack').value = data.book.rack_id;
+                            editBookForm.querySelector('#jumlah').value = data.book.book_stock
+                                .jmlh_tersedia;
+                            editBookForm.querySelector('#author').value = data.book.author;
+                            editBookForm.querySelector('#publisher').value = data.book.publisher;
+                            editBookForm.querySelector('#year').value = data.book.year;
                         })
-                        .catch(error => console.error('Error fetching book data:', error));
+                        .catch(error => {
+                            console.error('There was a problem with the fetch operation:', error);
+                        });
                 });
             });
         </script>
