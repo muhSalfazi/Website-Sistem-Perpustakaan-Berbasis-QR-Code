@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('role',['admin','member'])->default('member');
             $table->dateTime('last_login')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

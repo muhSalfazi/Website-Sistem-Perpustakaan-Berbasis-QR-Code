@@ -1,15 +1,14 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Carbon;
 use Illuminate\Notifications\Notifiable;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     protected $table = 'tbl_users';
 
@@ -20,6 +19,9 @@ class User extends Authenticatable
         'password',
         'role',
         'last_login',
+        'imageProfile', // Tambahkan imageProfile
+        'phone', // Tambahkan phone
+        'address', // Tambahkan address
     ];
 
     protected $hidden = [
@@ -35,12 +37,14 @@ class User extends Authenticatable
                     'first_name' => $user->first_name, // Gunakan first_name dari inputan
                     'last_name' => $user->last_name, // Gunakan last_name dari inputan
                     'email' => $user->email,
+                    'imageProfile' => $user->imageProfile, // Gunakan imageProfile dari inputan
+                    'phone' => $user->phone, // Gunakan phone dari inputan
+                    'address' => $user->address, // Gunakan address dari inputan
                     // 'password' => $user->password,
                 ]);
             }
         });
     }
-
 
     public function setLastLoginAttribute($value)
     {

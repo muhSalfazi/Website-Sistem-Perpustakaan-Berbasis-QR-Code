@@ -53,7 +53,7 @@
                                 <th scope="row">{{ $index + 1 }}</th>
                                 <td>
                                     <div class="d-flex justify-content-center align-items-center"
-                                        style="max-width: 130px; height: 80px; border-radius=10%">
+                                        style="max-width: 100px; height: 80px; border-radius=10%">
                                         <img class="mx-auto mh-100" src="{{ asset('storage/' . $book->book_cover) }}"
                                             alt="{{ $book->title }}">
                                     </div>
@@ -86,9 +86,6 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr>
-                                <td class="text-center" colspan="7"><b>Tidak ada data</b></td>
-                            </tr>
                         @endforelse
                     </tbody>
                 </table>

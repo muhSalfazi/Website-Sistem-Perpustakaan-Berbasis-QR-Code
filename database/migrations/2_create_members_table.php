@@ -14,11 +14,12 @@ return new class extends Migration {
             $table->string('last_name', 100);
             $table->string('email', 255)->unique();
             $table->string('imageProfile')->nullable();
-            $table->integer('phone', 20)->nullable();
+            $table->string('phone',15)->nullable();
             $table->text('address')->nullable();
             $table->date('tgl_lahir')->nullable();
             $table->string('qr_code', 255)->nullable()->unique();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('tbl_users')->onDelete('cascade');
         });

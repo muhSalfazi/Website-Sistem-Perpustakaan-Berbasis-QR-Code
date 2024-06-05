@@ -24,7 +24,14 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
     integrity="sha384-cVKIPhG1qiD1T6GkJt7E2YfIouuWE1cQEOstzF4iqp1rIwKtOf+SZAxTOQE2akKx" crossorigin="anonymous">
 </script>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
+<script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            new simpleDatatables.DataTable('.datatable');
+        });
+
+    </script>
+
 </body>
 
 </html>

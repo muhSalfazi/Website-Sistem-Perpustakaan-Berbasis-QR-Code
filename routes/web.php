@@ -44,8 +44,7 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 
     //route member
     Route::get('/member', [MemberController::class, 'index'])->name('member');
-    Route::get('/members/create', [MemberController::class, 'create'])->name('members.create');
-
+    Route::delete('/members/{id}', [MemberController::class, 'destroy'])->name('member.destroy');
 
     // peminjaman buku
     Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman');
@@ -61,8 +60,7 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     //daftar buku
     Route::get('/books', [BookController::class, 'index'])->name('books.index');
     Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
-    Route::get('/book/{id}', [BookController::class, 'showDetail'])->name('Books.showDetail');
-
+    Route::get('/book/{id}/', [BookController::class, 'showDetail'])->name('Books.showDetail');
     Route::get('/books/{id}update', [BookController::class, 'getBook'])->name('books.getBook'); // Adjusted this route
     Route::post('/books', [BookController::class, 'store'])->name('books.store');
     Route::put('/books/{id}', [BookController::class, 'update'])->name('books.update');
