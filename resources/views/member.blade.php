@@ -57,7 +57,9 @@
                                     <div class="d-flex justify-content-center gap-2">
                                         <form action="#" method="post">
                                             <button type="submit" class="btn btn-danger"
-                                                onclick="return confirm('Are you sure?');">Delete</button>
+                                                onclick="return confirm('Are you sure?');">Non-Aktifkan</button>
+
+
                                         </form>
                                     </div>
                                 </td>

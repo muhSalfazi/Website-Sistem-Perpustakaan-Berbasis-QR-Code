@@ -14,16 +14,6 @@
     </div>
 
     <div class="card">
-        <div class="pb-2">
-            @if (session('msg'))
-                <div class="alert {{ session('error') ? 'alert-danger' : 'alert-success' }} alert-dismissible fade show"
-                    role="alert">
-                    {{ session('msg') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
-        </div>
-
         @php
             $categories = App\Models\Kategori::all();
             $racks = App\Models\Rack::all();
@@ -36,17 +26,7 @@
                 <div class="col-12 col-lg-7">
                     <div class="d-flex gap-2 justify-content-md-end">
                         <div>
-                            <form action="" method="get">
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" name="search"
-                                        value="{{ request('search') }}" placeholder="Cari buku" aria-label="Cari buku"
-                                        aria-describedby="searchButton">
-                                    <button class="btn btn-outline-secondary" type="submit" id="searchButton">Cari</button>
-                                </div>
-                            </form>
-                        </div>
-                        <div>
-                            <a href="{{ route('books.create') }}" class="btn btn-primary py-2">
+                            <a href="{{ route('books.create') }}" class="btn btn-primary py-2 mt-2">
                                 <i class="ti ti-plus"></i> Tambah Data Buku
                             </a>
                         </div>
@@ -55,10 +35,10 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table table-hover table-striped">
+                <table class="table table-hover table-striped" id="bookTable">
                     <thead class="table-light">
                         <tr>
-                            <th scope="col">#</th>
+                            <th scope="col">No</th>
                             <th scope="col">Cover Buku</th>
                             <th scope="col">Judul</th>
                             <th scope="col">Kategori</th>
@@ -70,11 +50,11 @@
                     <tbody class="table-group-divider">
                         @forelse ($books as $index => $book)
                             <tr>
-                                <th scope="row">{{ $loop->iteration + $books->firstItem() }}</th>
+                                <th scope="row">{{ $index + 1 }}</th>
                                 <td>
                                     <a href="#">
                                         <div class="d-flex justify-content-center align-items-center"
-                                            style="max-width: 150px; height: 120px;">
+                                            style="max-width: 130px; height: 80px; border-radius=10%">
                                             <img class="mx-auto mh-100" src="{{ asset('storage/' . $book->book_cover) }}"
                                                 alt="{{ $book->title }}">
                                         </div>
@@ -90,10 +70,9 @@
                                 </td>
                                 <td>{{ optional($book->category)->name ?? '0' }}</td>
                                 <td>{{ optional($book->rack)->name ?? '0' }}</td>
-                              <td>{{ optional($book->bookStock)->jmlh_tersedia ?? '0' }}</td>
-
+                                <td>{{ optional($book->bookStock)->jmlh_tersedia ?? '0' }}</td>
                                 <td>
-                                    <a class="d-block btn btn-primary w-100 mb-2" data-bs-toggle="modal"
+                                    <a class="d-block btn btn-primary w-80 mb-2" data-bs-toggle="modal"
                                         data-bs-target="#editBookModal" data-id="{{ $book->id }}">
                                         <i class="ti ti-pencil"></i> Edit
                                     </a>
@@ -122,34 +101,30 @@
             </nav>
         </div>
 
-
-
-
         <!-- Edit Book Modal -->
         <div class="modal fade" id="editBookModal" tabindex="-1" aria-labelledby="editBookModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form id="editBookForm" action="{{ route('books.update', $book->id) }}" method="post"
+                    <form id="editBookForm" action="{{ route('books.update', $book) }}" method="post"
                         enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
+                        <input type="hidden" name="id" id="id">
+
                         <div class="modal-header">
                             <h5 class="modal-title" id="editBookModalLabel">Edit Buku</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label for="book_cover" class="form-label">Cover Buku</label>
-                                <input type="file" class="form-control" id="book_cover" name="book_cover">
-                                @if ($book->book_cover)
-                                    <img src="{{ asset('storage/' . $book->book_cover) }}" alt="Cover Buku"
-                                        style="max-width: 150px;">
-                                @endif
-                            </div>
-                            <div class="mb-3">
                                 <label for="title" class="form-label">Judul</label>
                                 <input type="text" class="form-control" id="title" name="title"
                                     value="{{ $book->title }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="isbn" class="form-label">isbn</label>
+                                <input type="text" class="form-control" id="isbn" name="isbn"
+                                    value="{{ $book->isbn }}" required>
                             </div>
                             <div class="mb-3">
                                 <label for="category" class="form-label">Kategori</label>
@@ -175,15 +150,29 @@
                             </div>
                             <div class="mb-3">
                                 <label for="jumlah" class="form-label">Jumlah</label>
-                               <input type="number" class="form-control" id="jumlah" name="jumlah"
+                                <input type="number" class="form-control" id="jumlah" name="jumlah"
                                     value="{{ optional($book->bookStock)->jmlh_tersedia }}" required>
-
                             </div>
                             <div class="mb-3">
                                 <label for="author" class="form-label">Author</label>
                                 <input type="text" class="form-control" id="author" name="author"
                                     value="{{ $book->author }}" required>
                             </div>
+                            <div class="mb-3">
+                                <label for="publisher" class="form-label">Publisher</label>
+                                <input type="text" class="form-control" id="publisher" name="publisher"
+                                    value="{{ $book->publisher }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="year" class="form-label">Year</label>
+                                <input type="number" class="form-control" id="year" name="year"
+                                    value="{{ $book->year }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="book_cover" class="form-label">Cover Buku</label>
+                                <input type="file" class="form-control" id="book_cover" name="book_cover">
+                            </div>
+
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -193,31 +182,42 @@
                 </div>
             </div>
         </div>
-    
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                const dataTable = new simpleDatatables.DataTable("#bookTable");
+
                 const editBookModal = document.getElementById('editBookModal');
                 editBookModal.addEventListener('show.bs.modal', function(event) {
                     const button = event.relatedTarget;
                     const bookId = button.getAttribute('data-id');
+                    const editBookForm = document.getElementById('editBookForm');
 
                     // Fetch book data and populate the form
-                    fetch(`/books/${bookId}/edit`)
-                        .then(response => response.json())
+                    fetch(`/books/${bookId}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
                         .then(data => {
-                            document.getElementById('title').value = data.title;
-                            document.getElementById('jumlah').value = data
-                            .jumlah_tersedia; // Ubah dari data.jumlah ke data.jumlah_tersedia
-                            document.getElementById('author').value = data.author;
-                            document.getElementById('category').value = data.category_id;
-                            document.getElementById('rack').value = data.rack_id;
+                            console.log('Fetched data:', data); // Log fetched data for debugging
+                            editBookForm.action = `/books/${bookId}`;
+                            editBookForm.querySelector('#title').value = data.title;
+                            editBookForm.querySelector('#isbn').value = data.isbn;
+                            editBookForm.querySelector('#jumlah').value = data.bookStock.jmlh_tersedia;
+                            editBookForm.querySelector('#author').value = data.author;
+                            editBookForm.querySelector('#category').value = data.category_id;
+                            editBookForm.querySelector('#rack').value = data.rack_id;
+                            editBookForm.querySelector('#publisher').value = data.publisher ??
+                                ''; // Set default value to empty string if undefined
+                            editBookForm.querySelector('#year').value = data.year ??
+                                ''; // Set default value to empty string if undefined
                         })
                         .catch(error => console.error('Error fetching book data:', error));
                 });
             });
         </script>
-
-
-
-    @endsection
+    </div>
+@endsection

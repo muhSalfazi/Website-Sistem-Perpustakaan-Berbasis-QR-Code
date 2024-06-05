@@ -7,34 +7,14 @@ use App\Models\Kategori;
 use App\Models\Rack;
 use App\Models\BookStock;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-        $books = Book::with(['category', 'rack', 'bookStock'])
-            ->when($search, function ($query, $search) {
-                return $query->where('title', 'like', '%' . $search . '%')
-                    ->orWhere('author', 'like', '%' . $search . '%')
-                    ->orWhereHas('category', function ($q) use ($search) {
-                        $q->where('name', 'like', '%' . $search . '%');
-                    })
-                    ->orWhereHas('rack', function ($q) use ($search) {
-                        $q->where('name', 'like', '%' . $search . '%');
-                    })
-                    ->orWhereHas('bookStock', function ($q) use ($search) {
-                        $q->where('jmlh_tersedia', 'like', '%' . $search . '%');
-                    });
-            })
-            ->paginate(10);
-
-        $categories = Kategori::all();
-        $racks = Rack::all();
-
-        return view('daftarbook', compact('books', 'categories', 'racks'));
+        $books = Book::with(['category', 'rack', 'bookStock'])->paginate(10);
+        return view('daftarbook', compact('books'));
     }
 
     public function create()
@@ -54,61 +34,88 @@ class BookController extends Controller
             'year' => 'required|integer',
             'rack_id' => 'required|exists:tbl_racks,id',
             'category_id' => 'required|exists:tbl_categories,id',
-            'book_cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'required|string',
+            'jmlh_tersedia' => 'required|integer',
         ]);
 
         $book = new Book($request->all());
 
-        if ($request->hasFile('book_cover')) {
-            $book->book_cover = $request->file('book_cover')->store('book_covers', 'public');
+        if ($request->hasFile('cover')) {
+            $bookCoverPath = $request->file('cover')->store('cover_book', 'public');
+            $book->book_cover = $bookCoverPath;
         }
 
         $book->save();
+
+        $bookStock = new BookStock();
+        $bookStock->book_id = $book->id;
+        $bookStock->jmlh_tersedia = $request->input('jmlh_tersedia');
+        $bookStock->save();
 
         return redirect()->route('books.index')->with('msg', 'Book added successfully')->with('error', false);
     }
 
-    public function edit(Book $book)
+
+    // BookController.php
+    public function getBook($id)
     {
-        $categories = Kategori::all();
-        $racks = Rack::all();
-        return view('books.edit', compact('book', 'categories', 'racks'));
+        $book = Book::with(['category', 'rack', 'bookStock'])->findOrFail($id);
+        return response()->json([
+            'id' => $book->id,
+            'title' => $book->title,
+            'isbn' => $book->isbn,
+            'author' => $book->author,
+            'publisher' => $book->publisher,
+            'year' => $book->year,
+            'category_id' => $book->category_id,
+            'rack_id' => $book->rack_id,
+            'bookStock' => [
+                'jmlh_tersedia' => optional($book->bookStock)->jmlh_tersedia
+            ]
+        ]);
     }
 
-    public function update(Request $request, Book $book)
+
+    public function update(Request $request, $id)
     {
+        $book = Book::findOrFail($id);
+
         $request->validate([
             'title' => 'required|string|max:157',
             'author' => 'required|string|max:80',
             'publisher' => 'required|string|max:80',
-            'isbn' => 'required|string|max:100|unique:tbl_books,isbn,' . $book->id,
+            'isbn' => 'nullable|string|max:100|unique:tbl_books,isbn,' . $id,
             'year' => 'required|integer',
             'rack_id' => 'required|exists:tbl_racks,id',
             'category_id' => 'required|exists:tbl_categories,id',
-            'book_cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'required|string',
+            'jmlh_tersedia' => 'required|integer',
         ]);
 
-        $book->fill($request->all());
+        $data = $request->except(['cover']);
 
-        if ($request->hasFile('book_cover')) {
-            if ($book->book_cover && Storage::disk('public')->exists($book->book_cover)) {
-                Storage::disk('public')->delete($book->book_cover);
-            }
-            $book->book_cover = $request->file('book_cover')->store('book_covers', 'public');
+        if ($request->hasFile('cover')) {
+            $coverPath = $request->file('cover')->store('cover_book', 'public');
+            Storage::disk('public')->delete($book->book_cover); // Delete old cover
+            $data['book_cover'] = $coverPath;
         }
 
-        $book->save();
+        $book->update($data);
 
         return redirect()->route('books.index')->with('msg', 'Book updated successfully')->with('error', false);
     }
 
-    public function destroy(Book $book)
+
+
+
+    public function destroy($id)
     {
-        if ($book->book_cover && Storage::disk('public')->exists($book->book_cover)) {
-            Storage::disk('public')->delete($book->book_cover);
-        }
-        $book->delete();
+        $book = Book::findOrFail($id);
+        $book->delete(); // Soft delete
 
         return redirect()->route('books.index')->with('msg', 'Book deleted successfully')->with('error', false);
     }
+
 }

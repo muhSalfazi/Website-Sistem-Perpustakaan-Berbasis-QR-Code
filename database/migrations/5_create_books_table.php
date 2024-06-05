@@ -12,14 +12,15 @@ return new class extends Migration {
     {
      Schema::create('tbl_books', function (Blueprint $table) {
             $table->id();
+            $table->string('book_cover')->nullable();
             $table->string('title', 157);
             $table->string('author', 80);
             $table->string('publisher', 80);
-            $table->string('isbn', 100)->uniqe();
+            $table->string('isbn', 100)->unique();
             $table->year('year');
             $table->unsignedBigInteger('rack_id');
             $table->unsignedBigInteger('category_id');
-            $table->string('book_cover')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

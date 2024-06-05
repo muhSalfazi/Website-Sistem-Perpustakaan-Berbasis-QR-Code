@@ -141,58 +141,62 @@
             });
         }
 
-        function handleQrCodeScanned(decodedText) {
-            // Kosongkan isi tabel sebelum menampilkan hasil pemindaian QR code yang baru
-            $('#memberTableBody').empty();
-            // Sembunyikan alert jika sebelumnya ditampilkan
-            $('#memberFoundAlert').addClass('d-none');
-            $('#memberNotRegisteredAlert').addClass('d-none');
-            // Sembunyikan kepala tabel jika tidak ada hasil
-            $('thead').addClass('d-none');
+       function handleQrCodeScanned(decodedText) {
+    // Kosongkan isi tabel sebelum menampilkan hasil pemindaian QR code yang baru
+    $('#memberTableBody').empty();
+    // Sembunyikan alert jika sebelumnya ditampilkan
+    $('#memberFoundAlert').addClass('d-none');
+    $('#memberNotRegisteredAlert').addClass('d-none');
+    // Sembunyikan kepala tabel jika tidak ada hasil
+    $('thead').addClass('d-none');
 
-            $.ajax({
-                url: "{{ route('scan.member.by.qrcode') }}",
-                type: 'GET',
-                data: {
-                    qr_code: decodedText
-                },
-                success: function(response) {
-                    if (response.member) {
-                        // Tampilkan data anggota di halaman
-                        $('#memberTableBody').html(`
-                        <tr>
-                            <td>${response.member.id}</td>
-                            <td>${response.member.first_name} ${response.member.last_name}</td>
-                            <td>${response.member.email}</td>
-                            <td>${response.member.phone}</td>
-                            <td>${response.member.address}</td>
-                            <td>
-                                <img src="{{ asset('storage/profiles') }}/${response.member.imageProfile}" alt="Profile Image" width="50">
-                            </td>
-                            <td>
-                                <button class="btn btn-outline-success" onclick="toggleSelect(this)">
-                                    <i class="bi bi-check2-circle"></i> Pilih
-                                </button>
-                            </td>
-                        </tr>
-                    `);
-                        // Tampilkan pemberitahuan bahwa anggota ditemukan
-                        $('#memberFoundAlert').removeClass('d-none');
-                        // Tampilkan kepala tabel
-                        $('thead').removeClass('d-none');
-                        // Tampilkan tabel
-                        $('#memberTableContainer').removeClass('d-none');
-                    } else {
-                        // Tampilkan pemberitahuan bahwa anggota tidak ditemukan
-                        $('#memberNotRegisteredAlert').removeClass('d-none');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    alert('Terjadi kesalahan. Silakan coba lagi.');
-                }
-            });
+    $.ajax({
+        url: "{{ route('scan.member.by.qrcode') }}",
+        type: 'GET',
+        data: {
+            qr_code: decodedText
+        },
+        success: function(response) {
+            if (response.member) {
+                // Tampilkan data anggota di halaman
+                $('#memberTableBody').html(`
+            <tr>
+                <td>${response.member.id}</td>
+                <td>${response.member.first_name} ${response.member.last_name}</td>
+                <td>${response.member.email}</td>
+                <td>${response.member.phone}</td>
+                <td>${response.member.address}</td>
+                <td>
+                    <img src="{{ asset('storage/profiles') }}/${response.member.imageProfile}" alt="Profile Image" width="50">
+                </td>
+                <td>
+                    <button class="btn btn-outline-success" onclick="toggleSelect(this)">
+                        <i class="bi bi-check2-circle"></i> Pilih
+                    </button>
+                </td>
+            </tr>
+        `);
+                // Tampilkan pemberitahuan bahwa anggota ditemukan
+                $('#memberFoundAlert').removeClass('d-none');
+                // Tampilkan kepala tabel
+                $('thead').removeClass('d-none');
+                // Tampilkan tabel
+                $('#memberTableContainer').removeClass('d-none');
+            } else if (response.error === 'Email member tidak terdaftar') {
+                // Tampilkan pemberitahuan bahwa email tidak terdaftar
+                $('#memberNotRegisteredAlert').removeClass('d-none');
+            } else {
+                // Handle other possible errors
+                alert('Terjadi kesalahan. Silakan coba lagi.');
+            }
+        },
+        error: function(xhr, status, error) {
+            // Handle Ajax error
+            console.error(error);
+            alert('Terjadi kesalahan. Silakan coba lagi.');
         }
-
+    });
+}
 
         function searchMemberByEmail() {
             var email = $('#email').val();

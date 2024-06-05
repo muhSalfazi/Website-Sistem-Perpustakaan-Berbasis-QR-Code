@@ -5,15 +5,28 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Member;
+use App\Models\Peminjaman;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Crypt;
 
 class PeminjamanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('peminjaman');
+        $search = $request->input('search');
+        $query = Peminjaman::with(['book', 'member']);
+
+        if ($search) {
+            $query->whereHas('member', function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%");
+            });
+        }
+
+        $peminjamans = $query->paginate(10);
+
+        return view('peminjaman', compact('peminjamans'));
     }
+
 
     public function search()
     {
@@ -63,13 +76,15 @@ class PeminjamanController extends Controller
         }
 
         // Lakukan pencarian anggota berdasarkan data yang didekripsi
-        $member = Member::where('email', $data['email'])->first();
+        $member = Member::where('email', $data['email'])->get();
 
         // Jika anggota ditemukan, kembalikan data anggota
-        if ($member) {
-            return response()->json(['member' => $member]);
+        if ($member->isNotEmpty()) {
+            // Menggunakan get() untuk mendapatkan satu hasil
+            return response()->json(['member' => $member->first()]);
         } else {
             return response()->json(['error' => 'Member not found'], 404);
         }
     }
+
 }

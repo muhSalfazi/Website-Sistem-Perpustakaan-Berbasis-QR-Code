@@ -16,6 +16,8 @@ class Book extends Model
         'rack_id',
         'year',
         'book_cover',
+        'publisher',
+        
     ];
 
     public function category()

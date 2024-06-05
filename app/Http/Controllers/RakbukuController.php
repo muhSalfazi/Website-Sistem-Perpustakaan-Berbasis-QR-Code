@@ -63,6 +63,7 @@ class RakbukuController extends Controller
         return redirect()->route('Rak.showdata')->with('msg', 'Rak berhasil diperbarui');
     }
 
+
     public function destroy($id)
     {
         $rack = Rack::findOrFail($id);
@@ -70,4 +71,6 @@ class RakbukuController extends Controller
 
         return redirect()->route('Rak.showdata')->with('msg', 'Rak berhasil dihapus');
     }
+
+    
 }

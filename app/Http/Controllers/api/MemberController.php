@@ -139,33 +139,32 @@ class MemberController extends Controller
         ], 200);
     }
 
+    private function generateEncryptedQRCodeData($memberId)
+    {
+        $member = Member::find($memberId);
 
- private function generateEncryptedQRCodeData($memberId)
-{
-    $member = Member::find($memberId);
+        $data = [
+            'first_name' => $member->first_name,
+            'last_name' => $member->last_name,
+            'email' => $member->email,
+            'imageProfile' => $member->imageProfile ? asset('storage/profiles/' . $member->imageProfile) : null,
+        ];
 
-    $data = [
-        'first_name' => $member->first_name,
-        'last_name' => $member->last_name,
-        'email' => $member->email,
-        'imageProfile' => $member->imageProfile ? asset('storage/profiles/' . $member->imageProfile) : null,
-    ];
+        $encryptedData = Crypt::encryptString(json_encode($data));
+        $qrCode = new QrCode($encryptedData);
+        $writer = new PngWriter();
 
-    $encryptedData = Crypt::encryptString(json_encode($data));
-    $qrCode = new QrCode($encryptedData);
-    $writer = new PngWriter();
+        // Ubah format nama file QR code menjadi sesuai dengan data anggota
+        $qrCodeFileName = $member->first_name . '-' . $member->last_name . '.png';
 
-    // Ubah format nama file QR code menjadi sesuai dengan data anggota
-    $qrCodeFileName = $member->first_name . '-' . $member->last_name . '.png';
+        $qrCodePath = 'qrcodes/' . $qrCodeFileName; // Mengubah lokasi penyimpanan QR code
 
-    $qrCodePath = 'qrcodes/' . $qrCodeFileName; // Mengubah lokasi penyimpanan QR code
+        $qrCodeData = $writer->write($qrCode)->getString();
 
-    $qrCodeData = $writer->write($qrCode)->getString();
+        file_put_contents(public_path($qrCodePath), $qrCodeData);
 
-    file_put_contents(public_path($qrCodePath), $qrCodeData);
-
-    return $qrCodeFileName;
-}
+        return $qrCodeFileName;
+    }
 
 
 }

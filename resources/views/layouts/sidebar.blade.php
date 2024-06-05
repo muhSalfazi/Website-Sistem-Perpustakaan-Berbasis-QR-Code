@@ -69,7 +69,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('daftarbook') }}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('books.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-book"></i>
                         </span>
@@ -77,7 +77,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="/admin/categories" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('categories.index')}}" aria-expanded="false">
                         <span>
                             <i class="ti ti-category-2"></i>
                         </span>
