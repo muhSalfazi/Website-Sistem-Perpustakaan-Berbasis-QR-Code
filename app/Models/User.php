@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -6,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, SoftDeletes;
@@ -22,6 +24,7 @@ class User extends Authenticatable
         'imageProfile', // Tambahkan imageProfile
         'phone', // Tambahkan phone
         'address', // Tambahkan address
+        'qr_code', // Tambahkan qr_code
     ];
 
     protected $hidden = [
@@ -34,13 +37,13 @@ class User extends Authenticatable
             if ($user->role == 'member') {
                 Member::create([
                     'user_id' => $user->id,
-                    'first_name' => $user->first_name, // Gunakan first_name dari inputan
-                    'last_name' => $user->last_name, // Gunakan last_name dari inputan
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
                     'email' => $user->email,
-                    'imageProfile' => $user->imageProfile, // Gunakan imageProfile dari inputan
-                    'phone' => $user->phone, // Gunakan phone dari inputan
-                    'address' => $user->address, // Gunakan address dari inputan
-                    // 'password' => $user->password,
+                    'imageProfile' => $user->imageProfile,
+                    'phone' => $user->phone,
+                    'address' => $user->address,
+                    'qr_code' => $user->qr_code,
                 ]);
             }
         });

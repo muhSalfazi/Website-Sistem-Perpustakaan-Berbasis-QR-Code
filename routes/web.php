@@ -51,6 +51,10 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/peminjaman/search', [PeminjamanController::class, 'search'])->name('Peminjaman.search');
     Route::get('/search-member-by-email', [PeminjamanController::class, 'searchMemberByEmail'])->name('search.member.by.email');
     Route::get('/scan/member', [PeminjamanController::class, 'scanMemberByQRCode'])->name('scan.member.by.qrcode');
+    Route::get('/search-books', [PeminjamanController::class, 'searchBookPage'])->name('search.book.page');
+    Route::post('/store-peminjaman', [PeminjamanController::class, 'storePeminjaman'])->name('createPinjaman');
+    Route::delete('/peminjaman/{id}', [PeminjamanController::class, 'destroy'])->name('peminjaman.destroy');
+
 
 
 

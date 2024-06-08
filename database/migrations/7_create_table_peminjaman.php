@@ -10,26 +10,27 @@ return new class extends Migration {
      */
     public function up()
     {
+        // Membuat tabel tbl_peminjaman
         Schema::create('tbl_peminjaman', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('resi_pjmn')->unique();
             $table->unsignedBigInteger('member_id');
             $table->unsignedBigInteger('book_id');
-            $table->integer('jmlh_buku')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('book_id')->references('id')->on('tbl_books')->onDelete('cascade');
             $table->foreign('member_id')->references('id')->on('tbl_members')->onDelete('cascade');
+            $table->foreign('book_id')->references('id')->on('tbl_books')->onDelete('cascade');
         });
-    }
 
+     
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('table_peminjaman');
+        Schema::dropIfExists('tbl_peminjaman');
     }
 };

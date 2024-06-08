@@ -1,52 +1,32 @@
 <?php
-
 namespace App\Models;
 
-use Database\Factories\DendaPnjmnFactory;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory; // Import trait HasFactory
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Book;
-use App\Models\Member;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Peminjaman extends Model
 {
-    use HasFactory; // Gunakan trait HasFactory
+    use HasFactory, SoftDeletes;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
     protected $table = 'tbl_peminjaman';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
-        'id',
         'resi_pjmn',
+        'id_members',
         'book_id',
-        'jmlh_buku',
-        'member_id',
-        'create_at'
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
 
-    /**
-     * Get the book record associated with the peminjaman.
-     */
-    public function book()
-    {
-        return $this->belongsTo(Book::class);
-    }
-
-    /**
-     * Get the member record associated with the peminjaman.
-     */
     public function member()
     {
-        return $this->belongsTo(Member::class);
+        return $this->belongsTo(Member::class, 'member_id');
+    }
+
+    public function book()
+    {
+        return $this->belongsTo(Book::class, 'book_id');
     }
 }

@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Response;
 class MemberController extends Controller
 {
     // Metode untuk registrasi anggota baru
-    public function register(Request $request)
+     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string',
@@ -43,9 +43,28 @@ class MemberController extends Controller
             'role' => 'member',
         ]);
 
-        // Return the created user data
+        // Generate QR code
+        $qrCodeData = $this->generateEncryptedQRCodeData($user->id);
+        $user->qr_code = $qrCodeData;
+        $user->save();
+
+        // Update or create corresponding Member entry
+        $member = Member::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'email' => $user->email,
+                'qr_code' => $qrCodeData,
+            ]
+        );
+
+        // Return the created user data with QR code URL
+        $qrCodeUrl = asset('qrcodes/' . $qrCodeData);
+
         return response()->json([
-            'member' => $user,
+            'member' => $member,
+            'qr_code_url' => $qrCodeUrl,
         ], 201);
     }
 

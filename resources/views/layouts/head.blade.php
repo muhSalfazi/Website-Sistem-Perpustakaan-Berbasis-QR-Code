@@ -15,5 +15,4 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
 
-    <script src="{{ asset('assets/vendor/simple-datatables/style.css') }}"></script>
 </head>

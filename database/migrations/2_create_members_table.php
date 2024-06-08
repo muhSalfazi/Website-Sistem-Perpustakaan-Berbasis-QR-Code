@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('phone',15)->nullable();
             $table->text('address')->nullable();
             $table->date('tgl_lahir')->nullable();
-            $table->string('qr_code', 255)->nullable()->unique();
+            $table->string('qr_code', 255)->nullable();
             $table->timestamps();
             $table->softDeletes();
 

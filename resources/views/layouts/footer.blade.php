@@ -7,9 +7,9 @@
 <script src="{{ asset('assets/libs/simplebar/dist/simplebar.js') }}"></script>
 <script src="{{ asset('assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
 <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/js/sidebarmenu.js"></script>
+{{-- <script src="../assets/js/sidebarmenu.js"></script>
 <script src="../assets/js/app.min.js"></script>
-<script src="../assets/js/dashboard.js"></script>
+<script src="../assets/js/dashboard.js"></script> --}}
 
 <script>
     function confirmLogout() {
@@ -24,13 +24,11 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
     integrity="sha384-cVKIPhG1qiD1T6GkJt7E2YfIouuWE1cQEOstzF4iqp1rIwKtOf+SZAxTOQE2akKx" crossorigin="anonymous">
 </script>
-<script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            new simpleDatatables.DataTable('.datatable');
-        });
-
-    </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        new simpleDatatables.DataTable('.datatable');
+    });
+</script>
 
 </body>
 

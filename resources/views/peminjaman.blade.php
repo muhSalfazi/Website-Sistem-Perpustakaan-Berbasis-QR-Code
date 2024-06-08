@@ -10,15 +10,6 @@
                 <div class="col-12 col-lg-7">
                     <div class="d-flex gap-2 justify-content-md-end">
                         <div>
-                            <form action="{{ route('peminjaman') }}" method="get">
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" name="search" placeholder="Cari peminjaman"
-                                        aria-label="Cari peminjaman" aria-describedby="searchButton">
-                                    <button class="btn btn-outline-secondary" type="submit" id="searchButton">Cari</button>
-                                </div>
-                            </form>
-                        </div>
-                        <div>
                             <a href="{{ route('Peminjaman.search') }}" class="btn btn-primary py-2">
                                 <i class="ti ti-plus"></i>
                                 Peminjaman baru
@@ -27,60 +18,61 @@
                     </div>
                 </div>
             </div>
-            <div class="table-responsive">
-                <table class="table table-hover table-striped">
-                    <thead class="table-light">
+             <div class="table-responsive">
+                <table class="table datatable table-hover table-striped">
+                    <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col" style="white-space: nowrap;">Resi</th>
-                            <th scope="col" style="white-space: nowrap;">Judul buku</th>
-                            <th scope="col" class="text-center">Jumlah</th>
-                            <th scope="col" style="white-space: nowrap;">Tanggal peminjaman</th>
-                            <th scope="col">Tenggat</th>
-                            <th scope="col" class="text-center">Status</th>
-                            <th scope="col" class="text-center">Aksi</th>
+                            <th scope="col">No</th>
+                            <th scope="col">Resi Peminjaman</th>
+                            <th scope="col">Nama Member</th>
+                            <th scope="col">Nama Buku</th>
+                            <th scope="col">Tanggal Pinjam</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="table-group-divider">
-                        @forelse ($peminjamans as $peminjaman)
+                    <tbody>
+                        @foreach($peminjamans as $key => $peminjaman)
                             <tr>
-                                <th scope="row">{{ $loop->iteration }}</th>
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $peminjaman->resi_pjmn }}</td>
                                 <td>
-                                    <a href="#" class="text-primary-emphasis text-decoration-underline">
-                                        <p><b>{{ $peminjaman->member->name }}</b></p>
-                                    </a>
+                                    @if($peminjaman->member)
+                                        {{ $peminjaman->member->first_name ?? 'Unknown' }} {{ $peminjaman->member->last_name ?? '' }}
+                                    @else
+                                        Unknown
+                                    @endif
                                 </td>
                                 <td>
-                                    <a href="#">
-                                        <p class="text-primary-emphasis text-decoration-underline">
-                                            <b>{{ $peminjaman->book->title }} ({{ $peminjaman->book->year }})</b>
-                                        </p>
-                                        <p class="text-body">Author: {{ $peminjaman->book->author }}</p>
-                                    </a>
+                                    @if($peminjaman->book)
+                                        {{ $peminjaman->book->title ?? 'Unknown' }}
+                                    @else
+                                        Unknown
+                                    @endif
                                 </td>
-                                <td class="text-center">{{ $peminjaman->jmlh_buku }}</td>
-                                <td>
-                                    <b>{{ $peminjaman->created_at->format('d-m-Y') }}</b><br>
-                                    <b>{{ $peminjaman->created_at->format('H:i') }}</b>
-                                </td>
-                                <td>
-                                    <b>{{ $peminjaman->created_at->addDays(14)->format('d-m-Y') }}</b>
-                                </td>
-                                <td class="text-center">
-                                    <span class="badge bg-success rounded-3 fw-semibold">Normal</span>
+                                <td>{{ $peminjaman->created_at->format('Y-m-d') }}</td>
+                                <td>   
+                                    @if($peminjaman->created_at->diffInDays() > 7)
+                                        <span class="badge bg-danger">Telat <i class="ti-alert"></i></span>
+                                    @else
+                                        <span class="badge bg-success">Normal <i class="ti-alert"></i></span> 
+                                    @endif
                                 </td>
                                 <td>
-                                    <a href="#" class="d-block btn btn-primary w-100 mb-2">Detail</a>
+                                    <form action="{{ route('peminjaman.destroy', $peminjaman->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger mt-1 w-40" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                            <i class="ti ti-trash"></i> Delete
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td class="text-center" colspan="8"><b>Tidak ada data</b></td>
-                            </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>
+            <!-- Pagination links if needed -->
             {{ $peminjamans->links() }}
         </div>
     </div>

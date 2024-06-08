@@ -14,6 +14,7 @@ class Kategori extends Model
     protected $table = 'tbl_categories';
     
     protected $fillable = [
+        'id',
         'name',
     ];
     protected $dates = ['

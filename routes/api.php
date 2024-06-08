@@ -16,7 +16,7 @@ use App\Http\Controllers\PeminjamanController;
 |
 */
 
-
+Route::get('/email/verify/{token}', 'Auth\VerificationController@verify')->name('verification.verify');
 Route::post('/register', [MemberController::class, 'register']);
 
 Route::post('/login', [AuthController::class, 'login']);
