@@ -14,7 +14,7 @@ class BookController extends Controller
     public function index()
     {
         $books = Book::with(['category', 'rack', 'bookStock'])->paginate(10);
-        return view('daftarbook', compact('books'));
+        return view('Books.daftarbook', compact('books'));
     }
 
     public function create()

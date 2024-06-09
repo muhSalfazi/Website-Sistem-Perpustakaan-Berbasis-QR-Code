@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Member; // Tambahkan impor untuk Member model
+use App\Models\Member;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Response;
 class MemberController extends Controller
 {
     // Metode untuk registrasi anggota baru
-     public function register(Request $request)
+    public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string',
@@ -43,35 +43,33 @@ class MemberController extends Controller
             'role' => 'member',
         ]);
 
-        // Generate QR code
+        // Generate QR code for the user
         $qrCodeData = $this->generateEncryptedQRCodeData($user->id);
         $user->qr_code = $qrCodeData;
         $user->save();
 
-        // Update or create corresponding Member entry
-        $member = Member::updateOrCreate(
-            ['user_id' => $user->id],
-            [
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
-                'email' => $user->email,
-                'qr_code' => $qrCodeData,
-            ]
-        );
+        // Create a corresponding member record
+        Member::create([
+            'user_id' => $user->id,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'email' => $user->email,
+            'qr_code' => $user->qr_code,
+        ]);
 
-        // Return the created user data with QR code URL
-        $qrCodeUrl = asset('qrcodes/' . $qrCodeData);
+        $qrCodeUrl = asset('qrcodes/' . $user->qr_code); // Mengubah path untuk bisa diakses secara publik
 
+        // Return the created user data
         return response()->json([
-            'member' => $member,
+            'message' => 'Akun berhasil Terdaftar di libranation',
+            'member' => $user,
             'qr_code_url' => $qrCodeUrl,
         ], 201);
     }
-
     // Metode untuk memperbarui informasi anggota
     public function update(Request $request, $id)
     {
-        $member = Member::find($id);
+        $member = User::find($id);
 
         if (!$member) {
             return response()->json(['message' => 'Pengguna tidak ditemukan'], 404);
@@ -154,13 +152,14 @@ class MemberController extends Controller
             'message' => 'Member updated successfully',
             'member' => $member,
             'qr_code_url' => $qrCodeUrl,
-            'image_profile_url' => $imageProfileUrl, // Tambahkan URL untuk image profile
+            'image_profile_url' => $imageProfileUrl, 
         ], 200);
     }
 
+
     private function generateEncryptedQRCodeData($memberId)
     {
-        $member = Member::find($memberId);
+        $member = User::find($memberId);
 
         $data = [
             'first_name' => $member->first_name,
@@ -184,6 +183,4 @@ class MemberController extends Controller
 
         return $qrCodeFileName;
     }
-
-
 }

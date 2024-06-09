@@ -21,33 +21,13 @@ class User extends Authenticatable
         'password',
         'role',
         'last_login',
-        'imageProfile', // Tambahkan imageProfile
-        'phone', // Tambahkan phone
-        'address', // Tambahkan address
-        'qr_code', // Tambahkan qr_code
+        'qr_code', 
     ];
 
     protected $hidden = [
         'password',
     ];
 
-    protected static function booted()
-    {
-        static::created(function ($user) {
-            if ($user->role == 'member') {
-                Member::create([
-                    'user_id' => $user->id,
-                    'first_name' => $user->first_name,
-                    'last_name' => $user->last_name,
-                    'email' => $user->email,
-                    'imageProfile' => $user->imageProfile,
-                    'phone' => $user->phone,
-                    'address' => $user->address,
-                    'qr_code' => $user->qr_code,
-                ]);
-            }
-        });
-    }
 
     public function setLastLoginAttribute($value)
     {

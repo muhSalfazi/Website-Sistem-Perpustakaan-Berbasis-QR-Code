@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,11 +14,13 @@ class Peminjaman extends Model
 
     protected $fillable = [
         'resi_pjmn',
-        'id_members',
+        'member_id',
         'book_id',
+        // 'qr_code',
         'created_at',
         'updated_at',
-        'deleted_at'
+        'deleted_at',
+        'return_date'
     ];
 
     public function member()
@@ -29,4 +32,9 @@ class Peminjaman extends Model
     {
         return $this->belongsTo(Book::class, 'book_id');
     }
+    public function denda()
+    {
+        return $this->hasOne(Denda::class, 'id_pjmn');
+    }
+
 }

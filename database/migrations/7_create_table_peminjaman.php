@@ -13,9 +13,11 @@ return new class extends Migration {
         // Membuat tabel tbl_peminjaman
         Schema::create('tbl_peminjaman', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('resi_pjmn')->unique();
-            $table->unsignedBigInteger('member_id');
-            $table->unsignedBigInteger('book_id');
+            $table->string('resi_pjmn')->unique()->nullable();
+            // $table->string('qr_code', 255)->nullable();
+            $table->unsignedBigInteger('member_id')->nullable();
+            $table->unsignedBigInteger('book_id')->nullable();
+            $table->dateTime('return_date')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

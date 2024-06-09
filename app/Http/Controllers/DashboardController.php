@@ -19,7 +19,7 @@ class DashboardController extends Controller
         $borrowingBooksCount = Peminjaman::whereDate('created_at', today())->count();
 
         // Menghitung jumlah buku yang telah dikembalikan
-        $returnBooksCount = Pengembalian::whereDate('tgl_kembali', today())->count();
+        $returnBooksCount = Peminjaman::whereDate('return_date', today())->count();
 
         // Menghitung jumlah buku yang terlambat dikembalikan (denda)
         $overdueBooksCount = Peminjaman::where('created_at', '<', Carbon::now()->subDays(7))->count();

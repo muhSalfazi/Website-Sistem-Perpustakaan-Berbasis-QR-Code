@@ -18,14 +18,5 @@ class UserSeeder extends Seeder
             'password' => Hash::make('admin'),
             'role' => 'admin',
         ]);
-
-        // Membuat member
-        User::create([
-            'first_name' => 'salman',
-            'last_name' => 'fauzi',
-            'email' => 'member@mail.com',
-            'password' => Hash::make('member'),
-            'role' => 'member',
-        ]);
     }
 }

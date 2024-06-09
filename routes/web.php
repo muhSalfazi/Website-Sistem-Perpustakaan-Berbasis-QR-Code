@@ -60,7 +60,15 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 
     // pengembalian buku
     Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian');
+    Route::get('/pengembalian/search', [PengembalianController::class, 'search'])->name('pengembalian.search');
+    Route::get('/pengembalian/cari', [PengembalianController::class, 'cari'])->name('pengembalian.cari');
+    Route::put('/pengembalian/simpan', [PengembalianController::class, 'simpan'])->name('pengembalian.simpan');
+    Route::delete('pengembalian/hapus/{id}', [PengembalianController::class, 'hapus'])->name('pengembalian.hapus');
 
+
+
+
+    
     //daftar buku
     Route::get('/books', [BookController::class, 'index'])->name('books.index');
     Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
@@ -89,5 +97,6 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 
     // denda
     Route::get('/denda', [DendaController::class, 'index'])->name('denda');
+    Route::post('/denda/bayar', [DendaController::class, 'bayarDenda'])->name('denda.bayar');
 
 });

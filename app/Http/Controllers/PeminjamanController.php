@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
-use App\Mail\PeminjamanEmail;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Illuminate\Support\Facades\DB;
 
 class PeminjamanController extends Controller
 {
@@ -25,10 +27,11 @@ class PeminjamanController extends Controller
                 $q->where('name', 'like', "%$search%");
             });
         }
+        $peminjamans = Peminjaman::whereNull('return_date')->paginate(10);
 
         $peminjamans = $query->paginate(10);
 
-        return view('peminjaman', compact('peminjamans'));
+        return view('Peminjaman.daftarpeminjaman', compact('peminjamans'));
     }
 
 
@@ -112,7 +115,7 @@ class PeminjamanController extends Controller
     {
         // Validasi input
         $validator = Validator::make($request->all(), [
-            'member_id' => 'required|exists:tbl_members,id', // Pastikan member_id ada dalam tabel members
+            'member_id' => 'required|exists:tbl_members,id',
             'book_id' => 'required|exists:tbl_books,id',
         ]);
 
@@ -137,7 +140,8 @@ class PeminjamanController extends Controller
         if (!$book) {
             return redirect()->back()->with('error', 'Buku tidak ditemukan.');
         }
-                // Check if the member has reached maximum borrowing limit
+
+        // Check if the member has reached maximum borrowing limit
         $borrowedBooksCount = Peminjaman::where('member_id', $memberId)->count();
         if ($borrowedBooksCount >= 3) {
             return redirect()->back()->with('error', 'Anggota telah mencapai batas maksimal peminjaman (3 buku).');
@@ -159,19 +163,46 @@ class PeminjamanController extends Controller
         }
 
         // Now $uniqueCode contains a unique value for the resi_pjmn column
-        $peminjaman = new Peminjaman();
         $peminjaman->resi_pjmn = $uniqueCode;
         $peminjaman->member_id = $memberId;
         $peminjaman->book_id = $bookId;
-          // Mengurangi jumlah buku yang tersedia
+
+        // Mengurangi jumlah buku yang tersedia
         $bookStock = $book->bookStock;
         $bookStock->jmlh_tersedia -= 1;
         $bookStock->save();
 
-
         $peminjaman->save();
-        
 
+        // Generate QR code for the borrowing transaction
+        $qrCodeData = [
+            'resi_pjmn' => $uniqueCode,
+            'nama_member' => $member->first_name . ' ' . $member->last_name,
+            'judul_buku' => $book->judul_buku,
+            // Add more data as needed
+        ];
+
+        // // Create QR code
+        // $qrCode = new QrCode(json_encode($qrCodeData));
+        // $qrCode->setSize(300);
+
+        // // Set the writer
+        // $writer = new PngWriter();
+
+        // // Set the QR code file path
+        // $qrCodePath = 'qrcodePJMN/' . $uniqueCode . '.png';
+
+        // // Write the QR code to the specified path
+        // $qrCodeData = $writer->write($qrCode)->getString();
+        // file_put_contents(public_path($qrCodePath), $qrCodeData);
+
+        // // Save the QR code path to the database
+        // DB::table('tbl_peminjaman')
+        //     ->where('resi_pjmn', $uniqueCode)
+        //     ->update(['qr_code' => $qrCodePath]);
+
+        // Mengirim email
+       
         return redirect()->back()->with('success', 'Buku berhasil dipinjam.');
     }
 

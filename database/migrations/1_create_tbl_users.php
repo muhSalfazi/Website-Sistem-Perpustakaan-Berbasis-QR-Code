@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('qr_code', 255)->nullable();
             $table->enum('role',['admin','member'])->default('member');
-            $table->string('verification_token', 100)->nullable(); // Tambahkan kolom verification_token
+            // $table->string('verification_token', 100)->nullable(); 
             $table->dateTime('last_login')->nullable();
             $table->timestamps();
             $table->softDeletes();

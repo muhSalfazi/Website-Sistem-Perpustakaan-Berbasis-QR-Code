@@ -8,11 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Denda extends Model
 {
     use HasFactory;
+
     protected $table = 'tbl_denda';
-    
+
     protected $fillable = [
-    'id_pengembalian',
-    'denda_yg_dibyr',
-    'uang_yg_dibyrkn',
-];
+        'id_pjmn',
+        'denda_yg_dibyr',
+        'uang_yg_dibyrkn',
+        'status', 
+    ];
+    public function peminjaman()
+    {
+        return $this->belongsTo(Peminjaman::class, 'id_pjmn');
+    }
 }
