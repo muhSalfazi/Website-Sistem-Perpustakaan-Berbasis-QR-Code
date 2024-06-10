@@ -37,8 +37,8 @@
                         <!-- Form pencarian -->
                         <form id="searchForm" action="{{ route('pengembalian.cari') }}" method="GET">
                             <div class="mb-3">
-                                <label for="resi_pnjmn" class="form-label">Masukkan Resi Peminjaman Anggota</label>
-                                <input type="text" class="form-control" id="resi_pnjmn" name="resi_pnjmn" placeholder="Resi Peminjaman">
+                                <label for="keyword" class="form-label">Masukkan Resi Peminjaman atau Email Anggota</label>
+                                <input type="text" class="form-control" id="keyword" name="keyword" placeholder="Resi Peminjaman atau Email">
                                 <div class="invalid-feedback"></div>
                             </div>
                             <button type="submit" class="btn btn-primary">Cari</button>

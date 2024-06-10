@@ -62,7 +62,7 @@
                             <li class="list-group-item">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <img class="img-fluid rounded" src="{{ asset('storage/' . $book->book_cover) }}"
+                                        <img class="img-fluid rounded" src="{{ asset($book->book_cover)  }}"
                                             alt="{{ $book->title }}">
                                     </div>
                                     <div class="col-md-8">

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Book;
@@ -8,6 +7,7 @@ use App\Models\Rack;
 use App\Models\BookStock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class BookController extends Controller
 {
@@ -21,7 +21,7 @@ class BookController extends Controller
     {
         $categories = Kategori::all();
         $racks = Rack::all();
-        return view('books.create', compact('categories', 'racks'));
+        return view('Books.create', compact('categories', 'racks'));
     }
 
     public function store(Request $request)
@@ -42,8 +42,10 @@ class BookController extends Controller
         $book = new Book($request->all());
 
         if ($request->hasFile('cover')) {
-            $bookCoverPath = $request->file('cover')->store('cover_book', 'public');
-            $book->book_cover = $bookCoverPath;
+            $imageFile = $request->file('cover');
+            $imageFileName = Str::random(10) . '.' . $imageFile->getClientOriginalExtension();
+            $imageFile->move(public_path('cover_book'), $imageFileName);
+            $book->book_cover = 'cover_book/' . $imageFileName;
         }
 
         $book->save();
@@ -71,16 +73,18 @@ class BookController extends Controller
         ]);
 
         $book = Book::findOrFail($id);
-        $book->title = $request->input('title');
-        $book->isbn = $request->input('isbn');
-        $book->category_id = $request->input('category_id');
-        $book->rack_id = $request->input('rack_id');
-        $book->author = $request->input('author');
-        $book->publisher = $request->input('publisher');
-        $book->year = $request->input('year');
+        $book->fill($request->all());
 
         if ($request->hasFile('book_cover')) {
-            $book->book_cover = $request->file('book_cover')->store('book_covers', 'public');
+            $imageFile = $request->file('book_cover');
+            $imageFileName = Str::random(10) . '.' . $imageFile->getClientOriginalExtension();
+            $imageFile->move(public_path('cover_book'), $imageFileName);
+            $book->book_cover = 'cover_book/' . $imageFileName;
+
+            // Remove old book cover if exists
+            if ($book->getOriginal('book_cover')) {
+                Storage::delete($book->getOriginal('book_cover'));
+            }
         }
 
         $book->save();
@@ -107,9 +111,16 @@ class BookController extends Controller
         $book = Book::with('category', 'rack', 'bookStock')->findOrFail($id);
         return response()->json(['book' => $book]);
     }
+
     public function destroy($id)
     {
         $book = Book::findOrFail($id);
+
+        // Remove book cover if exists
+        if ($book->book_cover) {
+            Storage::delete($book->book_cover);
+        }
+
         $book->delete(); // Soft delete
 
         return redirect()->route('books.index')->with('msg', 'Book deleted successfully')->with('error', false);

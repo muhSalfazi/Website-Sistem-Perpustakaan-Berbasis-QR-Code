@@ -27,21 +27,29 @@ class PengembalianController extends Controller
     public function cari(Request $request)
     {
         $request->validate([
-            'resi_pnjmn' => 'required', // Tambahkan aturan validasi yang sesuai
+            'keyword' => 'required|string', // Satu input untuk resi peminjaman atau email
         ]);
 
-        $resi = $request->input('resi_pnjmn');
+        $keyword = $request->input('keyword');
 
-        // Cari peminjaman berdasarkan nomor resi
-        $peminjaman = Peminjaman::where('resi_pjmn', $resi)->first();
+        // Cari peminjaman berdasarkan resi peminjaman
+        $peminjaman = Peminjaman::where('resi_pjmn', $keyword)->first();
+
+        // Jika tidak ditemukan berdasarkan resi, coba mencari berdasarkan email
+        if (!$peminjaman) {
+            $peminjaman = Peminjaman::whereHas('member', function ($query) use ($keyword) {
+                $query->where('email', $keyword);
+            })->first();
+        }
 
         if ($peminjaman) {
             return view('Pengembalian.searchPengembalian', ['peminjaman' => $peminjaman]);
         } else {
-            $errors = ['Resi peminjaman tidak ditemukan.'];
+            $errors = ['Data peminjaman tidak ditemukan.'];
             return redirect()->route('pengembalian.search')->withErrors($errors);
         }
     }
+
 
     public function simpan(Request $request, Peminjaman $peminjaman = null)
     {

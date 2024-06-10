@@ -13,7 +13,7 @@ class DendaController extends Controller
       $peminjamans = Peminjaman::with('member', 'book', 'denda')->paginate(10);
 
 
-      return view('denda.daftardenda', compact('peminjamans'));
+      return view('Denda.daftardenda', compact('peminjamans'));
    }
 
 
@@ -55,7 +55,7 @@ class DendaController extends Controller
       $denda->save();
 
       // Redirect kembali dengan pesan sukses
-      return redirect()->back()->with('msg', 'Pembayaran denda berhasil disimpan. Data denda sudah dihapus dari daftar.')->with('success', true);
+      return redirect()->back()->with('msg', 'Pembayaran denda berhasil disimpan.Member tersebut sudah dihapus dari daftar Denda.')->with('success', true);
    }
 
 

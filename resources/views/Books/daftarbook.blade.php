@@ -53,9 +53,9 @@
                                 <th scope="row">{{ $index + 1 }}</th>
                                 <td>
                                     <div class="d-flex justify-content-center align-items-center"
-                                        style="max-width: 100px; height: 80px; border-radius=10%">
-                                        <img class="mx-auto mh-100" src="{{ asset('storage/' . $book->book_cover) }}"
-                                            alt="{{ $book->title }}">
+                                        style="max-width: 100px; height: 80px;">
+                                        <img class="mx-auto mh-100" src="{{ asset($book->book_cover) }}"
+                                            alt="{{ $book->title }}" style="max-height: 100%; max-width: 100%;">
                                     </div>
                                 </td>
                                 <td>
@@ -69,23 +69,26 @@
                                 <td>{{ optional($book->bookStock)->jmlh_tersedia ?? '0' }}</td>
                                 <td>
                                     <a href="{{ route('Books.showDetail', $book->id) }}" class="btn btn-sm btn-info mt-1">
-                                        <i class="ti ti-eye"></i> Detail
+                                        <i class="ti ti-eye"></i> 
                                     </a>
-                                    <a class=" btn btn-sm btn-primary mt-1" data-bs-toggle="modal"
+                                    <a class="btn btn-sm btn-primary mt-1" data-bs-toggle="modal"
                                         data-bs-target="#editBookModal" data-id="{{ $book->id }}">
-                                        <i class="ti ti-pencil"></i> Edit
+                                        <i class="ti ti-pencil"></i> 
                                     </a>
                                     <form action="{{ route('books.destroy', $book) }}" method="post"
-                                        onsubmit="return confirm('Are you sure?');">
+                                        onsubmit="return confirm('Are you sure?');" style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn  btn-sm btn-danger mt-1 w-50 ">
-                                            <i class="ti ti-trash"></i> Delete
+                                        <button type="submit" class="btn btn-sm btn-danger mt-1">
+                                            <i class="ti ti-trash"></i> 
                                         </button>
                                     </form>
                                 </td>
                             </tr>
                         @empty
+                            <tr>
+                                <td colspan="7" class="text-center">No books available</td>
+                            </tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -191,8 +194,8 @@
                             editBookForm.querySelector('#isbn').value = data.book.isbn;
                             editBookForm.querySelector('#category').value = data.book.category_id;
                             editBookForm.querySelector('#rack').value = data.book.rack_id;
-                            editBookForm.querySelector('#jumlah').value = data.book.book_stock
-                                .jmlh_tersedia;
+                            editBookForm.querySelector('#jumlah').value = data.book.book
+                                .stock.jmlh_tersedia;
                             editBookForm.querySelector('#author').value = data.book.author;
                             editBookForm.querySelector('#publisher').value = data.book.publisher;
                             editBookForm.querySelector('#year').value = data.book.year;

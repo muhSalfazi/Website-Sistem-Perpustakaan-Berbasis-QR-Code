@@ -167,7 +167,7 @@
                                 <td>${response.member.phone}</td>
                                 <td>${response.member.address}</td>
                                 <td>
-                                    <img src="{{ asset('storage/profiles') }}/${response.member.imageProfile}" alt="Profile Image" width="50">
+                                    <img src="{{ asset('/profiles') }}/${response.member.imageProfile}" alt="Profile Image" width="50">
                                 </td>
                                 <td>
                                     <form action="{{ route('search.book.page') }}" method="GET">
@@ -235,7 +235,7 @@
                             <td>${response.member.phone}</td>
                             <td>${response.member.address}</td>
                             <td>
-                                <img src="{{ asset('storage/profiles') }}/${response.member.imageProfile}" alt="Profile Image" width="50">
+                                <img src="{{ asset('/profiles') }}/${response.member.imageProfile}" alt="Profile Image" width="50">
                             </td>
                             <td>
                                 <form action="{{ route('search.book.page') }}" method="GET">

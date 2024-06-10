@@ -41,10 +41,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($peminjamans as $key => $peminjaman)
+                        @php $counter = 0 @endphp
+                        @foreach ($peminjamans as $peminjaman)
                             @if (is_null($peminjaman->return_date))
+                                @php $counter++ @endphp
                                 <tr>
-                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ $counter }}</td>
                                     <td>{{ $peminjaman->resi_pjmn }}</td>
                                     <td>
                                         @if ($peminjaman->member)
