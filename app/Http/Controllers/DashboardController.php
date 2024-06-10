@@ -22,7 +22,7 @@ class DashboardController extends Controller
         $returnBooksCount = Peminjaman::whereDate('return_date', today())->count();
 
         // Menghitung jumlah buku yang terlambat dikembalikan (denda)
-        $overdueBooksCount = Peminjaman::where('created_at', '<', Carbon::now()->subDays(7))->count();
+        $overdueBooksCount = Peminjaman::where('return_date', '<', Carbon::now()->subDays(7))->count();
 
         // Mendapatkan ikhtisar 7 hari terakhir atau berdasarkan bulan yang dipilih
         $ikhtisarDays = $request->input('days', 7);  // default 7 hari jika tidak ada input
@@ -40,7 +40,8 @@ class DashboardController extends Controller
         // Total Tunggakan Tahun Lalu
         $lastYearTotalTunggakan = Denda::whereYear('created_at', now()->year - 1)->sum('denda_yg_dibyr');
 
-        return view('dashboard', compact(
+        // Data untuk dikirim ke view
+        $data = compact(
             'newMembersCount',
             'borrowingBooksCount',
             'returnBooksCount',
@@ -51,7 +52,9 @@ class DashboardController extends Controller
             'lastYearTotalDenda',
             'lastYearTotalTunggakan',
             'ikhtisarDays'
-        )
         );
+
+        return view('dashboard', $data);
     }
+
 }

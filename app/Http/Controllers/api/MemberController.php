@@ -57,7 +57,7 @@ class MemberController extends Controller
             'qr_code' => $user->qr_code,
         ]);
 
-        $qrCodeUrl = asset('qrcodes/' . $user->qr_code); // Mengubah path untuk bisa diakses secara publik
+        $qrCodeUrl = asset('/public/qrcodes/' . $user->qr_code); // Mengubah path untuk bisa diakses secara publik
 
         // Return the created user data
         return response()->json([
@@ -67,9 +67,10 @@ class MemberController extends Controller
         ], 201);
     }
     // Metode untuk memperbarui informasi anggota
-    public function update(Request $request, $id)
+    public function update(Request $request, $user_id)
     {
-        $member = User::find($id);
+        $member = Member::where('user_id', $user_id)->first();
+
 
         if (!$member) {
             return response()->json(['message' => 'Pengguna tidak ditemukan'], 404);
@@ -107,26 +108,25 @@ class MemberController extends Controller
             }
 
             // Buat nama file gambar profil acak dengan menggunakan Str::random()
-            $imageFileName = Str::random(40) . '.' . $imageFile->getClientOriginalExtension();
-            $imagePath = $imageFile->storeAs('public/profiles', $imageFileName);
+            $imageFileName = Str::random(5) . '.' . $imageFile->getClientOriginalExtension();
+
+            // Simpan gambar profil di folder public/profiles
+            $imageFile->move(public_path('profiles'), $imageFileName);
 
             // Hapus file gambar profil lama jika ada
             if ($member->imageProfile) {
-                Storage::delete('public/profiles/' . $member->imageProfile);
+                $oldImagePath = public_path('/public/profiles/' . $member->imageProfile);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
             }
 
             $member->imageProfile = $imageFileName;
 
             // Tambahkan pernyataan log untuk memeriksa lokasi penyimpanan gambar
-            info('Berkas berhasil diunggah. Disimpan di: ' . $imagePath);
+            info('Berkas berhasil diunggah. Disimpan di: ' . $imageFileName);
         } else {
             info('Tidak ada file gambar yang diunggah.');
-        }
-
-        // Generate and save QR code if necessary
-        if (!$member->qr_code || $request->has('first_name') || $request->has('last_name') || $request->has('email')) {
-            $qrCodeData = $this->generateEncryptedQRCodeData($member->id);
-            $member->qr_code = $qrCodeData;
         }
 
         // Update other fields...
@@ -145,16 +145,18 @@ class MemberController extends Controller
 
         $member->save();
 
-        $qrCodeUrl = asset('qrcodes/' . $member->qr_code); // Mengubah path untuk bisa diakses secara publik
-        $imageProfileUrl = asset('storage/profiles/' . $member->imageProfile); // URL untuk image profile
+        // Buat URL untuk gambar profil dan QR code
+        $qrCodeUrl = url('qrcodes/' . $member->qr_code);
+        $imageProfileUrl = url('profiles/' . $member->imageProfile);
 
         return response()->json([
             'message' => 'Member updated successfully',
             'member' => $member,
             'qr_code_url' => $qrCodeUrl,
-            'image_profile_url' => $imageProfileUrl, 
+            'image_profile_url' => $imageProfileUrl,
         ], 200);
     }
+
 
 
     private function generateEncryptedQRCodeData($memberId)
