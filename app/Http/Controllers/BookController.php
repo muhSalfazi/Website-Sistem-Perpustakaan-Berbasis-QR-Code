@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Book;
@@ -58,44 +59,42 @@ class BookController extends Controller
         return redirect()->route('books.index')->with('msg', 'Book added successfully')->with('error', false);
     }
 
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'isbn' => 'required|string|max:255',
-            'category_id' => 'required|exists:tbl_categories,id',
-            'rack_id' => 'required|exists:tbl_racks,id',
-            'jumlah' => 'required|integer|min:1',
-            'author' => 'required|string|max:255',
-            'publisher' => 'required|string|max:255',
-            'year' => 'required|integer|min:1900|max:' . date('Y'),
-            'book_cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+  public function update(Request $request, Book $book)
+{
+    // Validasi input
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'author' => 'required|string|max:255',
+        'year' => 'required|integer|min:1000|max:' . date('Y'),
+        'category_id' => 'required|integer|exists:tbl_categories,id',
+        'rack_id' => 'required|integer|exists:tbl_racks,id',
+        'jumlah' => 'required|integer|min:0',
+    ]);
+
+    // Update data buku
+    $book->update([
+        'title' => $request->title,
+        'author' => $request->author,
+        'year' => $request->year,
+        'category_id' => $request->category_id,
+        'rack_id' => $request->rack_id,
+    ]);
+
+    // Update stok buku
+    if ($book->bookStock) {
+        $book->bookStock->update([
+            'jmlh_tersedia' => $request->jumlah,
         ]);
-
-        $book = Book::findOrFail($id);
-        $book->fill($request->all());
-
-        if ($request->hasFile('book_cover')) {
-            $imageFile = $request->file('book_cover');
-            $imageFileName = Str::random(10) . '.' . $imageFile->getClientOriginalExtension();
-            $imageFile->move(public_path('cover_book'), $imageFileName);
-            $book->book_cover = 'cover_book/' . $imageFileName;
-
-            // Remove old book cover if exists
-            if ($book->getOriginal('book_cover')) {
-                Storage::delete($book->getOriginal('book_cover'));
-            }
-        }
-
-        $book->save();
-
-        // Update the book stock
-        $bookStock = BookStock::firstOrCreate(['book_id' => $book->id]);
-        $bookStock->jmlh_tersedia = $request->input('jumlah');
-        $bookStock->save();
-
-        return redirect()->route('books.index')->with('msg', 'Book updated successfully');
+    } else {
+        BookStock::create([
+            'book_id' => $book->id,
+            'jmlh_tersedia' => $request->jumlah,
+        ]);
     }
+
+    return redirect()->back()->with('msg', 'Data buku berhasil diperbarui.');
+}
+
 
     public function showDetail($id)
     {
@@ -108,7 +107,7 @@ class BookController extends Controller
 
     public function getBook($id)
     {
-        $book = Book::with('category', 'rack', 'bookStock')->findOrFail($id);
+        $book = Book::with('bookStock')->findOrFail($id);
         return response()->json(['book' => $book]);
     }
 

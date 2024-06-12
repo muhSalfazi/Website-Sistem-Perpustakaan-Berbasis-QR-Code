@@ -1,161 +1,241 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-
-.login h2 {
-    text-align: center;
-    margin-bottom: 55vh;
-    margin-right: -68vh;
-    font-size: 40px;
-    margin-top: -10px;
-    color: #2E3192;
-    text-shadow: 3px 2px 1px rgb(211, 211, 211);
+    min-height: 100vh;
+    background: linear-gradient(to right, #1e3c72, #2a5298);
+    padding: 20px;
 }
 
 .container {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    width: 70%;
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
 }
-
 
 .login-box {
-    background-color: #2E3192;
-    padding: 30px;
-    padding-top: 10px;
-    border-radius: 10px;
-    box-shadow: 10px 10px 8px rgba(0, 0, 0, 0.2);
-    color: #fff;
-    width: 400px;
-    height: 50vh;
-    line-height: 30px;
+    position: relative;
+    padding: 20px;
     text-align: center;
-    display: flex;
-    /* Add display flex */
-    flex-direction: column;
-    /* Set flex direction to column */
-    justify-content: center;
-    /* Center items vertically */
-    align-items: center;
-    /* Center items horizontally */
-}
-
-.input-group {
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: center; /* Pusatkan item secara horizontal */
-}
-
-.input-group input {
-    width: 380px;
-    padding: 10px;
-    border: none;
-    border-radius: 3px;
-    margin-top: 5px;
-    font-size: 16px;
-    height: auto;
-}
-
-.input-group button {
-    width: 120px;
-    padding: 10px;
-    background-color: #fff;
-    color: #2E3192;
-    border: none;
-    border-radius: 3px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-weight: bolder;
-    height: auto;
-}
-
-.input-group button:hover {
-    background-color: #ddd;
 }
 
 .logo {
-    text-align: center;
+    width: 100px;
+    margin-bottom: 20px;
+    animation: logo-animation 6.5s infinite;
 }
 
-.logo img {
-    width: 50%;
+@keyframes logo-animation {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.login-box h2 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: #333;
+    font-weight: 600;
+}
+
+.user-box {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.user-box input {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #333;
     margin-bottom: 10px;
+    border: none;
+    border-bottom: 2px solid #333;
+    outline: none;
+    background: transparent;
+    transition: 0.3s;
 }
 
-.logo h1 {
-    color: #3a3ebf;
-    font-size: 24px;
-    margin: 0;
-    line-height: 1.2;
+.user-box input:focus,
+.user-box input:not(:placeholder-shown) {
+    border-color: #1e3c72;
 }
 
-/* Untuk layar yang lebih kecil dari 768px */
-/* Untuk layar yang lebih kecil dari 768px */
-@media (max-width: 767px) {
+.user-box input:focus ~ label,
+.user-box input:not(:placeholder-shown) ~ label {
+    top: -20px;
+    left: 0;
+    color: #1e3c72;
+    font-size: 12px;
+}
+
+.user-box label {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #666;
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    color: #fff;
+    font-size: 16px;
+    text-transform: uppercase;
+    text-decoration: none;
+    margin-top: 20px;
+    letter-spacing: 2px;
+    border-radius: 5px;
+    background: linear-gradient(to right, #1e3c72, #2a5298);
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.btn:hover {
+    background: linear-gradient(to right, #2a5298, #1e3c72);
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+}
+
+.loader {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #fff;
+    border-top: 3px solid #1e3c72;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.btn.loading .loader {
+    display: inline-block;
+}
+
+.btn.loading span {
+    display: none;
+}
+
+@media (max-width: 1024px) {
     .container {
-        flex-direction: column;
-        align-items: center;
-        width: 90%;
+        padding: 30px;
     }
 
-    .login-box {
-        width: 90%; /* Mengurangi lebar kotak login */
-        margin: 20px 0;
+    .login-box h2 {
+        font-size: 28px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
+    .user-box input {
+        font-size: 16px;
+    }
+
+    .user-box label {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
         padding: 20px;
-        height: auto;
-        line-height: normal;
     }
 
-    .input-group input,
-    .input-group button {
-        width: 100%; /* Mengisi lebar */
-        max-width: none;
-        margin-top: 5px; /* Menambahkan margin atas */
-        font-size: 14px; /* Mengurangi ukuran font */
+    .login-box h2 {
+        font-size: 28px;
     }
 
-    .input-group button {
-        margin: 10px 0;
+    .btn {
+        padding: 10px 20px;
+        font-size: 16px;
     }
 
-    .logo {
-        margin-bottom: 20px;
+    .user-box input {
+        font-size: 16px;
     }
 
-    .login h2 {
-        font-size: 28px; /* Mengurangi ukuran font */
+    .user-box label {
+        font-size: 16px;
     }
 }
 
-
-/* Untuk layar antara 768px dan 1023px */
-@media (min-width: 768px) and (max-width: 1023px) {
+@media (max-width: 480px) {
     .container {
-        width: 90%;
+        padding: 15px;
     }
 
-    .login-box {
-        width: 80%;
-        height: auto;
+    .login-box h2 {
+        font-size: 28px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
+    .user-box input {
+        font-size: 16px;
+    }
+
+    .user-box label {
+        font-size: 16px;
     }
 }
 
-/* Untuk layar yang lebih besar dari atau sama dengan 1024px */
-@media (min-width: 1024px) {
+@media (max-width: 320px) {
     .container {
-        width: 70%;
+        padding: 10px;
     }
 
-    .login-box {
-        width: 400px;
-        height: auto;
+    .login-box h2 {
+        font-size: 28px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
+    .user-box input {
+        font-size: 16px;
+    }
+
+    .user-box label {
+        font-size: 16px;
     }
 }

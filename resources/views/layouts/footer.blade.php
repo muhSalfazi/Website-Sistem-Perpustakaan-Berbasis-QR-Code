@@ -9,7 +9,8 @@
 <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/sidebarmenu.js"></script>
 <script src="../assets/js/app.min.js"></script>
-    <script src="../assets/js/dashboard.js"></script>
+<script src="../assets/js/dashboard.js"></script>
+
 
 <script>
     function confirmLogout() {
@@ -18,18 +19,11 @@
         }
     }
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
-    integrity="sha384-IQsoLXlD6/8fQzt+3Q9fMdT6DRhcvwY1kp4fjYNFEO2U0lK4JsYkLf8Y9gltKGLS" crossorigin="anonymous">
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-    integrity="sha384-cVKIPhG1qiD1T6GkJt7E2YfIouuWE1cQEOstzF4iqp1rIwKtOf+SZAxTOQE2akKx" crossorigin="anonymous">
-</script>
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         new simpleDatatables.DataTable('.datatable');
     });
 </script>
 
-</body>
-
-</html>

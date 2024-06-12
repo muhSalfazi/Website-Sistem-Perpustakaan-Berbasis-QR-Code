@@ -37,15 +37,15 @@
             </div>
             <div class="card-body">
                 <div class="row justify-content-center">
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-6 mb-4">
                         <h5 class="card-title fw-semibold">Scan QR peminjaman / anggota</h5>
                         <!-- QR Code scanning UI -->
-                        <div id="reader" width="600px"></div>
+                        <div id="reader" style="width: 100%;"></div>
                         <button id="start-scan" class="btn btn-primary mt-3">Start Scan</button>
                         <button id="stop-scan" class="btn btn-danger mt-3 d-none">Stop Scan</button>
                     </div>
 
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-6 mb-4">
                         <h5 class="card-title fw-semibold mb-4">Atau cari anggota / buku</h5>
                         <!-- Search by email -->
                         <div class="mb-3">
@@ -126,7 +126,10 @@
                     facingMode: "environment"
                 }, {
                     fps: 10,
-                    qrbox: 300
+                    qrbox: {
+                        width: 250,
+                        height: 250
+                    } // Adjust the qrbox size for mobile
                 }, qrCodeSuccessCallback)
                 .catch(err => {
                     console.error(`Error starting QR code scanner: ${err}`);
@@ -160,25 +163,25 @@
                     if (response.member) {
                         // Tampilkan data anggota di halaman
                         $('#memberTableBody').html(`
-                            <tr>
-                                <td>${response.member.id}</td>
-                                <td>${response.member.first_name} ${response.member.last_name}</td>
-                                <td>${response.member.email}</td>
-                                <td>${response.member.phone}</td>
-                                <td>${response.member.address}</td>
-                                <td>
-                                    <img src="{{ asset('/profiles') }}/${response.member.imageProfile}" alt="Profile Image" width="50">
-                                </td>
-                                <td>
-                                    <form action="{{ route('search.book.page') }}" method="GET">
-                                        <input type="hidden" name="member_id" value="${response.member.id}">
-                                        <button type="submit" class="btn btn-outline-success">
-                                            <i class="bi bi-check2-circle"></i> Pilih
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        `);
+                        <tr>
+                            <td>${response.member.id}</td>
+                            <td>${response.member.first_name} ${response.member.last_name}</td>
+                            <td>${response.member.email}</td>
+                            <td>${response.member.phone}</td>
+                            <td>${response.member.address}</td>
+                            <td>
+                                <img src="{{ asset('/profiles') }}/${response.member.imageProfile}" alt="Profile Image" width="50">
+                            </td>
+                            <td>
+                                <form action="{{ route('search.book.page') }}" method="GET">
+                                    <input type="hidden" name="member_id" value="${response.member.id}">
+                                    <button type="submit" class="btn btn-outline-success">
+                                        <i class="bi bi-check2-circle"></i> Pilih
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    `);
                         // Tampilkan pemberitahuan bahwa anggota ditemukan
                         $('#memberFoundAlert').removeClass('d-none');
                         // Tampilkan kepala tabel
@@ -229,23 +232,23 @@
                         // Member found, populate table row
                         $('#memberTableBody').html(
                             `<tr>
-                            <td>${response.member.id}</td>
-                            <td>${response.member.first_name} ${response.member.last_name}</td>
-                            <td>${response.member.email}</td>
-                            <td>${response.member.phone}</td>
-                            <td>${response.member.address}</td>
-                            <td>
-                                <img src="{{ asset('/profiles') }}/${response.member.imageProfile}" alt="Profile Image" width="50">
-                            </td>
-                            <td>
-                                <form action="{{ route('search.book.page') }}" method="GET">
-                                    <input type="hidden" name="member_id" value="${response.member.id}">
-                                    <button type="submit" class="btn btn-outline-success">
-                                        <i class="bi bi-check2-circle"></i> Pilih
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>`
+                        <td>${response.member.id}</td>
+                        <td>${response.member.first_name} ${response.member.last_name}</td>
+                        <td>${response.member.email}</td>
+                        <td>${response.member.phone}</td>
+                        <td>${response.member.address}</td>
+                        <td>
+                            <img src="{{ asset('/profiles') }}/${response.member.imageProfile}" alt="Profile Image" width="50">
+                        </td>
+                        <td>
+                            <form action="{{ route('search.book.page') }}" method="GET">
+                                <input type="hidden" name="member_id" value="${response.member.id}">
+                                <button type="submit" class="btn btn-outline-success">
+                                    <i class="bi bi-check2-circle"></i> Pilih
+                                </button>
+                            </form>
+                        </td>
+                    </tr>`
                         );
                         // Show the "member found" alert
                         $('#memberFoundAlert').removeClass('d-none');

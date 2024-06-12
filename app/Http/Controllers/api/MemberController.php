@@ -167,7 +167,7 @@ class MemberController extends Controller
             'first_name' => $member->first_name,
             'last_name' => $member->last_name,
             'email' => $member->email,
-            'imageProfile' => $member->imageProfile ? asset('storage/profiles/' . $member->imageProfile) : null,
+            'imageProfile' => $member->imageProfile ? asset('profiles/' . $member->imageProfile) : null,
         ];
 
         $encryptedData = Crypt::encryptString(json_encode($data));
@@ -184,5 +184,26 @@ class MemberController extends Controller
         file_put_contents(public_path($qrCodePath), $qrCodeData);
 
         return $qrCodeFileName;
+    }
+
+    public function show(Request $request, $user_id)
+    {
+        $member = Member::where('user_id', $user_id)->first();
+
+        if (!$member) {
+            return response()->json(['message' => 'Pengguna tidak ditemukan'], 404);
+        }
+
+        // Anda bisa menambahkan informasi tambahan yang diperlukan dalam respons JSON
+        $qrCodeUrl = url('qrcodes/' . $member->qr_code);
+        $imageProfileUrl = url('profiles/' . $member->imageProfile);
+
+        return response()->json([
+            'message' => 'Data pengguna berhasil diambil',
+            'member' => $member,
+            'qr_code_url' => $qrCodeUrl,
+            'image_profile_url' => $imageProfileUrl,
+            
+        ], 200);
     }
 }

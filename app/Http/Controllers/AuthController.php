@@ -60,6 +60,7 @@ class AuthController extends Controller
         return redirect()->route('login')->withInput();
     }
 
+
     public function logout(Request $request)
     {
         Auth::logout();

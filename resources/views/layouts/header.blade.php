@@ -35,9 +35,4 @@
         </div>
     </nav>
 </header>
-<style>
-      .btn-logout:hover {
-        background-color: #c82333;
-        color: #fff;
-    }
-</style>
+

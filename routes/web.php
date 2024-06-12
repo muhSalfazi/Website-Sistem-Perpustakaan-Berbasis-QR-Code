@@ -1,18 +1,16 @@
 <?php
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\BookController;
+use App\Http\Controllers\BookController; // Perbaiki namespace disini
 use App\Http\Controllers\DendaController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\RakbukuController;
 use App\Http\Controllers\KategoriController;
 
-// Route::resource('books', BookController::class);
+
 
 
 
@@ -68,15 +66,16 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 
 
 
-    
     //daftar buku
     Route::get('/books', [BookController::class, 'index'])->name('books.index');
     Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
     Route::get('/book/{id}/', [BookController::class, 'showDetail'])->name('Books.showDetail');
-    Route::get('/books/{id}update', [BookController::class, 'getBook'])->name('books.getBook'); // Adjusted this route
+    Route::get('/books/{id}update', [BookController::class, 'getBook'])->name('books.getBook');
     Route::post('/books', [BookController::class, 'store'])->name('books.store');
-    Route::put('/books/{id}', [BookController::class, 'update'])->name('books.update');
     Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
+    Route::put('/books/{book}', [BookController::class, 'update'])->name('books.books.update');
+
+
 
     // rakbuku
     Route::get('/rak', [RakbukuController::class, 'index'])->name('Rak.showdata');

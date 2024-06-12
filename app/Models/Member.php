@@ -17,7 +17,6 @@ use HasFactory, SoftDeletes;
         'first_name',
         'last_name',
         'email',
-        'password',
         'imageProfile',
         'phone',
         'address', 

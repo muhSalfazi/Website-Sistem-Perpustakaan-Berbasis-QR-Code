@@ -11,7 +11,9 @@ class Book extends Model
 
     protected $table = 'tbl_books';
 
+
     protected $fillable = [
+        'book_cover',
         'title',
         'author',
         'publisher',
@@ -21,7 +23,6 @@ class Book extends Model
         'category_id',
         'description'
     ];
-
     public function category()
     {
         return $this->belongsTo(Kategori::class, 'category_id');

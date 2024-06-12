@@ -4,7 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\MemberController;
 use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\PeminjamanController;
+use App\Http\Controllers\API\ShowBookController;
+use App\Http\Controllers\API\ShowPeminjamanController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,7 +18,6 @@ use App\Http\Controllers\PeminjamanController;
 |
 */
 
-Route::get('/email/verify/{token}', 'Auth\VerificationController@verify')->name('verification.verify');
 Route::post('/register', [MemberController::class, 'register']);
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -28,10 +29,20 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 Route::post('/forget-password', [AuthController::class, 'forgetPassword']);
 // Protected Routes
 Route::middleware(['jwt.auth'])->group(function () {
-    Route::get('/members', [MemberController::class, 'index']);
-    Route::get('/members/{id}', [MemberController::class, 'show']);
+
+    // show profile
+    Route::get('members/{id}', [MemberController::class, 'show']);
+    // meember
     Route::post('/members/{id}', [MemberController::class, 'update']);
-    Route::delete('/members/{id}', [MemberController::class, 'destroy']);
-    Route::post('/peminjaman/scan', [PeminjamanController::class, 'scan']);
+    // show book all
+    Route::get('/api/books', [ShowBookController::class, 'index']);
+    Route::get('/api/books/{id}', [ShowBookController::class, 'show']);
+    Route::get('/api/books/category/{categoryName}', [ShowBookController::class, 'showByCategory']);
+
+
     
+    // show peminjaman berdasarkan member
+    Route::get('peminjaman/{id}', [ShowPeminjamanController::class, 'index']);
+
+
 });
