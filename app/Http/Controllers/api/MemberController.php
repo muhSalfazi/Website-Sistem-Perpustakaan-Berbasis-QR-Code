@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Support\Facades\Response;
-
+use App\Events\UserCreated;
 class MemberController extends Controller
 {
     // Metode untuk registrasi anggota baru
@@ -48,14 +48,8 @@ class MemberController extends Controller
         $user->qr_code = $qrCodeData;
         $user->save();
 
-        // Create a corresponding member record
-        Member::create([
-            'user_id' => $user->id,
-            'first_name' => $user->first_name,
-            'last_name' => $user->last_name,
-            'email' => $user->email,
-            'qr_code' => $user->qr_code,
-        ]);
+        // Trigger the UserCreated event
+        event(new UserCreated($user));
 
         $qrCodeUrl = asset('/public/qrcodes/' . $user->qr_code); // Mengubah path untuk bisa diakses secara publik
 
@@ -66,6 +60,7 @@ class MemberController extends Controller
             'qr_code_url' => $qrCodeUrl,
         ], 201);
     }
+
 
     // Metode untuk memperbarui informasi anggota
     public function update(Request $request, $user_id)

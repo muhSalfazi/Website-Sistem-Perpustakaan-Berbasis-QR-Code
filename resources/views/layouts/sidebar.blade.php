@@ -1,5 +1,3 @@
-
-
 <aside class="left-sidebar">
     <!-- Sidebar scroll-->
     <div>
@@ -55,7 +53,15 @@
                         <span>
                             <i class="ti ti-report-money"></i>
                         </span>
-                        <span class="hide-menu">Denda</span>
+                        <span class="hide-menu">Penagihan Denda</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('history.transaksi') }}" aria-expanded="false">
+                        <span>
+                            <i class="bi bi-clock-history"></i>
+                        </span>
+                        <span class="hide-menu">History Transaksi</span>
                     </a>
                 </li>
                 <li class="nav-small-cap">
@@ -79,7 +85,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('categories.index')}}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('categories.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-category-2"></i>
                         </span>

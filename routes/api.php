@@ -34,10 +34,11 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('members/{id}', [MemberController::class, 'show']);
     // meember
     Route::post('/members/{id}', [MemberController::class, 'update']);
-    // show book all
-    Route::get('/api/books', [ShowBookController::class, 'index']);
-    Route::get('/api/books/{id}', [ShowBookController::class, 'show']);
-    Route::get('/api/books/category/{categoryName}', [ShowBookController::class, 'showByCategory']);
+   
+    // show book all 
+    Route::get('/books', [ShowBookController::class, 'index']);
+    Route::get('/books/{id}', [ShowBookController::class, 'show']);
+    Route::get('/books/category/{categoryName}', [ShowBookController::class, 'showByCategory']);
 
     // show peminjaman berdasarkan member
     Route::get('peminjaman/{id}', [ShowPeminjamanController::class, 'index']);

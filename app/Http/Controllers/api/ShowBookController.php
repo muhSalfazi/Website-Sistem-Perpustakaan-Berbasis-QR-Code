@@ -7,6 +7,7 @@ use App\Models\Book;
 use App\Models\User;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
+
 class ShowBookController extends Controller
 {
     public function index()
@@ -108,7 +109,7 @@ class ShowBookController extends Controller
     }
 
 
-    public function unfavoriteBook($userId,$id)
+    public function unfavoriteBook($userId, $id)
     {
         // Temukan pengguna berdasarkan ID
         $user = User::find($userId);

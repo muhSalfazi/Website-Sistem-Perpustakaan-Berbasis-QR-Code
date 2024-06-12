@@ -53,7 +53,7 @@
                                 <th scope="row">{{ $index + 1 }}</th>
                                 <td>
                                     <div class="d-flex justify-content-center align-items-center"
-                                        style="max-width: 100px; height: 80px;">
+                                        style="max-width: 80px; height: 80px;">
                                         <img class="mx-auto mh-100" src="{{ asset($book->book_cover) }}"
                                             alt="{{ $book->title }}" style="max-height: 100%; max-width: 100%;">
                                     </div>

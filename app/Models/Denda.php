@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,8 +14,9 @@ class Denda extends Model
         'id_pjmn',
         'denda_yg_dibyr',
         'uang_yg_dibyrkn',
-        'status', 
+        'status',
     ];
+
     public function peminjaman()
     {
         return $this->belongsTo(Peminjaman::class, 'id_pjmn');

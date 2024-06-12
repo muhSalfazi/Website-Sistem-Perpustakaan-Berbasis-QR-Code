@@ -9,7 +9,7 @@ use App\Http\Controllers\DendaController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\RakbukuController;
 use App\Http\Controllers\KategoriController;
-use App\Http\Controllers\API\ShowBookController;
+use App\Http\Controllers\HistoryTransaksiController;
 
 
 
@@ -97,5 +97,7 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     // denda
     Route::get('/denda', [DendaController::class, 'index'])->name('denda');
     Route::post('/denda/bayar', [DendaController::class, 'bayarDenda'])->name('denda.bayar');
-
+    
+    // history Transaksi
+    Route::get('/history-transaksi', [HistoryTransaksiController::class, 'index'])->name('history.transaksi');
 });
