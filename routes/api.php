@@ -39,10 +39,11 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('/api/books/{id}', [ShowBookController::class, 'show']);
     Route::get('/api/books/category/{categoryName}', [ShowBookController::class, 'showByCategory']);
 
-
-    
     // show peminjaman berdasarkan member
     Route::get('peminjaman/{id}', [ShowPeminjamanController::class, 'index']);
 
-
+    // Favorit book 
+    Route::post('users/{userId}/books/{id}/favorite', [ShowBookController::class, 'favoriteBook']);
+    Route::delete('users/{userId}/books/{id}/favorite', [ShowBookController::class, 'unfavoriteBook']);
+    Route::get('users/{userId}/favorites', [ShowBookController::class, 'getFavoriteBooks']);
 });

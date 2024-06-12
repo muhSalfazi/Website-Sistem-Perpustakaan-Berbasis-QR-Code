@@ -33,4 +33,10 @@ use HasFactory, SoftDeletes;
     {
         return $this->hasMany(Peminjaman::class, 'member_id');
     }
+
+    public function favoriteBooks()
+    {
+        return $this->belongsToMany(Book::class, 'favorite_books')->withTimestamps();
+    }
+    
 }

@@ -96,79 +96,104 @@
 
         </div>
 
-        <!-- Edit Book Modal -->
-        <div class="modal fade" id="editBookModal" tabindex="-1" aria-labelledby="editBookModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form id="editBookForm" method="post" enctype="multipart/form-data" action="">
-                        @csrf
-                        @method('PUT')
-                        <input type="hidden" name="id" id="id">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editBookModalLabel">Edit Buku</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="title" class="form-label">Judul</label>
-                                <input type="text" class="form-control" id="title" name="title" value="">
-                            </div>
-                            <div class="mb-3">
-                                <label for="author" class="form-label">Author</label>
-                                <input type="text" class="form-control" id="author" name="author" value="">
-                            </div>
-                            <div class="mb-3">
-                                <label for="year" class="form-label">Tahun</label>
-                                <input type="number" class="form-control" id="year" name="year" value="">
-                            </div>
-                            <div class="mb-3">
-                                <label for="category_id" class="form-label">Kategori</label>
-                                <select class="form-control" id="category_id" name="category_id">
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="rack_id" class="form-label">Rak</label>
-                                <select class="form-control" id="rack_id" name="rack_id">
-                                    @foreach ($racks as $rack)
-                                        <option value="{{ $rack->id }}">{{ $rack->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="jumlah" class="form-label">Jumlah</label>
-                                <input type="number" class="form-control" id="jumlah" name="jumlah"
-                                    value="">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                        </div>
-                    </form>
+       <!-- Edit Book Modal -->
+<div class="modal fade" id="editBookModal" tabindex="-1" aria-labelledby="editBookModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editBookForm" method="post" enctype="multipart/form-data" action="">
+                @csrf
+                @method('PUT')
+                <input type="hidden" name="id" id="id">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editBookModalLabel">Edit Buku</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </div>
+                <div class="modal-body">
+                     <div class="mb-3">
+                        <label for="title" class="form-label">Judul</label>
+                        <input type="text" class="form-control" id="title" name="title" value="">
+                    </div>
+                    <div class="mb-3">
+                        <label for="author" class="form-label">Author</label>
+                        <input type="text" class="form-control" id="author" name="author" value="">
+                    </div>
+                    <div class="mb-3">
+                        <label for="publisher" class="form-label">Penerbit</label>
+                        <input type="text" class="form-control" id="publisher" name="publisher">
+                    </div>
+                    <div class="mb-3">
+                        <label for="isbn" class="form-label">ISBN</label>
+                        <input type="text" class="form-control" id="isbn" name="isbn">
+                    </div>
+                    <div class="mb-3">
+                        <label for="book_cover" class="form-label">Cover Buku</label>
+                        <input type="file" class="form-control" id="book_cover" name="book_cover">
+                    </div>
+                  
+                    
+                    <div class="mb-3">
+                        <label for="year" class="form-label">Tahun</label>
+                        <input type="number" class="form-control" id="year" name="year" value="">
+                    </div>
+                    <div class="mb-3">
+                        <label for="category_id" class="form-label">Kategori</label>
+                        <select class="form-control" id="category_id" name="category_id">
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="rack_id" class="form-label">Rak</label>
+                        <select class="form-control" id="rack_id" name="rack_id">
+                            @foreach ($racks as $rack)
+                                <option value="{{ $rack->id }}">{{ $rack->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="jumlah" class="form-label">Jumlah</label>
+                        <input type="number" class="form-control" id="jumlah" name="jumlah" value="">
+                    </div>
+                     <div class="mb-3">
+                        <label for="description" class="form-label">Deskripsi</label>
+                        <textarea class="form-control" id="description" name="description"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                </div>
+            </form>
         </div>
+    </div>
+</div>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                $('#editBookModal').on('show.bs.modal', function(event) {
-                    var button = $(event.relatedTarget);
-                    var book = button.data('book');
-                    var modal = $(this);
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        $('#editBookModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var book = button.data('book');
+            var modal = $(this);
 
-                    modal.find('form').attr('action', `/books/${book.id}`);
-                    modal.find('#id').val(book.id);
-                    modal.find('#title').val(book.title);
-                    modal.find('#author').val(book.author);
-                    modal.find('#year').val(book.year);
-                    modal.find('#category_id').val(book.category_id);
-                    modal.find('#rack_id').val(book.rack_id);
-                    modal.find('#jumlah').val(book.book_stock ? book.book_stock.jmlh_tersedia : 0);
-                });
-            });
-        </script>
+            modal.find('form').attr('action', `/books/${book.id}`);
+            modal.find('#id').val(book.id);
+            modal.find('#title').val(book.title);
+            modal.find('#author').val(book.author);
+            modal.find('#year').val(book.year);
+            modal.find('#description').val(book.description); // Tambahkan ini
+            modal.find('#publisher').val(book.publisher); // Tambahkan ini
+            modal.find('#isbn').val(book.isbn); // Tambahkan ini
+            modal.find('#category_id').val(book.category_id);
+            modal.find('#rack_id').val(book.rack_id);
+            modal.find('#jumlah').val(book.book_stock ? book.book_stock.jmlh_tersedia : 0);
+
+            // Tampilkan cover buku
+            var coverUrl = "{{ asset($book->book_cover) }}";
+            modal.find('#book_cover_preview').attr('src', coverUrl); // Pastikan ada elemen dengan id book_cover_preview
+        });
+    });
+</script>
+
     </div>
 @endsection

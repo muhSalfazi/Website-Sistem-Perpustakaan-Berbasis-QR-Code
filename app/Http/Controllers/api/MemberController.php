@@ -66,11 +66,11 @@ class MemberController extends Controller
             'qr_code_url' => $qrCodeUrl,
         ], 201);
     }
+
     // Metode untuk memperbarui informasi anggota
     public function update(Request $request, $user_id)
     {
         $member = Member::where('user_id', $user_id)->first();
-
 
         if (!$member) {
             return response()->json(['message' => 'Pengguna tidak ditemukan'], 404);
@@ -115,7 +115,7 @@ class MemberController extends Controller
 
             // Hapus file gambar profil lama jika ada
             if ($member->imageProfile) {
-                $oldImagePath = public_path('/public/profiles/' . $member->imageProfile);
+                $oldImagePath = public_path('profiles/' . $member->imageProfile);
                 if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
                 }
@@ -156,8 +156,6 @@ class MemberController extends Controller
             'image_profile_url' => $imageProfileUrl,
         ], 200);
     }
-
-
 
     private function generateEncryptedQRCodeData($memberId)
     {

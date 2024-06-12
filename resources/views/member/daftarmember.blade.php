@@ -41,9 +41,9 @@
                                         <th scope="row">{{ $index + 1 }}</th>
                                         <td class="text-center">
                                             @if ($member->imageProfile)
-                                                <img src="{{ asset('storage/profiles/' . $member->imageProfile) }}"
+                                                <img src="{{ asset('/profiles/' . $member->imageProfile) }}"
                                                     alt="{{ $member->first_name }}"
-                                                    style="max-width: 50px; border-radius:5%;">
+                                                    style="max-width: 100px; border-radius:5%;">
                                             @else
                                                 <span>Tidak ada foto profil</span>
                                             @endif

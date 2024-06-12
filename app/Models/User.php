@@ -38,4 +38,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(Member::class, 'user_id');
     }
+     public function favoriteBooks()
+    {
+        return $this->belongsToMany(Book::class, 'favorite_books')->withTimestamps();
+    }
 }
