@@ -33,7 +33,7 @@ Tampilan desain web saat ini sedang dalam proses pengembangan. Berikut adalah pr
 ![Login Page](https://github.com/muhSalfazi/project_E-library/assets/121502387/6674d9c5-a120-451a-9057-c1c30d30c603)
 
 ### Pratinjau Fitur Scan QR
-![QR Scan Feature](https://github.com/muhSalfazi/project_E-library/assets/121502387/4e83bffa-3b34-4350-9dd1-94fc7cca31db)
+![QR Scan Feature](https://github.com/muhSalfazi/project_E-library/assets/121502387/7a6773ca-d9f5-46c4-b77c-f671b3b4bfbb)
 
 ## 🛠️ Teknologi yang Digunakan
 
