@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration {
     public function up()
@@ -19,14 +20,16 @@ return new class extends Migration {
             $table->date('tgl_lahir')->nullable();
             $table->string('qr_code', 255)->nullable();
             $table->timestamps();
-            $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('tbl_users')->onDelete('cascade');
         });
+     
     }
+
 
     public function down()
     {
-        Schema::dropIfExists('tbl_members');
+
+        DB::unprepared('DROP TRIGGER IF EXISTS after_user_created');
     }
 };

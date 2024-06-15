@@ -5,14 +5,14 @@
 @section('content')
     <div class="container-fluid">
         <!-- Content Start -->
-        <a href="{{ route('peminjaman') }}" class="btn btn-outline-primary mb-3">
+        <a href="{{ route('peminjaman') }}" class="btn btn-outline-primary mb-3 animate__animated animate__fadeInLeft">
             <i class="ti ti-arrow-left"></i>
             Kembali
         </a>
 
-        <div class="card">
+        <div class="card shadow-lg rounded-lg border-0 animate__animated animate__fadeInUp">
             @if ($errors->any())
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div class="alert alert-danger alert-dismissible fade show animate__animated animate__shakeX" role="alert">
                     @foreach ($errors->all() as $error)
                         <div>{{ $error }}</div>
                     @endforeach
@@ -21,39 +21,39 @@
             @endif
 
             @if (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div class="alert alert-danger alert-dismissible fade show animate__animated animate__shakeX" role="alert">
                     {{ session('error') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
 
-            <div id="memberFoundAlert" class="alert alert-success alert-dismissible fade show d-none" role="alert">
+            <div id="memberFoundAlert" class="alert alert-success alert-dismissible fade show d-none animate__animated animate__fadeInDown" role="alert">
                 Member ditemukan.
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <div id="memberNotRegisteredAlert" class="alert alert-danger alert-dismissible fade show d-none" role="alert">
+            <div id="memberNotRegisteredAlert" class="alert alert-danger alert-dismissible fade show d-none animate__animated animate__fadeInDown" role="alert">
                 Member tidak ditemukan.
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             <div class="card-body">
                 <div class="row justify-content-center">
-                    <div class="col-12 col-md-6 mb-4">
-                        <h5 class="card-title fw-semibold">Scan QR peminjaman / anggota</h5>
+                    <div class="col-12 col-md-6 mb-4 text-center">
+                        <h5 class="card-title fw-bold">Scan QR peminjaman / anggota</h5>
                         <!-- QR Code scanning UI -->
-                        <div id="reader" style="width: 100%;"></div>
-                        <button id="start-scan" class="btn btn-primary mt-3">Start Scan</button>
-                        <button id="stop-scan" class="btn btn-danger mt-3 d-none">Stop Scan</button>
+                        <div id="reader" style="width: 100%; height: 250px; border: 2px dashed #007bff; border-radius: 10px;"></div>
+                        <button id="start-scan" class="btn btn-outline-primary mt-3 animate__animated animate__bounceIn">Start Scan</button>
+                        <button id="stop-scan" class="btn btn-outline-danger mt-3 d-none animate__animated animate__bounceIn">Stop Scan</button>
                     </div>
 
                     <div class="col-12 col-md-6 mb-4">
-                        <h5 class="card-title fw-semibold mb-4">Atau cari anggota / buku</h5>
+                        <h5 class="card-title fw-bold mb-4 text-center">Atau cari anggota / buku</h5>
                         <!-- Search by email -->
                         <div class="mb-3">
                             <label for="email" class="form-label">Masukkan Email Anggota</label>
                             <input type="email" class="form-control" id="email" name="email" placeholder="Email">
                             <div class="invalid-feedback"></div>
                         </div>
-                        <button class="btn btn-primary" onclick="searchMemberByEmail()">Cari</button>
+                        <button class="btn btn-outline-primary w-100 animate__animated animate__pulse" onclick="searchMemberByEmail()">Cari</button>
                     </div>
                 </div>
                 <div class="row justify-content-center d-none" id="memberTableContainer">
@@ -81,7 +81,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -90,6 +89,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="{{ asset('assets/libs/html5-qrcode/html5-qrcode.min.js') }}"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         let html5QrCode;
@@ -170,12 +170,12 @@
                             <td>${response.member.phone}</td>
                             <td>${response.member.address}</td>
                             <td>
-                                <img src="{{ asset('/profiles') }}/${response.member.imageProfile}" alt="Profile Image" width="50">
+                                <img src="{{ asset('/profiles') }}/${response.member.imageProfile}" alt="Profile Image" width="50" class="rounded-circle">
                             </td>
                             <td>
                                 <form action="{{ route('search.book.page') }}" method="GET">
                                     <input type="hidden" name="member_id" value="${response.member.id}">
-                                    <button type="submit" class="btn btn-outline-success">
+                                    <button type="submit" class="btn btn-outline-success animate__animated animate__heartBeat">
                                         <i class="bi bi-check2-circle"></i> Pilih
                                     </button>
                                 </form>
@@ -183,23 +183,34 @@
                         </tr>
                     `);
                         // Tampilkan pemberitahuan bahwa anggota ditemukan
-                        $('#memberFoundAlert').removeClass('d-none');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Member ditemukan',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
                         // Tampilkan kepala tabel
                         $('thead').removeClass('d-none');
                         // Tampilkan tabel
                         $('#memberTableContainer').removeClass('d-none');
                     } else if (response.error === 'Email member tidak terdaftar') {
                         // Tampilkan pemberitahuan bahwa email tidak terdaftar
-                        $('#memberNotRegisteredAlert').removeClass('d-none');
-                    } else {
-                        // Handle other possible errors
-                        alert('Terjadi kesalahan. Silakan coba lagi.');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Member tidak ditemukan',
+                            text: 'Email member tidak terdaftar',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
                     }
                 },
-                error: function(xhr, status, error) {
-                    // Handle Ajax error
-                    console.error(error);
-                    alert('Terjadi kesalahan. Silakan coba lagi.');
+                error: function(xhr, status, thrown) {
+                    console.log(thrown);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Terjadi kesalahan',
+                        text: 'Silakan coba lagi.',
+                    });
                 }
             });
         }
@@ -207,9 +218,12 @@
         function searchMemberByEmail() {
             var email = $('#email').val();
 
-            // Cek apakah email telah diisi
-            if (!email) {
-                alert('Email belum diisi. Silakan masukkan email.');
+            if (email === '') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Perhatian',
+                    text: 'Silakan masukkan email.',
+                });
                 return;
             }
 
@@ -238,12 +252,12 @@
                         <td>${response.member.phone}</td>
                         <td>${response.member.address}</td>
                         <td>
-                            <img src="{{ asset('/profiles') }}/${response.member.imageProfile}" alt="Profile Image" width="50">
+                            <img src="{{ asset('/profiles') }}/${response.member.imageProfile}" alt="Profile Image" width="50" class="rounded-circle">
                         </td>
                         <td>
                             <form action="{{ route('search.book.page') }}" method="GET">
                                 <input type="hidden" name="member_id" value="${response.member.id}">
-                                <button type="submit" class="btn btn-outline-success">
+                                <button type="submit" class="btn btn-outline-success animate__animated animate__heartBeat">
                                     <i class="bi bi-check2-circle"></i> Pilih
                                 </button>
                             </form>
@@ -251,20 +265,34 @@
                     </tr>`
                         );
                         // Show the "member found" alert
-                        $('#memberFoundAlert').removeClass('d-none');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Member ditemukan',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
                         // Show the table
                         $('#memberTableContainer').removeClass('d-none');
                         // Show the table head
                         $('thead').removeClass('d-none');
                     } else {
                         // Member not found, display alert
-                        $('#memberNotRegisteredAlert').removeClass('d-none');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Member tidak ditemukan',
+                            text: 'Email member tidak terdaftar',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
                     }
                 },
                 error: function(xhr, status, thrown) {
                     console.log(thrown);
-                    alert('Terjadi kesalahan. Silakan coba lagi.');
-                    // Handle error if needed
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Terjadi kesalahan',
+                        text: 'Silakan coba lagi.',
+                    });
                 }
             });
         }

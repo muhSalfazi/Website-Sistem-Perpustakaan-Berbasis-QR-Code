@@ -3,7 +3,7 @@
 @section('title', 'Tambah Rak Buku')
 
 @section('content')
-    <a href="{{ route('Rak.showdata') }}" class="btn btn-outline-primary mb-3">
+    <a href="{{ route('Rak.showdata') }}" class="btn btn-custom mb-3">
         <i class="ti ti-arrow-left"></i>
         Kembali
     </a>
@@ -11,7 +11,7 @@
         <div class="pb-2">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 {{ session('msg') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-custom" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
     @endif
@@ -34,7 +34,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Simpan</button>
+                <button type="submit" class="btn btn-custom">Simpan</button>
             </form>
         </div>
     </div>
@@ -65,5 +65,23 @@
             });
         });
     </script>
+
+    <!-- Custom CSS -->
+    <style>
+        .btn-custom {
+            background: linear-gradient(90deg, rgba(58,123,213,1) 0%, rgba(0,212,255,1) 100%);
+            border: none;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-custom:hover {
+            background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(58,123,213,1) 100%);
+        }
+        .btn-custom.btn-close {
+            padding: 0;
+            border: none;
+            background: none;
+        }
+    </style>
 
 @endsection

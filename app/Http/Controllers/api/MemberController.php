@@ -15,6 +15,7 @@ use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Support\Facades\Response;
 use App\Events\UserCreated;
+
 class MemberController extends Controller
 {
     // Metode untuk registrasi anggota baru
@@ -29,6 +30,12 @@ class MemberController extends Controller
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
+        }
+
+        // Periksa apakah email sudah ada di tabel tbl_members
+        $existingMember = Member::where('email', $request->email)->first();
+        if ($existingMember) {
+            return response()->json(['message' => 'Email sudah terdaftar sebagai anggota'], 400);
         }
 
         // Hash the password before storing it
@@ -51,7 +58,7 @@ class MemberController extends Controller
         // Trigger the UserCreated event
         event(new UserCreated($user));
 
-        $qrCodeUrl = asset('/public/qrcodes/' . $user->qr_code); // Mengubah path untuk bisa diakses secara publik
+        $qrCodeUrl = url('qrcodes/' . $user->qr_code);// Mengubah path untuk bisa diakses secara publik
 
         // Return the created user data
         return response()->json([
@@ -60,7 +67,6 @@ class MemberController extends Controller
             'qr_code_url' => $qrCodeUrl,
         ], 201);
     }
-
 
     // Metode untuk memperbarui informasi anggota
     public function update(Request $request, $user_id)
@@ -196,7 +202,7 @@ class MemberController extends Controller
             'member' => $member,
             'qr_code_url' => $qrCodeUrl,
             'image_profile_url' => $imageProfileUrl,
-            
+
         ], 200);
     }
 }

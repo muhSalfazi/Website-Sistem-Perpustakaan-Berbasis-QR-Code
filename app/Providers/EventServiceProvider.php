@@ -6,7 +6,8 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
-
+use App\Models\Peminjaman;
+use App\Listeners\CheckLateReturn;
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -21,19 +22,16 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\UserCreated' => [
             'App\Listeners\CreateUserMember',
         ],
-        PeminjamanCreated::class => [
-            CalculateDenda::class,
-        ],
     ];
 
     /**
      * Register any events for your application.
      */
-    public function boot(): void
+    public function boot()
     {
-        //
-    }
+        parent::boot();
 
+    }
     /**
      * Determine if events and listeners should be automatically discovered.
      */

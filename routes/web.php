@@ -33,7 +33,7 @@ Route::middleware('guest')->group(function () {
 });
 
 
-Route::middleware(['auth', AdminMiddleware::class])->group(function () {
+Route::middleware(['auth', 'throttle:50,1',AdminMiddleware::class])->group(function () {
     // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 

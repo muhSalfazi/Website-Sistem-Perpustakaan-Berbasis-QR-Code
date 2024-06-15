@@ -34,10 +34,9 @@ class PeminjamanController extends Controller
         return view('Peminjaman.daftarpeminjaman', compact('peminjamans'));
     }
 
-
     public function search()
     {
-        return view('peminjaman.search');
+        return view('Peminjaman.search');
     }
 
     public function searchMemberByEmail(Request $request)
@@ -109,7 +108,6 @@ class PeminjamanController extends Controller
         return view('Peminjaman.searchBook', compact('memberId', 'member', 'books'));
     }
 
-
     // Controller method to handle book borrowing
     public function storePeminjaman(Request $request)
     {
@@ -141,10 +139,14 @@ class PeminjamanController extends Controller
             return redirect()->back()->with('error', 'Buku tidak ditemukan.');
         }
 
-        // Check if the member has reached maximum borrowing limit
-        $borrowedBooksCount = Peminjaman::where('member_id', $memberId)->count();
+        // Check if the member has any overdue books
+        $borrowedBooksCount = Peminjaman::where('member_id', $memberId)
+            ->whereNull('return_date')
+            ->count();
+
+        // Allow borrowing if the member has less than 3 books not returned
         if ($borrowedBooksCount >= 3) {
-            return redirect()->back()->with('error', 'Anggota telah mencapai batas maksimal peminjaman (3 buku).');
+            return redirect()->back()->with('error', 'Anggota masih memiliki 3 atau lebih peminjaman yang belum dikembalikan.');
         }
 
         // Check if the book is available
@@ -182,27 +184,6 @@ class PeminjamanController extends Controller
             // Add more data as needed
         ];
 
-        // // Create QR code
-        // $qrCode = new QrCode(json_encode($qrCodeData));
-        // $qrCode->setSize(300);
-
-        // // Set the writer
-        // $writer = new PngWriter();
-
-        // // Set the QR code file path
-        // $qrCodePath = 'qrcodePJMN/' . $uniqueCode . '.png';
-
-        // // Write the QR code to the specified path
-        // $qrCodeData = $writer->write($qrCode)->getString();
-        // file_put_contents(public_path($qrCodePath), $qrCodeData);
-
-        // // Save the QR code path to the database
-        // DB::table('tbl_peminjaman')
-        //     ->where('resi_pjmn', $uniqueCode)
-        //     ->update(['qr_code' => $qrCodePath]);
-
-        // Mengirim email
-       
         return redirect()->back()->with('success', 'Buku berhasil dipinjam.');
     }
 
@@ -225,6 +206,5 @@ class PeminjamanController extends Controller
         $peminjaman->delete();
 
         return redirect()->back()->with('success', 'Data peminjaman berhasil dihapus.');
-        
     }
 }

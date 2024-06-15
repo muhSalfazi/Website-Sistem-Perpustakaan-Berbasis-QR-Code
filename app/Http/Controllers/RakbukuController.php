@@ -72,5 +72,5 @@ class RakbukuController extends Controller
         return redirect()->route('Rak.showdata')->with('msg', 'Rak berhasil dihapus');
     }
 
-    
+
 }

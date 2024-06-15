@@ -21,12 +21,14 @@ class JwtMiddleware
         try {
             $credentials = JWT::decode($token, new Key(env('JWT_SECRET'), 'HS256'));
         } catch (ExpiredException $e) {
-            return response()->json(['error' => 'Token yang diberikan sudah habis masa berlakunya.'], 400);
+            // Return a JSON response with appropriate status code for expired token
+            return response()->json(['error' => 'Token yang diberikan sudah habis masa berlakunya.'], 401);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Terjadi kesalahan saat mendekode token.'], 400);
         }
 
-        $request->auth = $credentials;
+        // Add the decoded token to the request attributes
+        $request->attributes->add(['auth' => $credentials]);
 
         return $next($request);
     }

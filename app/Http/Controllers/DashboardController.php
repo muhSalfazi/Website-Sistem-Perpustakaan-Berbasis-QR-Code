@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Member;
@@ -15,10 +16,10 @@ class DashboardController extends Controller
         // Menghitung jumlah anggota baru yang dibuat hari ini
         $newMembersCount = Member::whereDate('created_at', today())->count();
 
-        // Menghitung jumlah buku yang sedang dipinjam
+        // Menghitung jumlah buku yang sedang dipinjam hari ini
         $borrowingBooksCount = Peminjaman::whereDate('created_at', today())->count();
 
-        // Menghitung jumlah buku yang telah dikembalikan
+        // Menghitung jumlah buku yang telah dikembalikan hari ini
         $returnBooksCount = Peminjaman::whereDate('return_date', today())->count();
 
         // Menghitung jumlah buku yang terlambat dikembalikan (denda)
@@ -26,7 +27,10 @@ class DashboardController extends Controller
 
         // Mendapatkan ikhtisar 7 hari terakhir atau berdasarkan bulan yang dipilih
         $ikhtisarDays = $request->input('days', 7);  // default 7 hari jika tidak ada input
-        $ikhtisar = Peminjaman::whereBetween('created_at', [now()->subDays($ikhtisarDays), now()])->get();
+        $startDate = now()->subDays($ikhtisarDays);
+        $endDate = now();
+
+        $ikhtisar = Peminjaman::whereBetween('created_at', [$startDate, $endDate])->get();
 
         // Total Pendapatan Denda
         $totalDenda = Denda::sum('uang_yg_dibyrkn');
@@ -35,10 +39,10 @@ class DashboardController extends Controller
         $totalTunggakan = Denda::sum('denda_yg_dibyr');
 
         // Total Pendapatan Denda Tahun Lalu
-        $lastYearTotalDenda = Denda::whereYear('created_at', now()->year - 1)->sum('uang_yg_dibyrkn');
+        $lastYearTotalDenda = Denda::whereYear('created_at', now()->subYear()->year)->sum('uang_yg_dibyrkn');
 
         // Total Tunggakan Tahun Lalu
-        $lastYearTotalTunggakan = Denda::whereYear('created_at', now()->year - 1)->sum('denda_yg_dibyr');
+        $lastYearTotalTunggakan = Denda::whereYear('created_at', now()->subYear()->year)->sum('denda_yg_dibyr');
 
         // Data untuk dikirim ke view
         $data = compact(
@@ -56,5 +60,4 @@ class DashboardController extends Controller
 
         return view('dashboard', $data);
     }
-
 }

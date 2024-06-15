@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->year('year');
             $table->unsignedBigInteger('rack_id');
             $table->unsignedBigInteger('category_id');
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

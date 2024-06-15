@@ -5,15 +5,15 @@
 @section('content')
     <div class="pb-2">
         @if (session('msg'))
-            <div class="alert {{ session('error') ? 'alert-danger' : 'alert-success' }} alert-dismissible fade show"
+            <div class="alert {{ session('error') ? 'alert-danger' : 'alert-success' }} alert-dismissible fade show animate__animated animate__fadeInDown"
                 role="alert">
                 {{ session('msg') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-custom" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
     </div>
 
-    <div class="card">
+    <div class="card animate__animated animate__fadeIn">
         <div class="card-body">
             <div class="row mb-2">
                 <div class="col-12 col-lg-5">
@@ -22,7 +22,7 @@
                 <div class="col-12 col-lg-7">
                     <div class="d-flex gap-2 justify-content-md-end">
                         <div>
-                            <a href="{{ route('categories.create') }}" class="btn bt-sm btn-primary py-2 mt-1">
+                            <a href="{{ route('categories.create') }}" class="btn btn-custom py-2 mt-1">
                                 <i class="ti ti-plus"></i> Tambah Kategori
                             </a>
                         </div>
@@ -30,7 +30,7 @@
                 </div>
             </div>
 
-            <div class="table-responsive">
+            <div class="table-responsive animate__animated animate__fadeInUp">
                 <table class="table table-hover table-striped" id="categoryTable">
                     <thead class="table-light">
                         <tr>
@@ -42,19 +42,19 @@
                     </thead>
                     <tbody>
                         @foreach ($categories as $category)
-                            <tr>
+                            <tr class="animate__animated animate__fadeIn">
                                 <td class="text-center">{{ $loop->iteration }}</td>
                                 <td class="text-center">{{ $category->name }}</td>
                                 <td class="text-center">{{ $category->books_count }}</td>
                                 <td class="text-center">
-                                    <a href="#" class="btn btn-sm btn-primary edit-category mt-1"
+                                    <a href="#" class="btn btn-custom btn-sm mt-1 edit-category"
                                         data-bs-toggle="modal" data-bs-target="#editCategoryModal"
                                         data-id="{{ $category->id }}" data-name="{{ $category->name }}">Edit</a>
                                     <form action="{{ route('categories.destroy', $category->id) }}" method="post"
                                         class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger mt-1"
+                                        <button type="submit" class="btn btn-custom btn-sm btn-danger mt-1"
                                             onclick="return confirm('Are you sure you want to delete this category?')">Delete</button>
                                     </form>
                                 </td>
@@ -77,7 +77,7 @@
 
                     <div class="modal-header">
                         <h5 class="modal-title" id="editCategoryModalLabel">Edit Kategori Buku</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close btn-custom" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
@@ -86,14 +86,13 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        <button type="button" class="btn btn-custom btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-custom btn-primary">Simpan Perubahan</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -114,5 +113,48 @@
             });
         });
     </script>
+
+    <!-- Custom CSS -->
+    <style>
+        .btn-custom {
+            background: linear-gradient(90deg, rgba(58,123,213,1) 0%, rgba(0,212,255,1) 100%);
+            border: none;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-custom:hover {
+            background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(58,123,213,1) 100%);
+        }
+        .btn-custom.btn-close {
+            padding: 0;
+            border: none;
+            background: none;
+        }
+        .btn-custom.btn-danger {
+            background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,69,0,1) 100%);
+            border: none;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-custom.btn-danger:hover {
+            background: linear-gradient(90deg, rgba(255,69,0,1) 0%, rgba(255,0,0,1) 100%);
+        }
+        /* Animations */
+        .animate__animated {
+            animation-duration: 0.5s;
+        }
+        .animate__fadeIn {
+            animation-name: fadeIn;
+        }
+        .animate__fadeInDown {
+            animation-name: fadeInDown;
+        }
+        .animate__fadeInUp {
+            animation-name: fadeInUp;
+        }
+        .animate__fadeInLeft {
+            animation-name: fadeInLeft;
+        }
+    </style>
 
 @endsection

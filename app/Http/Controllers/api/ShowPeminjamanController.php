@@ -5,14 +5,17 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
-use Auth;
 use App\Models\Member;
-use Illuminate\Support\Facades\Route;
 
 class ShowPeminjamanController extends Controller
 {
-    public function index($id)
+    public function index(Request $request, $id)
     {
+        // Validasi ID agar dipastikan sebagai integer
+        if (!ctype_digit($id)) {
+            return response()->json(['message' => 'Invalid user ID'], 400);
+        }
+
         // Ambil member ID berdasarkan user ID
         $member = Member::where('user_id', $id)->first();
 

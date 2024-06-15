@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,12 +18,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('qr_code', 255)->nullable();
-            $table->enum('role',['admin','member'])->default('member');
-            // $table->string('verification_token', 100)->nullable(); 
+            $table->enum('role', ['admin', 'member'])->default('member');
             $table->dateTime('last_login')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
+
+       
     }
 
     /**

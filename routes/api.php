@@ -6,7 +6,7 @@ use App\Http\Controllers\API\MemberController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ShowBookController;
 use App\Http\Controllers\API\ShowPeminjamanController;
-
+use App\Http\Controllers\API\DendaController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -47,4 +47,8 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('users/{userId}/books/{id}/favorite', [ShowBookController::class, 'favoriteBook']);
     Route::delete('users/{userId}/books/{id}/favorite', [ShowBookController::class, 'unfavoriteBook']);
     Route::get('users/{userId}/favorites', [ShowBookController::class, 'getFavoriteBooks']);
+
+    //show denda
+    Route::get('/denda/{id_peminjaman}', [DendaController::class, 'show']);
+    
 });

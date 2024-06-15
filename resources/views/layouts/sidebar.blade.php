@@ -100,20 +100,6 @@
                         <span class="hide-menu">Rak</span>
                     </a>
                 </li>
-                <!-- If user is superadmin -->
-                {{-- <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Manajemen Akun</span>
-                </li> --}}
-                {{-- <li class="sidebar-item">
-                    <a class="sidebar-link" href="/admin/users" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-user-cog"></i>
-                        </span>
-                        <span class="hide-menu">Admin</span>
-                    </a>
-                </li> --}}
-                <!-- End if -->
             </ul>
         </nav>
         <!-- End Sidebar navigation -->

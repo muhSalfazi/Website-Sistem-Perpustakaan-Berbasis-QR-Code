@@ -33,19 +33,23 @@ class PengembalianController extends Controller
         $keyword = $request->input('keyword');
 
         // Cari peminjaman berdasarkan resi peminjaman
-        $peminjaman = Peminjaman::where('resi_pjmn', $keyword)->first();
+        $peminjaman = Peminjaman::where('resi_pjmn', $keyword)
+            ->whereNull('return_date')
+            ->first();
 
         // Jika tidak ditemukan berdasarkan resi, coba mencari berdasarkan email
         if (!$peminjaman) {
             $peminjaman = Peminjaman::whereHas('member', function ($query) use ($keyword) {
                 $query->where('email', $keyword);
-            })->first();
+            })->whereNull('return_date')->get();
+        } else {
+            $peminjaman = collect([$peminjaman]);
         }
 
-        if ($peminjaman) {
+        if ($peminjaman->isNotEmpty()) {
             return view('Pengembalian.searchPengembalian', ['peminjaman' => $peminjaman]);
         } else {
-            $errors = ['Data peminjaman tidak ditemukan.'];
+            $errors = ['Data peminjaman tidak ditemukan atau semua buku telah dikembalikan.'];
             return redirect()->route('pengembalian.search')->withErrors($errors);
         }
     }
@@ -69,15 +73,7 @@ class PengembalianController extends Controller
         $peminjaman->save();
 
         // Redirect ke halaman daftarpengembalian dengan pesan sukses
-        return redirect()->route('pengembalian')->with('success', 'Tanggal pengembalian berhasil diperbarui.');
+        return redirect()->route('pengembalian')->with('success', 'Buku telah berhasil dikembalikan.');
     }
 
-    public function hapus($id)
-    {
-        $pengembalian = Peminjaman::findOrFail($id);
-        $pengembalian->delete();
-
-        // Redirect ke halaman daftarpengembalian dengan pesan sukses
-        return redirect()->route('pengembalian')->with('success', 'Peminjaman berhasil dihapus.');
-    }
 }

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\ResetPasswordMail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\RateLimiter;
 
 class AuthController extends Controller
 {
@@ -29,17 +30,29 @@ class AuthController extends Controller
         }
 
         $credentials = $request->only('email', 'password');
+        $email = $credentials['email'];
 
-        $user = User::where('email', $credentials['email'])->first();
+        $key = 'login-attempts:' . $email;
+
+        if (RateLimiter::tooManyAttempts($key, 3)) {
+            return response()->json(['error' => 'Terlalu banyak upaya login. Silakan coba lagi nanti.'], 429);
+        }
+
+        $user = User::where('email', $email)->first();
 
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
+            RateLimiter::hit($key);
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
-        // Ensure only users can login
-        if ($user->role == 'user') {
+        // Ensure only users with proper roles can login
+        if ($user->role != 'member') {
+            RateLimiter::hit($key);
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+
+        // Clear rate limit hits on successful login
+        RateLimiter::clear($key);
 
         // Update last_login timestamp
         $user->last_login = now();
@@ -55,7 +68,6 @@ class AuthController extends Controller
 
         $jwt = JWT::encode($payload, env('JWT_SECRET'), 'HS256');
 
-
         return response()->json([
             'message' => 'Login successful',
             'user' => $user,
@@ -63,7 +75,7 @@ class AuthController extends Controller
         ], 200);
     }
 
-    // Metode untuk meminta reset password
+    // Method to request a password reset link
     public function forgetPassword(Request $request)
     {
         $request->validate([
@@ -79,7 +91,7 @@ class AuthController extends Controller
         return response()->json(['message' => 'Unable to send reset password link.'], 400);
     }
 
-    // Metode untuk menyetel ulang password
+    // Method to reset password
     public function resetPassword(Request $request, $token)
     {
         $validator = Validator::make($request->all(), [

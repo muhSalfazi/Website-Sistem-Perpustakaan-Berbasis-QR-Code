@@ -10,7 +10,7 @@ class KategoriController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->input('search');
+        $search = $request->input('search', ''); // Default value to prevent null
         $categories = Kategori::withCount([
             'books',
             'bookStocks as total_books' => function ($query) {
@@ -20,12 +20,12 @@ class KategoriController extends Controller
             ->where('name', 'like', '%' . $search . '%')
             ->get();
 
-        return view('Kategori.showkategori', compact('categories'));
+        return view('kategori.showkategori', compact('categories'));
     }
 
     public function create()
     {
-        return view('Kategori.createkategori');
+        return view('kategori.createkategori');
     }
 
     public function store(Request $request)
@@ -44,6 +44,7 @@ class KategoriController extends Controller
 
         return redirect()->route('categories.index')->with('msg', 'Kategori berhasil ditambahkan');
     }
+
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
@@ -61,7 +62,7 @@ class KategoriController extends Controller
         return redirect()->route('categories.index')->with('msg', 'Kategori berhasil diperbarui');
     }
 
-   public function destroy($id)
+    public function destroy($id)
     {
         $category = Kategori::findOrFail($id);
         $category->delete();
