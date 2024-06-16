@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('tbl_denda', function (Blueprint $table) {
             $table->id();
-            $table->string('resi_pjmn')->nullable();
+            $table->string('resi_pjmn')->unique()->nullable();
             $table->unsignedInteger('denda_yg_dibyr')->nullable();
             $table->unsignedInteger('uang_yg_dibyrkn')->nullable(); 
             $table->enum('status', ['lunas', 'belum lunas'])->nullable()->default('belum lunas'); 

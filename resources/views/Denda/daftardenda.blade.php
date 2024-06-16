@@ -56,7 +56,7 @@
                                     }
                                 @endphp
 
-                                @if ($telatHari > 0 && $status !== 'lunas')
+                                @if ($telatHari > 0 && $status == 'belum lunas')
                                     <tr class="animate__animated animate__fadeIn">
                                         <th scope="row">{{ $key + 1 }}</th>
                                         <td>{{ $peminjaman->resi_pjmn }}</td>

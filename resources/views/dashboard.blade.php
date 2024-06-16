@@ -2,167 +2,167 @@
 <title>Dashboard</title>
 @section('content')
 <style>
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
-    color: #333;
-    line-height: 1.6;
-}
-
-.card {
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-    margin-bottom: 20px;
-    padding: 20px;
-    background-color: white;
-}
-
-.card:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-    transform: translateY(-5px);
-}
-
-.card-header {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 15px;
-    background: linear-gradient(60deg, #3572EF, #050C9C);
-    color: white;
-    padding: 15px;
-    border-radius: 10px 10px 0 0;
-}
-
-.card-title {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-}
-
-.card-body {
-    font-size: 1rem;
-    padding: 15px;
-}
-
-.stat-number {
-    font-size: 2rem;
-    font-weight: bold;
-    animation: fadeIn 1s ease-in-out;
-    margin-top: 5px;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f0f2f5;
+        color: #333;
+        line-height: 1.6;
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.form-select {
-    border-radius: 8px;
-    padding: 10px;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.form-select:focus {
-    background-color: #f1f1f1;
-    border-color: #007bff;
-}
-
-.stat-box {
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    cursor: pointer;
-}
-
-.stat-box:hover {
-    background-color: #f8f9fa;
-    transform: scale(1.05);
-}
-
-.bg-light {
-    background-color: #f8f9fa !important;
-}
-
-.bg-primary {
-    background-color: #007bff !important;
-    color: white;
-}
-
-.bg-success {
-    background-color: #06D001 !important;
-    color: white;
-}
-
-.bg-info {
-    background-color: #FF9800 !important;
-    color: white;
-}
-
-.bg-danger {
-    background-color: #E72929 !important;
-    color: white;
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
+    .card {
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+        margin-bottom: 20px;
+        padding: 20px;
+        background-color: white;
     }
 
-    50% {
+    .card:hover {
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        transform: translateY(-5px);
+    }
+
+    .card-header {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+        background: linear-gradient(60deg, #3572EF, #050C9C);
+        color: white;
+        padding: 15px;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .card-body {
+        font-size: 1rem;
+        padding: 15px;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        animation: fadeIn 1s ease-in-out;
+        margin-top: 5px;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .form-select {
+        border-radius: 8px;
+        padding: 10px;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .form-select:focus {
+        background-color: #f1f1f1;
+        border-color: #007bff;
+    }
+
+    .stat-box {
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        cursor: pointer;
+    }
+
+    .stat-box:hover {
+        background-color: #f8f9fa;
         transform: scale(1.05);
     }
 
-    100% {
-        transform: scale(1);
-    }
-}
-
-.pulse {
-    animation: pulse 3.5s infinite;
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
+    .bg-light {
+        background-color: #f8f9fa !important;
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.slide-in {
-    animation: slideIn 1s ease-out;
-}
-
-@keyframes bounceIn {
-    from {
-        opacity: 0;
-        transform: scale(0.5);
+    .bg-primary {
+        background-color: #007bff !important;
+        color: white;
     }
 
-    to {
-        opacity: 1;
-        transform: scale(1);
+    .bg-success {
+        background-color: #06D001 !important;
+        color: white;
     }
-}
 
-.bounce-in {
-    animation: bounceIn 0.5s ease-out;
-}
+    .bg-info {
+        background-color: #FF9800 !important;
+        color: white;
+    }
 
-.text-nowrap {
-    white-space: nowrap;
-}
+    .bg-danger {
+        background-color: #E72929 !important;
+        color: white;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .pulse {
+        animation: pulse 3.5s infinite;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .slide-in {
+        animation: slideIn 1s ease-out;
+    }
+
+    @keyframes bounceIn {
+        from {
+            opacity: 0;
+            transform: scale(0.5);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .bounce-in {
+        animation: bounceIn 0.5s ease-out;
+    }
+
+    .text-nowrap {
+        white-space: nowrap;
+    }
 </style>
 
 <div class="container-fluid slide-in">
@@ -177,7 +177,7 @@ body {
                     ['label' => 'Member Baru', 'count' => $newMembersCount, 'bg' => 'bg-success'],
                     ['label' => 'Pinjam Buku', 'count' => $borrowingBooksCount, 'bg' => 'bg-info'],
                     ['label' => 'Kembali Buku', 'count' => $returnBooksCount, 'bg' => 'bg-info'],
-                    ['label' => 'Jatuh Tempo', 'count' => $overdueBooksCount, 'bg' => 'bg-danger']
+                    ['label' => 'Jatuh Tempo', 'count' => $overdueMembersCount, 'bg' => 'bg-danger']
                     ] as $stat)
                     <div class="col-6 col-md-3">
                         <div class="stat-box {{ $stat['bg'] }} pulse">
@@ -220,10 +220,8 @@ body {
         <div class="col-lg-4">
             <div class="row">
                 @foreach ([
-                ['title' => 'Total Denda', 'amount' => $totalDenda, 'change' => $lastYearTotalDenda, 'bg' =>
-                'bg-light-success', 'icon' => 'ti-arrow-up-left', 'text' => 'success'],
-                ['title' => 'Total Tunggakan', 'amount' => $totalTunggakan, 'change' => $lastYearTotalTunggakan, 'bg' =>
-                'bg-light-danger', 'icon' => 'ti-arrow-down-right', 'text' => 'danger']
+                ['title' => 'Total Denda', 'amount' => $totalDenda, 'change' => $lastYearTotalDenda, 'bg' => 'bg-light-success', 'icon' => 'ti-arrow-up-left', 'text' => 'success'],
+                ['title' => 'Total Tunggakan', 'amount' => $totalTunggakan, 'change' => $lastYearTotalTunggakan, 'bg' => 'bg-light-danger', 'icon' => 'ti-arrow-down-right', 'text' => 'danger']
                 ] as $stat)
                 <div class="col-lg-12 {{ !$loop->first ? 'mt-4' : '' }}">
                     <div class="card bounce-in">
@@ -233,8 +231,7 @@ body {
                                     <h5 class="card-title mb-4 fw-semibold">{{ $stat['title'] }}</h5>
                                     <h4 class="fw-semibold mb-3">${{ $stat['amount'] }}</h4>
                                     <div class="d-flex align-items-center pb-1">
-                                        <span
-                                            class="me-2 rounded-circle {{ $stat['bg'] }} round-20 d-flex align-items-center justify-content-center">
+                                        <span class="me-2 rounded-circle {{ $stat['bg'] }} round-20 d-flex align-items-center justify-content-center">
                                             <i class="ti {{ $stat['icon'] }} text-{{ $stat['text'] }}"></i>
                                         </span>
                                         @if($stat['change'] > 0)
@@ -249,8 +246,7 @@ body {
                                 </div>
                                 <div class="col-4">
                                     <div class="d-flex justify-content-end">
-                                        <div
-                                            class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                        <div class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
                                             <i class="ti ti-currency-dollar fs-6"></i>
                                         </div>
                                     </div>
