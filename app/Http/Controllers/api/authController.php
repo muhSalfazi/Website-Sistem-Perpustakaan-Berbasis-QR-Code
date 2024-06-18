@@ -7,14 +7,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-use Firebase\JWT\JWT;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ResetPasswordMail;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\RateLimiter;
+use Firebase\JWT\JWT;
 
 class AuthController extends Controller
 {
@@ -76,38 +72,57 @@ class AuthController extends Controller
     }
 
     // Method to request a password reset link
-    public function forgetPassword(Request $request)
+      public function forgetPassword(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
         ]);
 
-        $status = Password::sendResetLink($request->only('email'));
+        // Cari user berdasarkan email
+        $user = User::where('email', $request->email)->first();
 
-        if ($status === Password::RESET_LINK_SENT) {
-            return response()->json(['message' => 'Reset password link sent to your email address.'], 200);
+        // Jika user tidak ditemukan
+        if (!$user) {
+            return response()->json(['message' => 'Email tidak ditemukan'], 404);
         }
 
-        return response()->json(['message' => 'Unable to send reset password link.'], 400);
+        // Jika email belum aktif (belum diverifikasi)
+        // if (!$user->email_verified_at) {
+        //     return response()->json(['message' => 'Email has not been verified'], 400);
+        // }
+
+        // Generate 5-digit random token
+        $token = rand(10000, 99999);
+
+        // Simpan token ke user
+        $user->reset_token = $token;
+        $user->reset_token_created_at = now();
+        $user->save();
+
+        // Send email
+        Mail::to($user->email)->send(new ResetPasswordMail($token));
+
+        return response()->json(['message' => 'Tautan setel ulang kata sandi dikirimkan ke alamat email Anda.'], 200);
     }
 
-    // Method to reset password
-    public function resetPassword(Request $request, $token)
+    public function resetPassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'reset_token' => 'required|string',
             'password' => 'required|string|min:4|confirmed',
+            'password_confirmation' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
 
-        $user = User::where('reset_token', $token)
+        $user = User::where('reset_token', $request->reset_token)
             ->where('reset_token_created_at', '>', now()->subHours(1))
             ->first();
 
         if (!$user) {
-            return response()->json(['message' => 'Invalid or expired token'], 400);
+            return response()->json(['message' => 'Token tidak valid atau kedaluwarsa'], 400);
         }
 
         // Set new password and clear reset token
@@ -118,4 +133,5 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Password reset successfully'], 200);
     }
+
 }

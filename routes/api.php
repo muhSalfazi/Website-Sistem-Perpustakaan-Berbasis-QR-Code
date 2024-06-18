@@ -22,11 +22,9 @@ Route::post('/register', [MemberController::class, 'register']);
 
 Route::post('/login', [AuthController::class, 'login']);
 
-// Reset Password Route
+Route::post('/forget-password', [AuthController::class, 'forgetPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
-// Forget Password Route
-Route::post('/forget-password', [AuthController::class, 'forgetPassword']);
 // Protected Routes
 Route::middleware(['jwt.auth'])->group(function () {
 

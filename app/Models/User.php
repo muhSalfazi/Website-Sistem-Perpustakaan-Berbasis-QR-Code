@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Carbon;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
@@ -20,7 +21,9 @@ class User extends Authenticatable
         'password',
         'role',
         'last_login',
-        'qr_code', 
+        'qr_code',
+        'reset_token',
+        'reset_token_created_at',
     ];
 
     protected $hidden = [
