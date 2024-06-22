@@ -20,12 +20,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             KategoriSeeder::class,
             RackSeeder::class,
-            BookSeeder::class,
-            PinjamBukuSeeder ::class,
-             BookstockSeeder::class,
-          
+
         ]);
-        
-        // User:factory(10)>create();
+
     }
 }

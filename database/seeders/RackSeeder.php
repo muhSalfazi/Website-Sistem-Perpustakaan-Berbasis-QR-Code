@@ -49,10 +49,7 @@ class RackSeeder extends Seeder
                 'name' => '3C',
                 'rak' => '3',
             ],
-            // [
-            //     'name' => '3D',
-            //     'rak' => '3',
-            // ],
+        
         ]);
     }
 }

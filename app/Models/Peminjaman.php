@@ -9,34 +9,34 @@ use Carbon\Carbon;
 
 class Peminjaman extends Model
 {
-use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes;
 
-protected $table = 'tbl_peminjaman';
+    protected $table = 'tbl_peminjaman';
 
-protected $fillable = [
-    'resi_pjmn',
-    'member_id',
-    'book_id',
-    'created_at',
-    'updated_at',
-    'deleted_at',
-    'return_date'
-];
-protected $dates = [
-    'return_date',
-];
-public function member()
-{
-    return $this->belongsTo(Member::class, 'member_id');
-}
+    protected $fillable = [
+        'resi_pjmn',
+        'member_id',
+        'book_id',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'return_date'
+    ];
+    protected $dates = [
+        'return_date',
+    ];
+    public function member()
+    {
+        return $this->belongsTo(Member::class, 'member_id');
+    }
 
-public function book()
-{
-    return $this->belongsTo(Book::class, 'book_id');
-}
-public function denda()
-{
-    return $this->hasOne(Denda::class, 'resi_pjmn');
-}
+    public function book()
+    {
+        return $this->belongsTo(Book::class, 'book_id');
+    }
+    public function denda()
+    {
+        return $this->hasOne(Denda::class, 'resi_pjmn', 'resi_pjmn');
+    }
 
 }

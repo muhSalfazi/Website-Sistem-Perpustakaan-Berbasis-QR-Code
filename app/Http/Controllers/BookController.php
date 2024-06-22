@@ -10,15 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
 
 class BookController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
         $books = Book::with(['category', 'rack', 'bookStock'])->paginate(10);
@@ -39,40 +33,36 @@ class BookController extends Controller
             'author' => 'required|string|max:80',
             'publisher' => 'required|string|max:80',
             'isbn' => 'required|string|max:100|unique:tbl_books',
-            'year' => 'required|integer|min:1000|max:' . date('Y'),
+            'year' => 'required|integer',
             'rack_id' => 'required|exists:tbl_racks,id',
             'category_id' => 'required|exists:tbl_categories,id',
             'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'description' => 'required|string',
-            'jmlh_tersedia' => 'required|integer|min:0',
+            'jmlh_tersedia' => 'required|integer',
         ]);
 
-        try {
-            $book = new Book($request->except('cover'));
+        $book = new Book($request->all());
 
-            if ($request->hasFile('cover')) {
-                $imageFile = $request->file('cover');
-                $imageFileName = Str::random(10) . '.' . $imageFile->getClientOriginalExtension();
-                $path = $imageFile->storeAs('cover_book', $imageFileName);
-                $book->book_cover = $path;
-            }
-
-            $book->save();
-
-            $bookStock = new BookStock();
-            $bookStock->book_id = $book->id;
-            $bookStock->jmlh_tersedia = $request->input('jmlh_tersedia');
-            $bookStock->save();
-
-            return redirect()->route('books.index')->with('msg', 'Book added successfully')->with('error', false);
-        } catch (\Exception $e) {
-            Log::error('Error storing book: ' . $e->getMessage());
-            return redirect()->route('books.index')->with('msg', 'Failed to add book')->with('error', true);
+        if ($request->hasFile('cover')) {
+            $imageFile = $request->file('cover');
+            $imageFileName = Str::random(10) . '.' . $imageFile->getClientOriginalExtension();
+            $imageFile->move(public_path('cover_book'), $imageFileName);
+            $book->book_cover = 'cover_book/' . $imageFileName;
         }
+
+        $book->save();
+
+        $bookStock = new BookStock();
+        $bookStock->book_id = $book->id;
+        $bookStock->jmlh_tersedia = $request->input('jmlh_tersedia');
+        $bookStock->save();
+
+        return redirect()->route('books.index')->with('msg', 'Book added successfully')->with('error', false);
     }
 
     public function update(Request $request, Book $book)
     {
+        // Validasi input
         $request->validate([
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
@@ -83,52 +73,66 @@ class BookController extends Controller
             'rack_id' => 'required|integer|exists:tbl_racks,id',
             'jumlah' => 'required|integer|min:0',
             'description' => 'required|string',
-            'book_cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'book_cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi untuk book_cover baru
         ]);
 
-        try {
-            if ($request->hasFile('book_cover')) {
-                if ($book->book_cover) {
-                    $oldImagePath = public_path($book->book_cover);
-                    if (File::exists($oldImagePath)) {
-                        File::delete($oldImagePath);
-                    }
+        // Hapus gambar lama jika ada book_cover baru yang diunggah
+        if ($request->hasFile('book_cover')) {
+            if ($book->book_cover) {
+                // Mendapatkan path lengkap dari gambar lama
+                $oldImagePath = public_path($book->book_cover);
+
+                // Hapus file lama dari direktori cover_book
+                if (File::exists($oldImagePath)) {
+                    File::delete($oldImagePath);
                 }
             }
-
-            $book->update($request->except('book_cover'));
-
-            if ($request->hasFile('book_cover')) {
-                $imageFile = $request->file('book_cover');
-                $imageFileName = Str::random(10) . '.' . $imageFile->getClientOriginalExtension();
-                $path = $imageFile->storeAs('cover_book', $imageFileName);
-                $book->book_cover = $path;
-                $book->save();
-            }
-
-            if ($book->bookStock) {
-                $book->bookStock->update([
-                    'jmlh_tersedia' => $request->jumlah,
-                ]);
-            } else {
-                BookStock::create([
-                    'book_id' => $book->id,
-                    'jmlh_tersedia' => $request->jumlah,
-                ]);
-            }
-
-            return redirect()->back()->with('msg', 'Data buku berhasil diperbarui.');
-        } catch (\Exception $e) {
-            Log::error('Error updating book: ' . $e->getMessage());
-            return redirect()->back()->with('msg', 'Failed to update book')->with('error', true);
         }
+
+        // Update data buku
+        $book->update([
+            'title' => $request->title,
+            'author' => $request->author,
+            'publisher' => $request->publisher,
+            'isbn' => $request->isbn,
+            'description' => $request->description,
+            'year' => $request->year,
+            'category_id' => $request->category_id,
+            'rack_id' => $request->rack_id,
+        ]);
+
+        // Update book_cover jika ada yang diunggah
+        if ($request->hasFile('book_cover')) {
+            $imageFile = $request->file('book_cover');
+            $imageFileName = Str::random(10) . '.' . $imageFile->getClientOriginalExtension();
+            $imageFile->move(public_path('cover_book'), $imageFileName);
+            $book->book_cover = 'cover_book/' . $imageFileName;
+            $book->save();
+        }
+
+        // Update stok buku
+        if ($book->bookStock) {
+            $book->bookStock->update([
+                'jmlh_tersedia' => $request->jumlah,
+            ]);
+        } else {
+            BookStock::create([
+                'book_id' => $book->id,
+                'jmlh_tersedia' => $request->jumlah,
+            ]);
+        }
+
+        return redirect()->back()->with('msg', 'Data buku berhasil diperbarui.');
     }
+
+
 
     public function showDetail($id)
     {
         $book = Book::findOrFail($id);
         $categories = Kategori::all();
         $racks = Rack::all();
+
         return view('Books.showDetail', compact('book', 'categories', 'racks'));
     }
 
@@ -140,19 +144,15 @@ class BookController extends Controller
 
     public function destroy($id)
     {
-        try {
-            $book = Book::findOrFail($id);
+        $book = Book::findOrFail($id);
 
-            if ($book->book_cover) {
-                Storage::delete($book->book_cover);
-            }
-
-            $book->delete();
-
-            return redirect()->route('books.index')->with('msg', 'Book deleted successfully')->with('error', false);
-        } catch (\Exception $e) {
-            Log::error('Error deleting book: ' . $e->getMessage());
-            return redirect()->route('books.index')->with('msg', 'Failed to delete book')->with('error', true);
+        // Remove book cover if exists
+        if ($book->book_cover) {
+            Storage::delete($book->book_cover);
         }
+
+        $book->delete(); // Soft delete
+
+        return redirect()->route('books.index')->with('msg', 'Book deleted successfully')->with('error', false);
     }
 }

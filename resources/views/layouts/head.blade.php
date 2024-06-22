@@ -14,5 +14,6 @@
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 </head>

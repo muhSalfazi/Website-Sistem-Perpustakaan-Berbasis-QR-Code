@@ -66,8 +66,8 @@
                                             -
                                         @endif
                                     </td>
-                                    <td>{{ $peminjaman->denda_yg_dibyr }}</td>
-                                    <td>{{ $peminjaman->uang_yg_dibyrkn }}</td>
+                                    <td>Rp{{ number_format( $peminjaman->denda_yg_dibyr, 0, ',', '.') }}</td>
+                                    <td>Rp{{ number_format( $peminjaman->uang_yg_dibyrkn, 0, ',', '.') }}</td>
                                     <td>
                                         @if ($peminjaman->status == 'lunas')
                                             <span class="badge bg-success animate__animated animate__fadeIn">{{ $peminjaman->status }}</span>

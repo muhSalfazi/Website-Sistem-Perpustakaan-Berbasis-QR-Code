@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
@@ -11,16 +10,17 @@ class ResetPasswordMail extends Mailable
     use Queueable, SerializesModels;
 
     public $resetToken;
+    public $tokenDuration;
 
     /**
      * Create a new message instance.
      *
-     * @param string $resetToken
      * @return void
      */
-    public function __construct($resetToken)
+    public function __construct($resetToken, $tokenDuration)
     {
         $this->resetToken = $resetToken;
+        $this->tokenDuration = $tokenDuration;
     }
 
     /**
@@ -30,8 +30,10 @@ class ResetPasswordMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.reset_password', [
-            'resetToken' => $this->resetToken,
-        ]);
+        return $this->view('emails.reset_password')
+                    ->with([
+                        'resetToken' => $this->resetToken,
+                        'tokenDuration' => $this->tokenDuration,
+                    ]);
     }
 }

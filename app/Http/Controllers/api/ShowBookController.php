@@ -56,7 +56,7 @@ class ShowBookController extends Controller
 
     public function showByCategory($categoryName)
     {
-        $category = Kategori::where('name', $categoryName)->first();
+    $category = Kategori::where('name', $categoryName)->first();
 
         if (!$category) {
             return response()->json(['message' => 'Category not found'], 404);

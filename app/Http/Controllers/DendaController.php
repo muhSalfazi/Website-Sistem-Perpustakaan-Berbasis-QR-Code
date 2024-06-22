@@ -34,28 +34,15 @@ class DendaController extends Controller
 
       // Update the 'uang_yg_dibyrkn' field in Denda model
       $denda = Denda::where('resi_pjmn', $peminjaman->resi_pjmn)->first();
-      if ($denda) {
-         // Update existing Denda record
-         $denda->uang_yg_dibyrkn = $request->uang_yg_dibyrkn;
-         $denda->status = 'lunas'; // Assuming updating the status here if payment completes the denda
-         $denda->save();
-      } else {
-         // Create a new Denda record if none exists
-         $denda = new Denda();
-         $denda->id_pjmn = $peminjaman->id;
-         $denda->resi_pjmn = $peminjaman->resi_pjmn;
-         $denda->uang_yg_dibyrkn = $request->uang_yg_dibyrkn;
-         $denda->status = 'lunas'; // Assuming updating the status here if payment completes the denda
-         $denda->save();
-      }
 
-      // Update Peminjaman status to 'lunas'
-      $peminjaman->status = 'lunas';
-      $peminjaman->save();
+      // Update existing Denda record
+      $denda->uang_yg_dibyrkn = $request->uang_yg_dibyrkn;
+      $denda->status = 'lunas'; // Assuming updating the status here if payment completes the denda
+      $denda->save();
 
       // Redirect back with success message
       return redirect()->back()->with('msg', 'Pembayaran denda berhasil tersimpan. Member tersebut sudah tercatat dalam riwayat transaksi.')->with('success', true);
-   
+
    }
 
 }

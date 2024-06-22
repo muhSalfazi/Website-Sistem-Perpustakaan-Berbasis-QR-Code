@@ -19,7 +19,7 @@ class Denda extends Model
 
     public function peminjaman()
     {
-        return $this->belongsTo(Peminjaman::class, 'resi_pjmn');
+        return $this->belongsTo(Peminjaman::class, 'resi_pjmn', 'resi_pjmn');
     }
 
 }

@@ -39,24 +39,22 @@
                         <tbody>
                             @foreach ($peminjamans as $key => $peminjaman)
                                 @php
+                                    if (!$peminjaman->return_date) {
+                                        continue;
+                                    }
                                     $createdAt = \Carbon\Carbon::parse($peminjaman->created_at);
                                     $returnDate = \Carbon\Carbon::parse($peminjaman->return_date);
                                     $telatHari = max(0, $returnDate->diffInDays($createdAt) - 7); // Menentukan telat, jika kurang dari 7 hari, dianggap 0 hari telat
                                     $totalDenda = $telatHari * 5000;
 
                                     // Periksa apakah ada data denda yang sudah dibayar
-                                    $denda = $peminjaman->denda;
-                                    $status = 'belum lunas';
-                                    if ($denda) {
-                                        // Periksa apakah id_pjmn ada dalam tabel tbl_denda
-                                        if ($denda->resi_pjmn == $peminjaman->resi_pjmn) {
-                                            // Jika ada, status menjadi lunas
-                                            $status = 'lunas';
-                                        }
+                                    $status = 'belum bayar';
+                                    if ($peminjaman->denda) {
+                                        $status = $peminjaman->denda->status === 'lunas' ? 'lunas' : 'belum bayar';
                                     }
                                 @endphp
 
-                                @if ($telatHari > 0 && $status == 'belum lunas')
+                                @if ($telatHari > 0 && $status == 'belum bayar')
                                     <tr class="animate__animated animate__fadeIn">
                                         <th scope="row">{{ $key + 1 }}</th>
                                         <td>{{ $peminjaman->resi_pjmn }}</td>
@@ -64,7 +62,7 @@
                                             {{ $peminjaman->member->last_name ?? '' }}</td>
                                         <td>{{ $createdAt->format('Y-m-d') }}</td>
                                         <td>{{ $telatHari }}</td>
-                                        <td>Rp {{ $totalDenda }}</td>
+                                        <td>Rp {{ number_format($totalDenda, 0, ',', '.') }}</td>
                                         <td>
                                             <button type="button" class="btn btn-sm btn-success mt-1 w-40"
                                                 data-bs-toggle="modal" data-bs-target="#payModal{{ $peminjaman->id }}">
@@ -86,18 +84,18 @@
 
     @foreach ($peminjamans as $peminjaman)
         @php
+            if (!$peminjaman->return_date) {
+                continue;
+            }
             $createdAt = \Carbon\Carbon::parse($peminjaman->created_at);
             $returnDate = \Carbon\Carbon::parse($peminjaman->return_date);
             $telatHari = max(0, $returnDate->diffInDays($createdAt) - 7); // Menentukan telat, jika kurang dari 7 hari, dianggap 0 hari telat
             $totalDenda = $telatHari * 5000;
+
             // Periksa apakah ada data denda yang sudah dibayar
+            $status = 'belum bayar';
             if ($peminjaman->denda) {
-                $status =
-                    $peminjaman->denda->denda_yg_dibyr >= $peminjaman->denda->uang_yg_dibyrkn
-                        ? 'lunas'
-                        : 'belum lunas';
-            } else {
-                $status = $peminjaman->status === 'lunas' ? 'lunas' : 'belum lunas';
+                $status = $peminjaman->denda->status === 'lunas' ? 'lunas' : 'belum bayar';
             }
         @endphp
         <!-- Modal -->
@@ -115,20 +113,20 @@
                             <input type="hidden" name="id_pjmn" value="{{ $peminjaman->id }}">
                             <p>Nama Member: {{ $peminjaman->member->first_name ?? 'Unknown' }}
                                 {{ $peminjaman->member->last_name ?? '' }}</p>
-                            <p>Jumlah Telat:{{ $telatHari }} hari</p>
-                            <p>Total Denda: Rp {{ $totalDenda }}</p>
+                            <p>Jumlah Telat: {{ $telatHari }} hari</p>
+                            <p>Total Denda: Rp {{ number_format($totalDenda, 0, ',', '.') }}</p>
 
                             <div class="mb-3">
                                 <label for="uang_dibayarkan" class="form-label">Uang yang Dibayarkan</label>
                                 <input type="number" class="form-control" id="uang_dibayarkan_{{ $peminjaman->id }}"
                                     name="uang_yg_dibyrkn" required min="{{ $totalDenda }}">
                                 <div class="invalid-feedback">
-                                    Uang yang dibayarkan harus tepat sejumlah Rp {{ $totalDenda }} atau lebih.
+                                    Uang yang dibayarkan harus tepat sejumlah Rp {{ number_format($totalDenda, 0, ',', '.') }} atau lebih.
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label for="kembalian" class="form-label">Kembalian</label>
-                                <input type="number" class="form-control" id="kembalian_{{ $peminjaman->id }}" readonly>
+                                <input type="text" class="form-control" id="kembalian_{{ $peminjaman->id }}" readonly>
                             </div>
                             <div class="mb-3">
                                 <label for="status" class="form-label">Status</label>
@@ -150,22 +148,26 @@
                 var inputUangDibayarkan = document.getElementById("uang_dibayarkan_{{ $peminjaman->id }}");
                 var kembalianInput = document.getElementById("kembalian_{{ $peminjaman->id }}");
 
+                function formatRupiah(number) {
+                    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number).replace(/Rp/g, 'Rp ');
+                }
+
                 inputUangDibayarkan.addEventListener("input", function() {
                     var uangDibayarkan = parseFloat(inputUangDibayarkan.value);
                     var kembalian = uangDibayarkan - {{ $totalDenda }};
-                    var status = (kembalian >= 0) ? 'lunas' : 'belum lunas';
+                    var status = (kembalian >= 0) ? 'lunas' : 'belum bayar';
 
                     document.getElementById("status_{{ $peminjaman->id }}").value = status;
-                    kembalianInput.value = (kembalian > 0) ? kembalian : 0;
+                    kembalianInput.value = formatRupiah((kembalian > 0) ? kembalian : 0);
 
                     if (uangDibayarkan < {{ $totalDenda }}) {
                         inputUangDibayarkan.classList.add('is-invalid');
-                    }
-                    else {
+                    } else {
                         inputUangDibayarkan.classList.remove('is-invalid');
                     }
                 });
             });
         </script>
     @endforeach
+
 @endsection

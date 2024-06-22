@@ -34,7 +34,7 @@
                 </div>
             </div>
 
-          <div class="table-responsive">
+            <div class="table-responsive">
                 <table class="table datatable table-hover table-striped">
                     <thead class="custom-thead">
                         <tr>
@@ -68,7 +68,8 @@
                                 <td>{{ optional($book->rack)->name ?? '0' }}</td>
                                 <td>{{ optional($book->bookStock)->jmlh_tersedia ?? '0' }}</td>
                                 <td>
-                                    <a href="{{ route('Books.showDetail', $book->id) }}" class="btn btn-custom btn-sm mt-1">
+                                    <a href="{{ route('Books.showDetail', $book->id) }}"
+                                        class="btn btn-custom btn-sm mt-1">
                                         <i class="ti ti-eye"></i>
                                     </a>
                                     <a class="btn btn-custom btn-sm mt-1" data-bs-toggle="modal"
@@ -85,7 +86,7 @@
                                     </form>
                                 </td>
                             </tr>
-                         @empty
+                        @empty
                         @endforelse
                     </tbody>
                 </table>
@@ -158,7 +159,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-custom btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="button" class="btn btn-custom btn-secondary"
+                                data-bs-dismiss="modal">Batal</button>
                             <button type="submit" class="btn btn-custom btn-primary">Simpan Perubahan</button>
                         </div>
                     </form>
@@ -194,14 +196,16 @@
     <!-- Custom CSS -->
     <style>
         .btn-custom {
-            background: linear-gradient(90deg, rgba(58,123,213,1) 0%, rgba(0,212,255,1) 100%);
+            background: linear-gradient(90deg, rgba(58, 123, 213, 1) 0%, rgba(0, 212, 255, 1) 100%);
             border: none;
             color: white;
             font-weight: bold;
         }
+
         .btn-custom:hover {
-            background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(58,123,213,1) 100%);
+            background: linear-gradient(90deg, rgba(0, 212, 255, 1) 0%, rgba(58, 123, 213, 1) 100%);
         }
+
         .btn-custom.btn-close {
             padding: 0;
             border: none;

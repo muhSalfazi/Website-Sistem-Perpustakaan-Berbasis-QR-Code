@@ -72,38 +72,37 @@ class AuthController extends Controller
     }
 
     // Method to request a password reset link
-      public function forgetPassword(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-        ]);
+   public function forgetPassword(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+    ]);
 
-        // Cari user berdasarkan email
-        $user = User::where('email', $request->email)->first();
+    // Cari user berdasarkan email
+    $user = User::where('email', $request->email)->first();
 
-        // Jika user tidak ditemukan
-        if (!$user) {
-            return response()->json(['message' => 'Email tidak ditemukan'], 404);
-        }
-
-        // Jika email belum aktif (belum diverifikasi)
-        // if (!$user->email_verified_at) {
-        //     return response()->json(['message' => 'Email has not been verified'], 400);
-        // }
-
-        // Generate 5-digit random token
-        $token = rand(10000, 99999);
-
-        // Simpan token ke user
-        $user->reset_token = $token;
-        $user->reset_token_created_at = now();
-        $user->save();
-
-        // Send email
-        Mail::to($user->email)->send(new ResetPasswordMail($token));
-
-        return response()->json(['message' => 'Tautan setel ulang kata sandi dikirimkan ke alamat email Anda.'], 200);
+    // Jika user tidak ditemukan
+    if (!$user) {
+        return response()->json(['message' => 'Email tidak ditemukan'], 404);
     }
+
+    // Generate 5-digit random token
+    $token = rand(10000, 99999);
+
+    // Simpan token ke user
+    $user->reset_token = $token;
+    $user->reset_token_created_at = now();
+    $user->save();
+
+    // Durasi token (1 jam)
+    $tokenDuration = 1; // dalam jam
+
+    // Send email
+    Mail::to($user->email)->send(new ResetPasswordMail($token, $tokenDuration));
+
+    return response()->json(['message' => 'Tautan setel ulang kata sandi dikirimkan ke alamat email Anda.'], 200);
+}
+
 
     public function resetPassword(Request $request)
     {
