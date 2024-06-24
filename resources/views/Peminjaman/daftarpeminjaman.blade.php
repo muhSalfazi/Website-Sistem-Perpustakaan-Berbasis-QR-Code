@@ -4,8 +4,9 @@
 @section('content')
     <div class="card shadow-sm rounded-3 animate__animated animate__fadeIn">
         <div class="card-body">
-            @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show animate__animated animate__fadeInDown" role="alert">
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show animate__animated animate__fadeInDown"
+                    role="alert">
                     {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
@@ -16,7 +17,8 @@
                     <h5 class="card-title fw-bold mb-3">Data Peminjaman</h5>
                 </div>
                 <div class="col-12 col-lg-7 text-end">
-                    <a href="{{ route('Peminjaman.search') }}" class="btn btn-custom-new py-2 px-4 animate__animated animate__zoomIn">
+                    <a href="{{ route('Peminjaman.search') }}"
+                        class="btn btn-custom-new py-2 px-4 animate__animated animate__zoomIn">
                         <i class="ti ti-plus me-2"></i>
                         Peminjaman Baru
                     </a>
@@ -66,15 +68,27 @@
                                             Unknown
                                         @endif
                                     </td>
-                                    <td class="animate__animated animate__fadeInRight">{{ $peminjaman->created_at->format('d-m-Y') }}</td>
+                                    <td class="animate__animated animate__fadeInRight">
+                                        {{ $peminjaman->created_at->format('d-m-Y') }}</td>
                                    <td class="animate__animated animate__fadeInUp">
-                                        @if ($peminjaman->created_at->diffInDays() == 0)
-                                            <span class="badge bg-primary">New Borrow <i class="ti-alert"></i></span>
-                                        @elseif ($peminjaman->created_at->diffInDays() > 7)
-                                            <span class="badge bg-danger">Jatuh Tempo <i class="ti-alert"></i></span>
-                                        @else
-                                            <span class="badge bg-success">Normal <i class="ti-alert"></i></span>
-                                        @endif
+                                        @php
+                                            $createdDate = \Carbon\Carbon::parse($peminjaman->created_at);
+                                            $daysSinceLoan = \Carbon\Carbon::now()->diffInDays($createdDate);
+
+                                            if ($createdDate->isToday()) {
+                                                $status = 'New';
+                                                $badgeClass = 'success';
+                                            } elseif ($daysSinceLoan < 7) {
+                                                $status = 'Normal';
+                                                $badgeClass = 'primary';
+                                            } else {
+                                                $status = 'Jatuh Tempo';
+                                                $badgeClass = 'danger';
+                                            }
+                                        @endphp
+                                        <span class="badge bg-{{ $badgeClass }} animate__animated animate__bounce">
+                                            {{ $status }} <i class="ti-alert"></i>
+                                        </span>
                                     </td>
                                 </tr>
                             @endif
@@ -90,14 +104,14 @@
     <!-- Custom CSS -->
     <style>
         .btn-custom-new {
-            background: linear-gradient(90deg, rgba(58,123,213,1) 0%, rgba(0,212,255,1) 100%);
+            background: linear-gradient(90deg, rgba(58, 123, 213, 1) 0%, rgba(0, 212, 255, 1) 100%);
             border: none;
             color: white;
             font-weight: bold;
             padding: 10px 20px;
             border-radius: 30px;
             transition: all 0.3s ease;
-            box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .btn-custom-new .ti {
@@ -107,7 +121,7 @@
         }
 
         .btn-custom-new:hover {
-            background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(58,123,213,1) 100%);
+            background: linear-gradient(90deg, rgba(0, 212, 255, 1) 0%, rgba(58, 123, 213, 1) 100%);
             transform: scale(1.05);
         }
 
@@ -134,5 +148,5 @@
         });
     </script>
     <!-- Animate.css for additional animations -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 @endsection
