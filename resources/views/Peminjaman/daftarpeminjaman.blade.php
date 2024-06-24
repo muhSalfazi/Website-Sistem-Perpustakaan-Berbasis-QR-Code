@@ -67,8 +67,10 @@
                                         @endif
                                     </td>
                                     <td class="animate__animated animate__fadeInRight">{{ $peminjaman->created_at->format('d-m-Y') }}</td>
-                                    <td class="animate__animated animate__fadeInUp">
-                                        @if ($peminjaman->created_at->diffInDays() > 7)
+                                   <td class="animate__animated animate__fadeInUp">
+                                        @if ($peminjaman->created_at->diffInDays() == 0)
+                                            <span class="badge bg-primary">New Borrow <i class="ti-alert"></i></span>
+                                        @elseif ($peminjaman->created_at->diffInDays() > 7)
                                             <span class="badge bg-danger">Jatuh Tempo <i class="ti-alert"></i></span>
                                         @else
                                             <span class="badge bg-success">Normal <i class="ti-alert"></i></span>

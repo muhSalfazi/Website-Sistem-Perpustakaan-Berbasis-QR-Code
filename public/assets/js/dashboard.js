@@ -92,7 +92,7 @@ $(function () {
     // =====================================
     var breakupOptions = {
         series: [totalDenda, lastYearTotalDenda],
-        labels: ["This Year", "Last Year"],
+        labels: ["This Month", "Last Month"],
         chart: {
             width: 180,
             type: "donut",

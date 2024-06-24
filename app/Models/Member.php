@@ -22,6 +22,7 @@ use HasFactory;
         'tgl_lahir',
         'last_login',
         'qr_code',
+        'created_at',
     ];
 
     public function user()

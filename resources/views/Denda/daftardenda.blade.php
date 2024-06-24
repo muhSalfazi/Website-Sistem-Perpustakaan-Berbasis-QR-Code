@@ -37,6 +37,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php $counter = 0 @endphp
                             @foreach ($peminjamans as $key => $peminjaman)
                                 @php
                                     if (!$peminjaman->return_date) {
@@ -56,7 +57,8 @@
 
                                 @if ($telatHari > 0 && $status == 'belum bayar')
                                     <tr class="animate__animated animate__fadeIn">
-                                        <th scope="row">{{ $key + 1 }}</th>
+                                        @php $counter++ @endphp
+                                        <td>{{ $counter }}</td>
                                         <td>{{ $peminjaman->resi_pjmn }}</td>
                                         <td>{{ $peminjaman->member->first_name ?? 'Unknown' }}
                                             {{ $peminjaman->member->last_name ?? '' }}</td>
@@ -77,8 +79,6 @@
                 </div>
             </div>
 
-            <!-- Placeholder Paginasi -->
-            {{ $peminjamans->links() }}
         </div>
     </div>
 
@@ -91,7 +91,6 @@
             $returnDate = \Carbon\Carbon::parse($peminjaman->return_date);
             $telatHari = max(0, $returnDate->diffInDays($createdAt) - 7); // Menentukan telat, jika kurang dari 7 hari, dianggap 0 hari telat
             $totalDenda = $telatHari * 5000;
-
             // Periksa apakah ada data denda yang sudah dibayar
             $status = 'belum bayar';
             if ($peminjaman->denda) {
@@ -121,7 +120,8 @@
                                 <input type="number" class="form-control" id="uang_dibayarkan_{{ $peminjaman->id }}"
                                     name="uang_yg_dibyrkn" required min="{{ $totalDenda }}">
                                 <div class="invalid-feedback">
-                                    Uang yang dibayarkan harus tepat sejumlah Rp {{ number_format($totalDenda, 0, ',', '.') }} atau lebih.
+                                    Uang yang dibayarkan harus tepat sejumlah Rp
+                                    {{ number_format($totalDenda, 0, ',', '.') }} atau lebih.
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -149,7 +149,10 @@
                 var kembalianInput = document.getElementById("kembalian_{{ $peminjaman->id }}");
 
                 function formatRupiah(number) {
-                    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number).replace(/Rp/g, 'Rp ');
+                    return new Intl.NumberFormat('id-ID', {
+                        style: 'currency',
+                        currency: 'IDR'
+                    }).format(number).replace(/Rp/g, 'Rp ');
                 }
 
                 inputUangDibayarkan.addEventListener("input", function() {

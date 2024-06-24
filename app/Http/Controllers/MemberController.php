@@ -10,16 +10,13 @@ class MemberController extends Controller
     // Metode untuk menampilkan daftar anggota
     public function index()
     {
-        $members = Member::paginate(10);
+        $members = Member::all()->map(function ($member) {
+            $member->status = $member->created_at->isToday() ? 'new' : 'old';
+            return $member;
+        });
+
         return view('member.daftarmember', compact('members'));
     }
-
-    public function showDetail($id)
-    {
-        $member = Member::findOrFail($id);
-        // Tambahkan logika lainnya sesuai kebutuhan, misalnya, tampilkan modal detail member
-    }
-
     public function destroy($id)
     {
         $member = Member::findOrFail($id);

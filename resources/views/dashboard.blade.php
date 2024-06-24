@@ -306,7 +306,7 @@
     </style>
 
     <script>
-         var newMembersCount = {!! json_encode($newMembersCount) !!};
+        var newMembersCount = {!! json_encode($newMembersCount) !!};
         var borrowingBooksCount = {!! json_encode($borrowingBooksCount) !!};
         var returnBooksCount = {!! json_encode($returnBooksCount) !!};
         var overdueBooksCount = {!! json_encode($overdueBooksCount) !!};
@@ -317,8 +317,20 @@
         var lastYearTotalDenda = {!! json_encode($lastYearTotalDenda) !!};
         var lastYearTotalTunggakan = {!! json_encode($lastYearTotalTunggakan) !!};
 
+        // laporan today
+        var newMembersCountToday = {!! json_encode($newMembersCountToday) !!};
+        var borrowingBooksCountToday = {!! json_encode($borrowingBooksCountToday) !!};
+        var returnBooksCountToday = {!! json_encode($returnBooksCountToday) !!};
+        var overdueBooksCountToday = {!! json_encode($overdueBooksCountToday) !!};
+        var overdueMembersCountToday = {!! json_encode($overdueMembersCountToday) !!};
 
-        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update stat boxes with the data
+            document.getElementById('newMembersCountToday').textContent = newMembersCountToday;
+            document.getElementById('borrowingBooksCountToday').textContent = borrowingBooksCountToday;
+            document.getElementById('returnBooksCountToday').textContent = returnBooksCountToday;
+            document.getElementById('overdueMembersCountToday').textContent = overdueMembersCountToday;
+        });
     </script>
 
     <div class="container-fluid slide-in">
@@ -329,25 +341,32 @@
                 </div>
                 <div class="card-body">
                     <div class="row text-center">
-                        @foreach ([['label' => 'Member Baru', 'count' => 'newMembersCount', 'bg' => 'bg-success'], ['label' => 'Pinjam Buku', 'count' => 'borrowingBooksCount', 'bg' => 'bg-info'], ['label' => 'Kembali Buku', 'count' => 'returnBooksCount', 'bg' => 'bg-info'], ['label' => 'Jatuh Tempo', 'count' => 'overdueMembersCount', 'bg' => 'bg-danger']] as $stat)
-                            <div class="col-6 col-md-3">
-                                <div class="stat-box {{ $stat['bg'] }} pulse"
-                                    onclick="showModal('modal{{ $loop->index }}')">
-                                    <h4 class="text-white"><b>{{ $stat['label'] }}</b></h4>
-                                    <h3 id="{{ $stat['count'] }}" class="stat-number">0</h3>
-                                </div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-box bg-success pulse" onclick="window.location.href='/member'">
+                                <h4 class="text-white"><b>Member Baru</b></h4>
+                                <h3 id="newMembersCountToday" class="stat-number">0</h3>
                             </div>
-
-                            <!-- Modal content -->
-                            <div id="modal{{ $loop->index }}" class="modal">
-                                <div class="modal-content">
-                                    <span class="close" onclick="closeModal('modal{{ $loop->index }}')">&times;</span>
-                                    <h2>{{ $stat['label'] }}</h2>
-                                    <p>Informasi Detail Tentang {{ $stat['label'] }}...</p>
-                                </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-box bg-info pulse" onclick="window.location.href='/peminjaman'">
+                                <h4 class="text-white"><b>Pinjam Buku</b></h4>
+                                <h3 id="borrowingBooksCountToday" class="stat-number">0</h3>
                             </div>
-                        @endforeach
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-box bg-info pulse" onclick="window.location.href='/pengembalian'">
+                                <h4 class="text-white"><b>Kembali Buku</b></h4>
+                                <h3 id="returnBooksCountToday" class="stat-number">0</h3>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-box bg-danger pulse" onclick="window.location.href='/peminjaman'">
+                                <h4 class="text-white"><b>Jatuh Tempo</b></h4>
+                                <h3 id="overdueMembersCountToday" class="stat-number">0</h3>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -358,7 +377,7 @@
                     <div class="card-body">
                         <div class="d-sm-flex d-block align-items-center justify-content-between mb-4">
                             <div class="mb-3 mb-sm-0">
-                               <h5 class="card-title fw-semibold">Ikhtisar Libranation Perbulan</h5>
+                                <h5 class="card-title fw-semibold">Ikhtisar Libranation Perbulan</h5>
                             </div>
                         </div>
                         <div id="chart">
@@ -378,18 +397,18 @@
                                             <h4 class="fw-semibold mb-3">
                                                 Rp{{ number_format($stat['amount'], 0, ',', '.') }}</h4>
                                             <div class="d-flex align-items-center pb-1">
-                                                <span
-                                                    class="me-2 rounded-circle {{ $stat['bg'] }} round-20 d-flex align-items-center justify-content-center">
-                                                    <i class="ti {{ $stat['icon'] }} text-{{ $stat['text'] }}"></i>
-                                                </span>
+                                                
                                                 @if ($stat['change'] > 0)
                                                     <p class="text-dark me-1 fs-3 mb-0">
                                                         +{{ number_format((($stat['amount'] - $stat['change']) / $stat['change']) * 100, 2) }}%
                                                     </p>
                                                 @else
-                                                    <p class="text-dark me-1 fs-3 mb-0">NULL</p>
+                                                    {{-- <p class="text-dark me-1 fs-3 mb-0">Te</p> --}}
+                                                    </p>
                                                 @endif
-                                                <p class="fs-3 mb-0">last year</p>
+                                                {{-- <p class="fs-3 mb-0">last Month --}}
+
+                                                </p>
                                             </div>
                                         </div>
                                         <div class="col-4">

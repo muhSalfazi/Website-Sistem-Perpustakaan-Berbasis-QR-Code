@@ -12,8 +12,28 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
+        // Menghitung jumlah anggota baru yang dibuat hari ini
+        $newMembersCountToday = Member::whereDate('created_at', today())->count();
+
+        // Menghitung jumlah buku yang sedang dipinjam hari ini
+        $borrowingBooksCountToday = Peminjaman::whereDate('created_at', today())
+            ->whereNull('return_date') // hanya yang belum dikembalikan
+            ->count();
+
+        // Menghitung jumlah buku yang telah dikembalikan hari ini
+        $returnBooksCountToday = Peminjaman::whereDate('return_date', today())->count();
+
+        // Menghitung jumlah buku yang terlambat dikembalikan (denda)
+        $overdueBooksCountToday = Peminjaman::where('created_at', '<', Carbon::now()->subDays(7))->count();
+
+        // Menghitung jumlah member yang memiliki peminjaman yang sudah jatuh tempo
+        $overdueMembersCountToday = Peminjaman::where('return_date', null)
+            ->where('created_at', '<', Carbon::now()->subDays(7))
+            ->distinct('member_id')
+            ->count('member_id');
+
         // Define the dates for the ikhtisar (overview)
-        $ikhtisarDays = $request->input('days', 7);  // default 7 days if no input
+        $ikhtisarDays = $request->input('days', 30);  // default 7 days if no input
         $startDate = now()->subDays($ikhtisarDays);
         $endDate = now();
 
@@ -27,12 +47,22 @@ class DashboardController extends Controller
             ->distinct('member_id')
             ->count('member_id');
 
-        $totalDenda = Denda::sum('uang_yg_dibyrkn');
-        $totalTunggakan = Denda::sum('denda_yg_dibyr');
-        $lastYearTotalDenda = Denda::whereYear('created_at', now()->subYear()->year)->sum('uang_yg_dibyrkn');
-        $lastYearTotalTunggakan = Denda::whereYear('created_at', now()->subYear()->year)->sum('denda_yg_dibyr');
+        $totalDenda = Denda::whereColumn('denda_yg_dibyr', '<=', 'uang_yg_dibyrkn')
+            ->orWhere('denda_yg_dibyr', 0) // tambahkan kondisi jika denda_yg_dibyr = 0 (menghindari pembagian dengan nol)
+            ->sum('denda_yg_dibyr');
 
-        // Data to be passed to the view
+        // Hitung total tunggakan, hanya kasus di mana pembayaran cukup besar
+        $totalTunggakan = Denda::whereColumn('denda_yg_dibyr', '>', 'uang_yg_dibyrkn')
+            ->orWhere('denda_yg_dibyr', 0) // tambahkan kondisi jika denda_yg_dibyr = 0 (menghindari pembagian dengan nol)
+            ->sum('denda_yg_dibyr');
+
+        $lastYearTotalDenda = Denda::whereYear('created_at', now()->subYear()->year)->sum('uang_yg_dibyrkn');
+        $lastYearTotalTunggakan = Denda::whereYear('created_at', now()->subYear()->year)
+            ->whereColumn('denda_yg_dibyr', '>', 'uang_yg_dibyrkn')
+            ->orWhere('denda_yg_dibyr', 0) // tambahkan kondisi jika denda_yg_dibyr = 0
+            ->sum('denda_yg_dibyr');
+
+        // Data yang akan dikirimkan ke tampilan
         $data = compact(
             'newMembersCount',
             'borrowingBooksCount',
@@ -43,7 +73,12 @@ class DashboardController extends Controller
             'totalTunggakan',
             'lastYearTotalDenda',
             'lastYearTotalTunggakan',
-            'ikhtisarDays'
+            'ikhtisarDays',
+            'newMembersCountToday',
+            'borrowingBooksCountToday',
+            'returnBooksCountToday',
+            'overdueBooksCountToday',
+            'overdueMembersCountToday'
         );
 
         return view('dashboard', $data);

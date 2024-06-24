@@ -41,37 +41,43 @@
                             {{-- <th scope="col">Aksi</th> --}}
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($pengembalians as $key => $pengembalian)
-                            <tr class="animate__animated animate__fadeInUpBig">
-                                <td>{{ $key + 1 }}</td>
-                                <td>{{ $pengembalian->resi_pjmn ?? '-' }}</td>
-                                <td>
-                                    @if ($pengembalian->member)
-                                        {{ $pengembalian->member->email ?? 'Unknown' }}
-                                    @else
-                                        Unknown
-                                    @endif
-                                </td>
-                                <td>{{ isset($pengembalian->created_at) ? \Carbon\Carbon::parse($pengembalian->created_at)->format('d-m-Y') : '-' }}</td>
-                                <td>{{ isset($pengembalian->return_date) ? \Carbon\Carbon::parse($pengembalian->return_date)->format('d-m-Y') : '-' }}</td>
-                                <td>
-                                    @php
-                                        $tanggalPinjam = \Carbon\Carbon::parse($pengembalian->created_at);
-                                        $tanggalKembali = \Carbon\Carbon::parse($pengembalian->return_date);
-                                        $selisih = $tanggalKembali->diffInDays($tanggalPinjam);
-                                        $telat = $selisih > 7 ? $selisih - 7 : 0;
-                                    @endphp
-                                    @if ($telat > 0)
-                                        <span class="badge bg-danger animate__animated animate__bounce">Telat <i class="ti-alert"></i></span>
-                                    @else
-                                        <span class="badge bg-success animate__animated animate__bounce">Normal <i class="ti-alert"></i></span>
-                                    @endif
-                                </td>
-                                <td>{{ $telat }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
+                <tbody>
+    @foreach ($pengembalians as $key => $pengembalian)
+        <tr class="animate__animated animate__fadeInUpBig">
+            <td>{{ $key + 1 }}</td>
+            <td>{{ $pengembalian->resi_pjmn ?? '-' }}</td>
+            <td>
+                @if ($pengembalian->member)
+                    {{ $pengembalian->member->email ?? 'Unknown' }}
+                @else
+                    Unknown
+                @endif
+            </td>
+            <td>{{ isset($pengembalian->created_at) ? \Carbon\Carbon::parse($pengembalian->created_at)->format('d-m-Y') : '-' }}</td>
+            <td>{{ isset($pengembalian->return_date) ? \Carbon\Carbon::parse($pengembalian->return_date)->format('d-m-Y') : '-' }}</td>
+            <td>
+                @php
+                    $returnDate = \Carbon\Carbon::parse($pengembalian->return_date);
+                    $status = $returnDate->isToday() ? 'New' : 'old';
+                @endphp
+                <span class="badge bg-{{ $returnDate->isToday() ? 'success' : 'danger' }} animate__animated animate__bounce">
+                    {{ $status }} <i class="ti-alert"></i>
+                </span>
+            </td>
+            <td>
+                @php
+                    $tanggalPinjam = \Carbon\Carbon::parse($pengembalian->created_at);
+                    $tanggalKembali = \Carbon\Carbon::parse($pengembalian->return_date);
+                    $selisih = $tanggalKembali->diffInDays($tanggalPinjam);
+                    $telat = $selisih > 7 ? $selisih - 7 : 0;
+                @endphp
+                {{ $telat }}
+            </td>
+        </tr>
+    @endforeach
+</tbody>
+
+
                 </table>
             </div>
         </div>

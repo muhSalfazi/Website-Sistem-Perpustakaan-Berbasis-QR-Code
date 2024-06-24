@@ -21,17 +21,22 @@
             @endif
 
             @if (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show animate__animated animate__shakeX" role="alert">
+                <div class="alert alert-danger alert-dismissible fade show animate__animated animate__shakeX"
+                    role="alert">
                     {{ session('error') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
 
-            <div id="memberFoundAlert" class="alert alert-success alert-dismissible fade show d-none animate__animated animate__fadeInDown" role="alert">
+            <div id="memberFoundAlert"
+                class="alert alert-success alert-dismissible fade show d-none animate__animated animate__fadeInDown"
+                role="alert">
                 Member ditemukan.
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <div id="memberNotRegisteredAlert" class="alert alert-danger alert-dismissible fade show d-none animate__animated animate__fadeInDown" role="alert">
+            <div id="memberNotRegisteredAlert"
+                class="alert alert-danger alert-dismissible fade show d-none animate__animated animate__fadeInDown"
+                role="alert">
                 Member tidak ditemukan.
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
@@ -40,9 +45,13 @@
                     <div class="col-12 col-md-6 mb-4 text-center">
                         <h5 class="card-title fw-bold">Scan QR peminjaman / anggota</h5>
                         <!-- QR Code scanning UI -->
-                        <div id="reader" style="width: 100%; height: 250px; border: 2px dashed #007bff; border-radius: 10px;"></div>
-                        <button id="start-scan" class="btn btn-outline-primary mt-3 animate__animated animate__bounceIn">Start Scan</button>
-                        <button id="stop-scan" class="btn btn-outline-danger mt-3 d-none animate__animated animate__bounceIn">Stop Scan</button>
+                        <div id="reader"
+                            style="width: 100%; height: 320px; border: 2px dashed #007bff; border-radius: 10px;"></div>
+                        <button id="start-scan"
+                            class="btn btn-outline-primary mt-3 animate__animated animate__bounceIn">Start Scan</button>
+                        <button id="stop-scan"
+                            class="btn btn-outline-danger mt-3 d-none animate__animated animate__bounceIn">Stop
+                            Scan</button>
                     </div>
 
                     <div class="col-12 col-md-6 mb-4">
@@ -53,7 +62,8 @@
                             <input type="email" class="form-control" id="email" name="email" placeholder="Email">
                             <div class="invalid-feedback"></div>
                         </div>
-                        <button class="btn btn-outline-primary w-100 animate__animated animate__pulse" onclick="searchMemberByEmail()">Cari</button>
+                        <button class="btn btn-outline-primary w-100 animate__animated animate__pulse"
+                            onclick="searchMemberByEmail()">Cari</button>
                     </div>
                 </div>
                 <div class="row justify-content-center d-none" id="memberTableContainer">

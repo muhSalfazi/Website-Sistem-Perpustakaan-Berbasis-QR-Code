@@ -29,7 +29,7 @@ class PeminjamanController extends Controller
         }
         $peminjamans = Peminjaman::whereNull('return_date')->paginate(10);
 
-        $peminjamans = $query->paginate(10);
+        // $peminjamans = $query->paginate(10);
 
         return view('Peminjaman.daftarpeminjaman', compact('peminjamans'));
     }

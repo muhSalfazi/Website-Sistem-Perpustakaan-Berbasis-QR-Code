@@ -32,6 +32,7 @@
                                     <th scope="col" class="text-center">Email</th>
                                     <th scope="col" class="text-center">Telepon</th>
                                     <th scope="col" class="text-center">Alamat</th>
+                                    <th scope="col" class="text-center">Status</th>
                                     <th scope="col" class="text-center">Aksi</th>
                                 </tr>
                             </thead>
@@ -53,6 +54,9 @@
                                         <td class="text-center">{{ $member->email ?? 'N/A' }}</td>
                                         <td class="text-center">{{ $member->phone ?? 'N/A' }}</td>
                                         <td class="text-center">{{ $member->address ?? 'N/A' }}</td>
+                                         <td class="text-center">
+                                            <span class="badge {{ $member->status == 'new' ? 'bg-success' : 'bg-secondary' }}">{{ $member->status }}</span>
+                                        </td>
                                         <td class="text-center">
                                             <form action="{{ route('member.destroy', $member->id) }}" method="POST">
                                                 @csrf

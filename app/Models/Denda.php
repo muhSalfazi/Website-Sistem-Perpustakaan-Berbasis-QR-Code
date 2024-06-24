@@ -11,7 +11,7 @@ class Denda extends Model
     protected $table = 'tbl_denda';
 
     protected $fillable = [
-        'id_pjmn',
+        'id',
         'denda_yg_dibyr',
         'uang_yg_dibyrkn',
         'status',
