@@ -173,15 +173,15 @@
                     text: 'Email atau Kata Sandi diperlukan!',
                     width: '300px', // Smaller width
                     timer: 6000,
-                    showConfirmButton: false,
+                    showConfirmButton: true,
                 });
-                return false; // Prevent form submission
+                return false; // Cegah pengiriman formulir
             }
 
             const button = document.querySelector('.btn');
             button.classList.add('loading');
 
-            return true; // Allow form submission
+            return true; // Izinkan pengiriman formulir
         }
 
         document.addEventListener('DOMContentLoaded', function() {

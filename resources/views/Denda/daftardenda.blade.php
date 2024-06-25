@@ -30,6 +30,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Resi Peminjaman</th>
                                 <th scope="col">Nama Member</th>
+                                <th scope="col">Email</th>
                                 <th scope="col">Tanggal Pinjam</th>
                                 <th scope="col">Telat (hari)</th>
                                 <th scope="col">Denda</th>
@@ -37,7 +38,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php $counter = 0 @endphp
+                              @php $counter = 0 @endphp
                             @foreach ($peminjamans as $key => $peminjaman)
                                 @php
                                     if (!$peminjaman->return_date) {
@@ -57,11 +58,12 @@
 
                                 @if ($telatHari > 0 && $status == 'belum bayar')
                                     <tr class="animate__animated animate__fadeIn">
-                                        @php $counter++ @endphp
+                                         @php $counter++ @endphp
                                         <td>{{ $counter }}</td>
                                         <td>{{ $peminjaman->resi_pjmn }}</td>
                                         <td>{{ $peminjaman->member->first_name ?? 'Unknown' }}
                                             {{ $peminjaman->member->last_name ?? '' }}</td>
+                                        <td>{{ $peminjaman->member->email ?? 'Unknown' }}</td>
                                         <td>{{ $createdAt->format('Y-m-d') }}</td>
                                         <td>{{ $telatHari }}</td>
                                         <td>Rp {{ number_format($totalDenda, 0, ',', '.') }}</td>
@@ -91,6 +93,7 @@
             $returnDate = \Carbon\Carbon::parse($peminjaman->return_date);
             $telatHari = max(0, $returnDate->diffInDays($createdAt) - 7); // Menentukan telat, jika kurang dari 7 hari, dianggap 0 hari telat
             $totalDenda = $telatHari * 5000;
+
             // Periksa apakah ada data denda yang sudah dibayar
             $status = 'belum bayar';
             if ($peminjaman->denda) {
@@ -120,8 +123,7 @@
                                 <input type="number" class="form-control" id="uang_dibayarkan_{{ $peminjaman->id }}"
                                     name="uang_yg_dibyrkn" required min="{{ $totalDenda }}">
                                 <div class="invalid-feedback">
-                                    Uang yang dibayarkan harus tepat sejumlah Rp
-                                    {{ number_format($totalDenda, 0, ',', '.') }} atau lebih.
+                                    Uang yang dibayarkan harus tepat sejumlah Rp {{ number_format($totalDenda, 0, ',', '.') }} atau lebih.
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -149,10 +151,7 @@
                 var kembalianInput = document.getElementById("kembalian_{{ $peminjaman->id }}");
 
                 function formatRupiah(number) {
-                    return new Intl.NumberFormat('id-ID', {
-                        style: 'currency',
-                        currency: 'IDR'
-                    }).format(number).replace(/Rp/g, 'Rp ');
+                    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number).replace(/Rp/g, 'Rp ');
                 }
 
                 inputUangDibayarkan.addEventListener("input", function() {

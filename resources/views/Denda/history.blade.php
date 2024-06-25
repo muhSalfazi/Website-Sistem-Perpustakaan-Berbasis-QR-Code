@@ -29,7 +29,7 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Resi</th>
-                                <th scope="col">Nama Anggota</th>
+                                <th scope="col">Email</th>
                                 <th scope="col">Judul Buku</th>
                                 <th scope="col">Tanggal Peminjaman</th>
                                 <th scope="col">Tanggal Pengembalian</th>
@@ -43,10 +43,17 @@
                                 <tr class="animate__animated animate__fadeIn">
                                     <th scope="row">{{ $loop->iteration }}</th>
                                     <td>{{ $peminjaman->peminjaman ? $peminjaman->peminjaman->resi_pjmn : '-' }}</td>
+                                    <!--<td>-->
+                                    <!--    @if ($peminjaman->peminjaman && $peminjaman->peminjaman->member)-->
+                                    <!--        {{ $peminjaman->peminjaman->member->first_name ?? 'Unknown' }}-->
+                                    <!--        {{ $peminjaman->peminjaman->member->last_name ?? '' }}-->
+                                    <!--    @else-->
+                                    <!--        Unknown-->
+                                    <!--    @endif-->
+                                    <!--</td>-->
                                     <td>
                                         @if ($peminjaman->peminjaman && $peminjaman->peminjaman->member)
-                                            {{ $peminjaman->peminjaman->member->first_name ?? 'Unknown' }}
-                                            {{ $peminjaman->peminjaman->member->last_name ?? '' }}
+                                            {{ $peminjaman->peminjaman->member->email ?? 'Unknown' }}
                                         @else
                                             Unknown
                                         @endif
