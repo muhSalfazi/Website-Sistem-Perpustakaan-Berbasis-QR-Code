@@ -196,7 +196,7 @@
                         Swal.fire({
                             icon: 'success',
                             title: 'Member ditemukan',
-                            showConfirmButton: false,
+                            showConfirmButton: true,
                             timer: 1500
                         });
                         // Tampilkan kepala tabel
@@ -209,7 +209,7 @@
                             icon: 'error',
                             title: 'Member tidak ditemukan',
                             text: 'Email member tidak terdaftar',
-                            showConfirmButton: false,
+                            showConfirmButton: true,
                             timer: 1500
                         });
                     }
@@ -278,7 +278,7 @@
                         Swal.fire({
                             icon: 'success',
                             title: 'Member ditemukan',
-                            showConfirmButton: false,
+                            showConfirmButton: true,
                             timer: 1500
                         });
                         // Show the table
@@ -291,7 +291,7 @@
                             icon: 'error',
                             title: 'Member tidak ditemukan',
                             text: 'Email member tidak terdaftar',
-                            showConfirmButton: false,
+                            showConfirmButton: true,
                             timer: 1500
                         });
                     }

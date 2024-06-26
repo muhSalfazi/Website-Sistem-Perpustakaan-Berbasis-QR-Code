@@ -19,11 +19,12 @@ $(function () {
             fontFamily: 'inherit',
             sparkline: { enabled: false },
         },
-        colors: ["#5D87FF", "#49BEFF"],
+        colors: ["#5D87FF", ], 
+        // "#49BEFF"
         plotOptions: {
             bar: {
                 horizontal: false,
-                columnWidth: "35%",
+                columnWidth: "45%",
                 borderRadius: [6],
                 borderRadiusApplication: 'end',
                 borderRadiusWhenStacked: 'all'
@@ -65,14 +66,14 @@ $(function () {
         },
         stroke: {
             show: true,
-            width: 3,
+            width: 4,
             lineCap: "butt",
             colors: ["transparent"],
         },
         tooltip: { theme: "light" },
         responsive: [
             {
-                breakpoint: 600,
+                breakpoint: 550,
                 options: {
                     plotOptions: {
                         bar: {

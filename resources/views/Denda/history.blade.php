@@ -27,59 +27,63 @@
                     <table class="table datatable table-hover table-striped">
                         <thead class="custom-thead animate__animated animate__fadeInDown">
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Resi</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Judul Buku</th>
-                                <th scope="col">Tanggal Peminjaman</th>
-                                <th scope="col">Tanggal Pengembalian</th>
-                                <th scope="col">Denda yang Dibayar</th>
-                                <th scope="col">Uang yang Dibayar</th>
-                                <th scope="col">Status</th>
+                                <th scope="col" class="text-center">No</th>
+                                <th scope="col"class="text-center">Resi</th>
+                                <th scope="col"class="text-center">Email</th>
+                                <th scope="col"class="text-center">Judul Buku</th>
+                                <th scope="col"class="text-center">Tanggal Peminjaman</th>
+                                <th scope="col"class="text-center">Tanggal Pengembalian</th>
+                                <th scope="col"class="text-center">Denda yang Dibayar</th>
+                                <th scope="col"class="text-center">Uang yang Dibayar</th>
+                                <th scope="col"class="text-center">Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($peminjamans as $peminjaman)
                                 <tr class="animate__animated animate__fadeIn">
                                     <th scope="row">{{ $loop->iteration }}</th>
-                                    <td>{{ $peminjaman->peminjaman ? $peminjaman->peminjaman->resi_pjmn : '-' }}</td>
+                                    <td class="text-center">{{ $peminjaman->peminjaman ? $peminjaman->peminjaman->resi_pjmn : '-' }}</td>
                                     <!--<td>-->
-                                    <!--    @if ($peminjaman->peminjaman && $peminjaman->peminjaman->member)-->
+                                    <!--    @if ($peminjaman->peminjaman && $peminjaman->peminjaman->member)
+    -->
                                     <!--        {{ $peminjaman->peminjaman->member->first_name ?? 'Unknown' }}-->
                                     <!--        {{ $peminjaman->peminjaman->member->last_name ?? '' }}-->
-                                    <!--    @else-->
+                                <!--    @else-->
                                     <!--        Unknown-->
-                                    <!--    @endif-->
+                                    <!--
+    @endif-->
                                     <!--</td>-->
-                                    <td>
+                                    <td class="text-center">
                                         @if ($peminjaman->peminjaman && $peminjaman->peminjaman->member)
                                             {{ $peminjaman->peminjaman->member->email ?? 'Unknown' }}
                                         @else
                                             Unknown
                                         @endif
                                     </td>
-                                    <td>{{ $peminjaman->peminjaman ? $peminjaman->peminjaman->book->title : '-' }}</td>
-                                    <td>
+                                    <td class="text-center">{{ $peminjaman->peminjaman ? $peminjaman->peminjaman->book->title : '-' }}</td>
+                                    <td class="text-center">
                                         @if ($peminjaman->peminjaman && $peminjaman->peminjaman->created_at)
                                             {{ \Carbon\Carbon::parse($peminjaman->peminjaman->created_at)->format('d-m-Y') }}
                                         @else
                                             -
                                         @endif
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         @if ($peminjaman->peminjaman && $peminjaman->peminjaman->return_date)
                                             {{ \Carbon\Carbon::parse($peminjaman->peminjaman->return_date)->format('d-m-Y') }}
                                         @else
                                             -
                                         @endif
                                     </td>
-                                    <td>Rp{{ number_format( $peminjaman->denda_yg_dibyr, 0, ',', '.') }}</td>
-                                    <td>Rp{{ number_format( $peminjaman->uang_yg_dibyrkn, 0, ',', '.') }}</td>
-                                    <td>
+                                    <td class="text-center">Rp{{ number_format($peminjaman->denda_yg_dibyr, 0, ',', '.') }}</td>
+                                    <td class="text-center">Rp{{ number_format($peminjaman->uang_yg_dibyrkn, 0, ',', '.') }}</td>
+                                    <td class="text-center">
                                         @if ($peminjaman->status == 'lunas')
-                                            <span class="badge bg-success animate__animated animate__fadeIn">{{ $peminjaman->status }}</span>
+                                            <span
+                                                class="badge bg-success animate__animated animate__fadeIn">{{ $peminjaman->status }}</span>
                                         @else
-                                            <span class="badge bg-danger animate__animated animate__fadeIn">{{ $peminjaman->status }}</span>
+                                            <span
+                                                class="badge bg-danger animate__animated animate__fadeIn">{{ $peminjaman->status }}</span>
                                         @endif
                                     </td>
                                 </tr>

@@ -12,6 +12,7 @@ class Denda extends Model
 
     protected $fillable = [
         'id',
+        'resi_pjmn',
         'denda_yg_dibyr',
         'uang_yg_dibyrkn',
         'status',

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Member;
 use App\Models\Peminjaman;
 use App\Models\Book;
+use App\Models\Denda;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -108,7 +109,7 @@ class PeminjamanController extends Controller
         return view('Peminjaman.searchBook', compact('memberId', 'member', 'books'));
     }
 
-    // Controller method to handle book borrowing
+    // Metode pengontrol untuk menangani peminjaman buku
     public function storePeminjaman(Request $request)
     {
         // Validasi input
@@ -138,15 +139,24 @@ class PeminjamanController extends Controller
         if (!$book) {
             return redirect()->back()->with('error', 'Buku tidak ditemukan.');
         }
-
-        // Check if the member has any overdue books
+        
+        // Periksa apakah anggota mempunyai buku yang sudah lewat jatuh tempo
         $borrowedBooksCount = Peminjaman::where('member_id', $memberId)
             ->whereNull('return_date')
             ->count();
 
-        // Allow borrowing if the member has less than 3 books not returned
+        // Periksa apakah anggota memiliki denda yang belum dibayar
+        $unpaidFinesCount = Denda::whereHas('peminjaman', function ($query) use ($memberId) {
+            $query->where('member_id', $memberId);
+        })->where('status', 'belum lunas')->count();
+
+        // Membolehkan peminjaman apabila anggota mempunyai kurang dari 3 buku yang belum dikembalikan dan tidak ada denda yang belum dibayar
         if ($borrowedBooksCount >= 3) {
             return redirect()->back()->with('error', 'Anggota masih memiliki 3 atau lebih peminjaman yang belum dikembalikan.');
+        }
+
+        if ($unpaidFinesCount > 0) {
+            return redirect()->back()->with('error', 'Anggota masih memiliki tunggakan denda.');
         }
 
         // Check if the book is available
@@ -154,17 +164,17 @@ class PeminjamanController extends Controller
             return redirect()->back()->with('error', 'Buku tidak tersedia untuk dipinjam.');
         }
 
-        // Create a new borrowing record
+        // Buat catatan peminjaman baru
         $peminjaman = new Peminjaman();
         $uniqueCode = Str::random(10); // Generate a random string of 10 characters
 
-        // Check if the generated code already exists in the database
+        // Periksa apakah kode yang dihasilkan sudah ada di database
         while (Peminjaman::where('resi_pjmn', $uniqueCode)->exists()) {
-            // If the code already exists, generate a new one
+            // Jika kode sudah ada, buat yang baru
             $uniqueCode = Str::random(10);
         }
 
-        // Now $uniqueCode contains a unique value for the resi_pjmn column
+        // Sekarang $uniqueCode berisi nilai unik untuk kolom resi_pjmn
         $peminjaman->resi_pjmn = $uniqueCode;
         $peminjaman->member_id = $memberId;
         $peminjaman->book_id = $bookId;
@@ -176,7 +186,6 @@ class PeminjamanController extends Controller
 
         $peminjaman->save();
 
-        // Generate QR code for the borrowing transaction
         $qrCodeData = [
             'resi_pjmn' => $uniqueCode,
             'nama_member' => $member->first_name . ' ' . $member->last_name,
@@ -186,6 +195,7 @@ class PeminjamanController extends Controller
 
         return redirect()->back()->with('success', 'Buku berhasil dipinjam.');
     }
+
 
     public function destroy($id)
     {
