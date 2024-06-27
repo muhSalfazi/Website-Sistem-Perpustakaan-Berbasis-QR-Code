@@ -19,13 +19,16 @@ class CreateUserMember
         // Ambil data pengguna yang baru dibuat dari event
         $user = $event->user;
 
-        // Buat entri di tabel member berdasarkan data pengguna
-        Member::create([
-            'user_id' => $user->id,
-            'first_name' => $user->first_name,
-            'last_name' => $user->last_name,
-            'email' => $user->email,
-            'qr_code' => $user->qr_code,
-        ]);
+        // Pastikan email sudah terverifikasi sebelum membuat entri di tabel member
+        if ($user->email_verified_at !== null) {
+            // Buat entri di tabel member berdasarkan data pengguna
+            Member::create([
+                'user_id' => $user->id,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'email' => $user->email,
+                'qr_code' => $user->qr_code,
+            ]);
+        }
     }
 }

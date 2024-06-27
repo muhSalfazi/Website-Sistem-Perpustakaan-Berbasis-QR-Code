@@ -8,13 +8,13 @@ use App\Models\Member;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail; // Import Mail class
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
-use Illuminate\Support\Facades\Response;
 use App\Events\UserCreated;
+use App\Mail\VerifyEmail; // Import VerifyEmail Mailable
 
 class MemberController extends Controller
 {
@@ -38,15 +38,22 @@ class MemberController extends Controller
             return response()->json(['message' => 'Email sudah terdaftar sebagai anggota'], 400);
         }
 
-        // Hash the password before storing it
+        // Generate Unique OTP
+        do {
+            $otp = rand(10000, 99999);
+            $existingOtp = User::where('verification_token', $otp)->exists();
+        } while ($existingOtp);
+
+        // Hash kata sandi sebelum menyimpannya
         $hashedPassword = Hash::make($request->password);
 
-        // Create the user with hashed password
+        // Buat pengguna dengan kata sandi hash dan OTP unik
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => $hashedPassword,
+            'verification_token' => $otp,
             'role' => 'member',
         ]);
 
@@ -60,13 +67,45 @@ class MemberController extends Controller
 
         $qrCodeUrl = url('qrcodes/' . $user->qr_code);// Mengubah path untuk bisa diakses secara publik
 
-        // Return the created user data
+        // Send email with OTP
+        Mail::to($user->email)->send(new VerifyEmail($otp));
+
         return response()->json([
-            'message' => 'Akun berhasil Terdaftar di libranation',
-            'member' => $user,
+            'message' => 'Silakan periksa email Anda untuk kode verifikasi OTP.',
             'qr_code_url' => $qrCodeUrl,
+            'user_id' => $user->id,
         ], 201);
     }
+
+    public function verifyEmail(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'otp' => 'required|digits:5',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        // Cari pengguna berdasarkan kode otp
+        $user = User::where('verification_token', $request->otp)->first();
+
+        // Periksa apakah OTP yang dimasukkan sesuai dengan yang tersimpan
+        if (!$user || $user->verification_token != $request->otp) {
+            return response()->json(['message' => 'Kode OTP tidak valid.'], 400);
+        }
+
+        // Update waktu verifikasi email dan hapus token OTP
+        $user->email_verified_at = now();
+        $user->verification_token = null;
+        $user->save();
+
+        return response()->json([
+            'message' => 'Email berhasil diverifikasi. Anda sekarang dapat login.',
+            'user' => $user,
+        ], 200);
+    }
+
 
     // Metode untuk memperbarui informasi anggota
     public function update(Request $request, $user_id)
@@ -158,6 +197,28 @@ class MemberController extends Controller
         ], 200);
     }
 
+    
+
+    public function show(Request $request, $user_id)
+    {
+        $member = Member::where('user_id', $user_id)->first();
+
+        if (!$member) {
+            return response()->json(['message' => 'Pengguna tidak ditemukan'], 404);
+        }
+
+        // Anda bisa menambahkan informasi tambahan yang diperlukan dalam respons JSON
+        $qrCodeUrl = url('qrcodes/' . $member->qr_code);
+        $imageProfileUrl = url('profiles/' . $member->imageProfile);
+
+        return response()->json([
+            'message' => 'Data pengguna berhasil diambil',
+            'member' => $member,
+            'qr_code_url' => $qrCodeUrl,
+            'image_profile_url' => $imageProfileUrl,
+        ], 200);
+    }
+
     private function generateEncryptedQRCodeData($memberId)
     {
         $member = User::find($memberId);
@@ -183,26 +244,5 @@ class MemberController extends Controller
         file_put_contents(public_path($qrCodePath), $qrCodeData);
 
         return $qrCodeFileName;
-    }
-
-    public function show(Request $request, $user_id)
-    {
-        $member = Member::where('user_id', $user_id)->first();
-
-        if (!$member) {
-            return response()->json(['message' => 'Pengguna tidak ditemukan'], 404);
-        }
-
-        // Anda bisa menambahkan informasi tambahan yang diperlukan dalam respons JSON
-        $qrCodeUrl = url('qrcodes/' . $member->qr_code);
-        $imageProfileUrl = url('profiles/' . $member->imageProfile);
-
-        return response()->json([
-            'message' => 'Data pengguna berhasil diambil',
-            'member' => $member,
-            'qr_code_url' => $qrCodeUrl,
-            'image_profile_url' => $imageProfileUrl,
-
-        ], 200);
     }
 }

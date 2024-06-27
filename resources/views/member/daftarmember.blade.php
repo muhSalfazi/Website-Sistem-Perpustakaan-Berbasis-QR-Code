@@ -18,7 +18,8 @@
             <div class="card animate__animated animate__fadeIn">
                 <div class="card-body">
                     <div class="col-12 col-lg-5">
-                        <h5 class="card-title fw-semibold mb-4 animate__animated animate__fadeInLeft">Daftar Anggota Perpustakaan</h5>
+                        <h5 class="card-title fw-semibold mb-4 animate__animated animate__fadeInLeft">Daftar Anggota
+                            Perpustakaan</h5>
                     </div>
 
                     <!-- Table with stripped rows -->
@@ -54,8 +55,9 @@
                                         <td class="text-center">{{ $member->email ?? 'N/A' }}</td>
                                         <td class="text-center">{{ $member->phone ?? 'N/A' }}</td>
                                         <td class="text-center">{{ $member->address ?? 'N/A' }}</td>
-                                         <td class="text-center">
-                                            <span class="badge {{ $member->status == 'new' ? 'bg-success' : 'bg-secondary' }}">{{ $member->status }}</span>
+                                        <td class="text-center">
+                                            <span
+                                                class="badge {{ $member->status == 'new' ? 'bg-success' : 'bg-secondary' }}">{{ $member->status }}</span>
                                         </td>
                                         <td class="text-center">
                                             <form action="{{ route('member.destroy', $member->id) }}" method="POST">
@@ -69,9 +71,6 @@
                                         </td>
                                     </tr>
                                 @empty
-                                    <tr class="animate__animated animate__fadeIn">
-                                        <td colspan="7" class="text-center">No members found</td>
-                                    </tr>
                                 @endforelse
                             </tbody>
                         </table>
@@ -89,12 +88,12 @@
     </script>
 
     <!-- Animate.css for animations -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
     <!-- Custom CSS -->
     <style>
         .btn-custom {
-            background: linear-gradient(90deg, rgba(58,123,213,1) 0%, rgba(0,212,255,1) 100%);
+            background: linear-gradient(90deg, rgba(58, 123, 213, 1) 0%, rgba(0, 212, 255, 1) 100%);
             border: none;
             color: white;
             font-weight: bold;
@@ -102,7 +101,7 @@
         }
 
         .btn-custom:hover {
-            background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(58,123,213,1) 100%);
+            background: linear-gradient(90deg, rgba(0, 212, 255, 1) 0%, rgba(58, 123, 213, 1) 100%);
             transform: scale(1.05);
         }
 

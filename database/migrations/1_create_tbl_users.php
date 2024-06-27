@@ -19,9 +19,9 @@ return new class extends Migration {
             $table->string('qr_code', 255)->nullable();
             $table->enum('role', ['admin', 'member'])->default('member');
             $table->dateTime('last_login')->nullable();
-            $table->string('reset_token')->unique()->nullable();
+            $table->integer('verification_token')->nullable()->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('reset_token_created_at')->nullable();
-            // $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });
     }

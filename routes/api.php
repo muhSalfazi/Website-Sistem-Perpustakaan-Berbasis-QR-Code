@@ -19,7 +19,10 @@ use App\Http\Controllers\API\showKategori;
 |
 */
 
+
+
 Route::post('/register', [MemberController::class, 'register']);
+Route::post('/verify-email', [MemberController::class, 'verifyEmail']);
 
 Route::post('/login', [AuthController::class, 'login']);
 

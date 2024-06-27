@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Carbon;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-
+use Illuminate\Notifications\Notifiable;
+use App\Events\UserCreated;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
@@ -22,7 +22,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'role',
         'last_login',
         'qr_code',
-        'reset_token',
+        'verification_token',
+        'email_verified_at',
+        // 'reset_token',
         'reset_token_created_at',
     ];
 
@@ -30,6 +32,21 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
     ];
 
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updated(function ($user) {
+            if ($user->isDirty('email_verified_at') && $user->email_verified_at !== null) {
+                event(new UserCreated($user));
+            }
+        });
+    }
 
     public function setLastLoginAttribute($value)
     {
@@ -40,7 +57,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Member::class, 'user_id');
     }
-     public function favoriteBooks()
+
+    public function favoriteBooks()
     {
         return $this->belongsToMany(Book::class, 'favorite_books')->withTimestamps();
     }
