@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"salmanfauzi0512@gmail.com\",\r\n    \"password\": \"password123\",\r\n    \"password_confirmation\": \"password123\",\r\n    \"first_name\": \"salman\",\r\n    \"last_name\": \"fauzi\"\r\n}\r\n",
+							"raw": "{\r\n    \"email\": \"slmnstudy@gmail.com\",\r\n    \"password\": \"password123\",\r\n    \"password_confirmation\": \"password123\",\r\n    \"first_name\": \"salman\",\r\n    \"last_name\": \"fauzi\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -24,15 +24,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/register",
-							"protocol": "http",
+							"raw": "https://lib.libranation.my.id/api/register",
+							"protocol": "https",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"lib",
+								"libranation",
+								"my",
+								"id"
 							],
-							"port": "8000",
 							"path": [
 								"api",
 								"register"
@@ -139,6 +138,37 @@
 								"api",
 								"members",
 								"22 QR 1=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verifikasiOTP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"otp\": \"95330\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://lib.libranation.my.id/api/verify-email",
+							"protocol": "https",
+							"host": [
+								"lib",
+								"libranation",
+								"my",
+								"id"
+							],
+							"path": [
+								"api",
+								"verify-email"
 							]
 						}
 					},
@@ -586,7 +616,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"salmanfauzi0512@gmail.com\",\r\n    \"password\":\"salman\"\r\n}\r\n",
+					"raw": "{\r\n    \"email\": \"slmnstudy@gmail.com\",\r\n    \"password\":\"password123\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -594,14 +624,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://lib.libranation.my.id/api/login",
-					"protocol": "https",
+					"raw": "http://127.0.0.1:8000/api/login",
+					"protocol": "http",
 					"host": [
-						"lib",
-						"libranation",
-						"my",
-						"id"
+						"127",
+						"0",
+						"0",
+						"1"
 					],
+					"port": "8000",
 					"path": [
 						"api",
 						"login"

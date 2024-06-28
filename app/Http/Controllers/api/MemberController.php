@@ -234,10 +234,10 @@ class MemberController extends Controller
         $qrCode = new QrCode($encryptedData);
         $writer = new PngWriter();
 
-        // Ubah format nama file QR code menjadi sesuai dengan data anggota
-        $qrCodeFileName = $member->first_name . '-' . $member->last_name . '.png';
+        // Hasilkan nama file acak unik untuk kode QR
+        $qrCodeFileName = Str::random(5) . '.png';
 
-        $qrCodePath = 'qrcodes/' . $qrCodeFileName; // Mengubah lokasi penyimpanan QR code
+        $qrCodePath = 'qrcodes/' . $qrCodeFileName; // Set the path to save the QR code
 
         $qrCodeData = $writer->write($qrCode)->getString();
 
@@ -245,4 +245,5 @@ class MemberController extends Controller
 
         return $qrCodeFileName;
     }
+
 }
