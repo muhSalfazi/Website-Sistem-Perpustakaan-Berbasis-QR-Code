@@ -9,7 +9,6 @@ return new class extends Migration {
      */
     public function up()
     {
-        // Membuat tabel tbl_peminjaman
         Schema::create('tbl_peminjaman', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('resi_pjmn')->unique()->nullable();
@@ -19,13 +18,13 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
+            // Menambahkan foreign key constraint
             $table->foreign('member_id')->references('id')->on('tbl_members')->onDelete('cascade');
             $table->foreign('book_id')->references('id')->on('tbl_books')->onDelete('cascade');
         });
-
-     
     }
-
+ 
+ 
     /**
      * Reverse the migrations.
      */

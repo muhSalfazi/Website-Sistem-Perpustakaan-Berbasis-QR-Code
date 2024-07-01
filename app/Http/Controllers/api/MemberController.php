@@ -80,7 +80,7 @@ class MemberController extends Controller
     public function verifyEmail(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'otp' => 'required|digits:5',
+            'otp' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -229,6 +229,7 @@ class MemberController extends Controller
             'email' => $member->email,
             'imageProfile' => $member->imageProfile ? asset('profiles/' . $member->imageProfile) : null,
         ];
+        
 
         $encryptedData = Crypt::encryptString(json_encode($data));
         $qrCode = new QrCode($encryptedData);

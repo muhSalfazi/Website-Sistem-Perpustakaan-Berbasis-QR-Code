@@ -21,13 +21,6 @@ class MemberController extends Controller
     {
         $member = Member::findOrFail($id);
 
-        // Hapus file qr_code jika ada
-        if ($member->qr_code) {
-            $qrCodePath = public_path('qr_codes/' . $member->qr_code);
-            if (File::exists($qrCodePath)) {
-                File::delete($qrCodePath);
-            }
-        }
 
         // Hapus file imageProfile jika ada
         if ($member->imageProfile) {
@@ -39,7 +32,13 @@ class MemberController extends Controller
 
         // Temukan pengguna yang terkait dengan anggota
         $user = User::find($member->user_id);
-
+        // Hapus file qr_code jika ada
+         if ($user->qr_codes) {
+         $qrCodePath = public_path('qrcodes/' . $user->qr_code);
+         if (File::exists($qrCodePath)) {
+         File::delete($qrCodePath);
+         }
+         }
         // Hapus pengguna jika ditemukan
         if ($user) {
             $user->delete();

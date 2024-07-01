@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('category_id');
             $table->text('description')->nullable();
             $table->timestamps();
-            $table->softDeletes();
+            // $table->softDeletes();
 
             $table->foreign('rack_id')->references('id')->on('tbl_racks')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('tbl_categories')->onDelete('cascade');

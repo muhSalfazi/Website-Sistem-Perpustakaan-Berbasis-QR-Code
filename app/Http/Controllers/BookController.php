@@ -7,7 +7,6 @@ use App\Models\Kategori;
 use App\Models\Rack;
 use App\Models\BookStock;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 
@@ -142,17 +141,19 @@ class BookController extends Controller
         return response()->json(['book' => $book]);
     }
 
-    public function destroy($id)
-    {
-        $book = Book::findOrFail($id);
+     public function destroy($id)
+     {
+     $book = Book::findOrFail($id);
 
-        // Remove book cover if exists
-        if ($book->book_cover) {
-            Storage::delete($book->book_cover);
-        }
+     if ($book->book_cover) {
+     $coverBookPath = public_path($book->book_cover);
+     if (File::exists($coverBookPath)) {
+     File::delete($coverBookPath);
+     }
+     }
 
-        $book->delete(); // Soft delete
+     $book->delete();
 
-        return redirect()->route('books.index')->with('msg', 'Book deleted successfully')->with('error', false);
-    }
+     return redirect()->route('books.index')->with('msg', 'Book deleted successfully')->with('error', false);
+     }
 }
