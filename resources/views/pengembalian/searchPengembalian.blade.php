@@ -78,7 +78,7 @@
                                         <td>{{ $item->resi_pjmn }}</td>
                                         <td>{{ $item->member->email }}</td>
                                         <td>{{ $item->book->title ?? 'Unknown' }}</td>
-                                        <td>{{ $item->created_at }}</td>
+                                        <td>{{ $item->created_at->format('d-m-Y') }}</td>
                                         <td>
                                             <form action="{{ route('pengembalian.simpan', $item) }}" method="POST">
                                                 @csrf
