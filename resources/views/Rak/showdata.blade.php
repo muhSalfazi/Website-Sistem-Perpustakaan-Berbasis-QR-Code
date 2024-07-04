@@ -42,8 +42,10 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php $counter = 0 @endphp
                         @foreach ($racks as $rack)
-                            <tr class="animate__animated animate__fadeIn">
+                            <tr class="animate__animated animate__fadeIn" style="animation-duration: 1s; animation-delay: {{ $counter * 0.2 }}s; animation-timing-function: ease-in-out;">
+                                @php $counter++ @endphp
                                 <td class="text-center">{{ $loop->iteration }}</td>
                                 <td class="text-center animate__animated animate__fadeInLeft">{{ $rack->name }}</td>
                                 <td class="text-center animate__animated animate__fadeInRight">{{ $rack->rak }}</td>

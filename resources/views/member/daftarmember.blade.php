@@ -15,15 +15,14 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <div class="card animate__animated animate__fadeIn">
+            <div class="card animate__animated animate__fadeIn" style="animation-duration: 1s; animation-timing-function: ease-in-out;">
                 <div class="card-body">
                     <div class="col-12 col-lg-5">
-                        <h5 class="card-title fw-semibold mb-4 animate__animated animate__fadeInLeft">Daftar Anggota
-                            Perpustakaan</h5>
+                        <h5 class="card-title fw-semibold mb-4 animate__animated animate__fadeInLeft" style="animation-duration: 1s; animation-timing-function: ease-in-out;">Daftar Anggota Perpustakaan</h5>
                     </div>
 
                     <!-- Table with stripped rows -->
-                    <div class="table-responsive animate__animated animate__fadeInUp">
+                    <div class="table-responsive animate__animated animate__fadeInUp" style="animation-duration: 1s; animation-timing-function: ease-in-out;">
                         <table class="table datatable table-hover table-striped">
                             <thead class="custom-thead">
                                 <tr>
@@ -39,38 +38,38 @@
                             </thead>
                             <tbody class="table-group-divider">
                                 @forelse ($members as $index => $member)
-                                    <tr class="animate__animated animate__fadeIn">
+                                    <tr class="animate__animated animate__fadeIn" style="animation-duration: 1s; animation-delay: {{ $index * 0.2 }}s; animation-timing-function: ease-in-out;">
                                         <th scope="row">{{ $index + 1 }}</th>
                                         <td class="text-center">
                                             @if ($member->imageProfile)
                                                 <img src="{{ asset('/profiles/' . $member->imageProfile) }}"
                                                     alt="{{ $member->first_name }}"
-                                                    style="max-width: 50px; border-radius:5%;">
+                                                    class="profile-img">
                                             @else
                                                 <span>Tidak ada foto profil</span>
                                             @endif
                                         </td>
-                                        <td class="text-center">{{ $member->first_name ?? 'N/A' }}
-                                            {{ $member->last_name ?? 'N/A' }}</td>
+                                        <td class="text-center">{{ $member->first_name ?? 'N/A' }} {{ $member->last_name ?? 'N/A' }}</td>
                                         <td class="text-center">{{ $member->email ?? 'N/A' }}</td>
                                         <td class="text-center">{{ $member->phone ?? 'N/A' }}</td>
                                         <td class="text-center">{{ $member->address ?? 'N/A' }}</td>
                                         <td class="text-center">
-                                            <span
-                                                class="badge {{ $member->status == 'new' ? 'bg-success' : 'bg-secondary' }}">{{ $member->status }}</span>
+                                            <span class="badge status-badge {{ $member->status == 'new' ? 'bg-new' : 'bg-other' }} animate__animated animate__pulse" style="animation-duration: 1s; animation-timing-function: ease-in-out;">{{ ucfirst($member->status) }}</span>
                                         </td>
                                         <td class="text-center">
                                             <form action="{{ route('member.destroy', $member->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-custom btn-sm delete-btn"
-                                                    onclick="return confirmDelete()">
+                                                <button type="submit" class="btn btn-custom btn-sm delete-btn" onclick="return confirmDelete()">
                                                     <i class="ti ti-trash"></i> Delete
                                                 </button>
                                             </form>
                                         </td>
                                     </tr>
                                 @empty
+                                    <tr class="animate__animated animate__fadeIn">
+                                        <td colspan="8" class="text-center">Tidak ada anggota terdaftar</td>
+                                    </tr>
                                 @endforelse
                             </tbody>
                         </table>
@@ -110,5 +109,51 @@
             border: none;
             background: none;
         }
+
+        .profile-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-responsive {
+            margin-top: 20px;
+        }
+
+        .table-group-divider tr {
+            transition: background-color 0.3s;
+        }
+
+        .table-group-divider tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .status-badge:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .bg-new {
+            background: linear-gradient(45deg, #4caf50, #81c784);
+            box-shadow: 0px 4px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .bg-other {
+            background: linear-gradient(45deg, #f44336, #e57373);
+            box-shadow: 0px 4px 15px rgba(244, 67, 54, 0.4);
+        }
     </style>
+    
 @endsection

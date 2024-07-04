@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PeminjamanController;
@@ -24,13 +25,17 @@ use App\Http\Controllers\HistoryTransaksiController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware('guest')->group(function () {
-    // Rute untuk menampilkan halaman login
-    Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
+Route::middleware(['guest'])->group(function () {
+// Rute untuk menampilkan halaman login
+Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 
-    // Rute untuk proses login
-    Route::post('/', [AuthController::class, 'login']);
+// Rute untuk proses login
+Route::post('/', [AuthController::class, 'login']);
+Route::get('/captcha/refresh', function () {
+return response()->json(['captcha' => captcha_src()]);
 });
+});
+
 
 
 Route::middleware(['auth', 'throttle:50,1',AdminMiddleware::class])->group(function () {

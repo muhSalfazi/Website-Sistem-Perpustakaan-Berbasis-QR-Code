@@ -3,16 +3,14 @@
 @section('title', 'Daftar Kategori Buku')
 
 @section('content')
-    <div class="pb-2">
+  <div class="pb-2">
         @if (session('msg'))
-            <div class="alert {{ session('error') ? 'alert-danger' : 'alert-success' }} alert-dismissible fade show animate__animated animate__fadeInDown"
-                role="alert">
-                {{ session('msg') }}
+            <div class="alert {{ session('suc') ? 'alert-danger' : 'alert-success' }} alert-dismissible fade show animate__animated animate__fadeInDown" role="alert">
                 <button type="button" class="btn-close btn-custom" data-bs-dismiss="alert" aria-label="Close"></button>
+                {{ session('msg') }}
             </div>
         @endif
     </div>
-
     <div class="card animate__animated animate__fadeIn">
         <div class="card-body">
             <div class="row mb-2">
@@ -41,8 +39,10 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php $counter = 0 @endphp
                         @foreach ($categories as $category)
-                            <tr class="animate__animated animate__fadeIn">
+                            <tr class="animate__animated animate__fadeIn" style="animation-duration: 1s; animation-delay: {{ $counter * 0.2 }}s; animation-timing-function: ease-in-out;">
+                                @php $counter++ @endphp
                                 <td class="text-center">{{ $loop->iteration }}</td>
                                 <td class="text-center">{{ $category->name }}</td>
                                 <td class="text-center">{{ $category->books_count }}</td>
@@ -156,5 +156,4 @@
             animation-name: fadeInLeft;
         }
     </style>
-
 @endsection

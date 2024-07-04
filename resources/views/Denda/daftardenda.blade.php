@@ -38,7 +38,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                              @php $counter = 0 @endphp
+                            @php $counter = 0 @endphp
                             @foreach ($peminjamans as $key => $peminjaman)
                                 @php
                                     if (!$peminjaman->return_date) {
@@ -57,8 +57,8 @@
                                 @endphp
 
                                 @if ($telatHari > 0 && $status == 'belum bayar')
-                                    <tr class="animate__animated animate__fadeIn">
-                                         @php $counter++ @endphp
+                                    <tr class="animate__animated animate__fadeInUpBig" style="animation-duration: 1s; animation-delay: {{ $counter * 0.2 }}s; animation-timing-function: ease-in-out;">
+                                        @php $counter++ @endphp
                                         <td>{{ $counter }}</td>
                                         <td>{{ $peminjaman->resi_pjmn }}</td>
                                         <td>{{ $peminjaman->member->first_name ?? 'Unknown' }}
@@ -80,7 +80,6 @@
                     </table>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -171,5 +170,4 @@
             });
         </script>
     @endforeach
-
 @endsection

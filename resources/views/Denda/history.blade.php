@@ -5,8 +5,7 @@
 @section('content')
     <div class="pb-2">
         @if (session('msg'))
-            <div class="alert {{ session('error') ? 'alert-danger' : 'alert-success' }} alert-dismissible fade show animate__animated animate__fadeIn"
-                role="alert">
+            <div class="alert {{ session('error') ? 'alert-danger' : 'alert-success' }} alert-dismissible fade show animate__animated animate__fadeIn" role="alert">
                 {{ session('msg') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
@@ -28,31 +27,23 @@
                         <thead class="custom-thead animate__animated animate__fadeInDown">
                             <tr>
                                 <th scope="col" class="text-center">No</th>
-                                <th scope="col"class="text-center">Resi</th>
-                                <th scope="col"class="text-center">Email</th>
-                                <th scope="col"class="text-center">Judul Buku</th>
-                                <th scope="col"class="text-center">Tanggal Peminjaman</th>
-                                <th scope="col"class="text-center">Tanggal Pengembalian</th>
-                                <th scope="col"class="text-center">Denda yang Dibayar</th>
-                                <th scope="col"class="text-center">Uang yang Dibayar</th>
-                                <th scope="col"class="text-center">Status</th>
+                                <th scope="col" class="text-center">Resi</th>
+                                <th scope="col" class="text-center">Email</th>
+                                <th scope="col" class="text-center">Judul Buku</th>
+                                <th scope="col" class="text-center">Tanggal Peminjaman</th>
+                                <th scope="col" class="text-center">Tanggal Pengembalian</th>
+                                <th scope="col" class="text-center">Denda yang Dibayar</th>
+                                <th scope="col" class="text-center">Uang yang Dibayarkan</th>
+                                <th scope="col" class="text-center">Status</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @php $counter = 0 @endphp
                             @foreach ($peminjamans as $peminjaman)
-                                <tr class="animate__animated animate__fadeIn">
+                                <tr class="animate__animated animate__fadeIn" style="animation-duration: 1s; animation-delay: {{ $counter * 0.2 }}s; animation-timing-function: ease-in-out;">
+                                    @php $counter++ @endphp
                                     <th scope="row">{{ $loop->iteration }}</th>
                                     <td class="text-center">{{ $peminjaman->peminjaman ? $peminjaman->peminjaman->resi_pjmn : '-' }}</td>
-                                    <!--<td>-->
-                                    <!--    @if ($peminjaman->peminjaman && $peminjaman->peminjaman->member)
-    -->
-                                    <!--        {{ $peminjaman->peminjaman->member->first_name ?? 'Unknown' }}-->
-                                    <!--        {{ $peminjaman->peminjaman->member->last_name ?? '' }}-->
-                                <!--    @else-->
-                                    <!--        Unknown-->
-                                    <!--
-    @endif-->
-                                    <!--</td>-->
                                     <td class="text-center">
                                         @if ($peminjaman->peminjaman && $peminjaman->peminjaman->member)
                                             {{ $peminjaman->peminjaman->member->email ?? 'Unknown' }}
@@ -79,11 +70,9 @@
                                     <td class="text-center">Rp{{ number_format($peminjaman->uang_yg_dibyrkn, 0, ',', '.') }}</td>
                                     <td class="text-center">
                                         @if ($peminjaman->status == 'lunas')
-                                            <span
-                                                class="badge bg-success animate__animated animate__fadeIn">{{ $peminjaman->status }}</span>
+                                            <span class="badge badge-lunas animate__animated animate__fadeIn">{{ $peminjaman->status }}</span>
                                         @else
-                                            <span
-                                                class="badge bg-danger animate__animated animate__fadeIn">{{ $peminjaman->status }}</span>
+                                            <span class="badge badge-belum-lunas animate__animated animate__fadeIn">{{ $peminjaman->status }}</span>
                                         @endif
                                     </td>
                                 </tr>
@@ -97,4 +86,40 @@
             {{ $peminjamans->links() }}
         </div>
     </div>
+
+    <!-- Custom CSS -->
+    <style>
+        .badge {
+            padding: 5px 10px;  /* Reduced padding */
+            border-radius: 15px;  /* Smaller border-radius */
+            color: white;
+            font-weight: bold;
+            font-size: 12px;  /* Reduced font-size */
+            text-transform: uppercase;
+        }
+
+        .badge-lunas {
+            background: linear-gradient(45deg, #4caf50, #81c784);
+            box-shadow: 0px 4px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .badge-belum-lunas {
+            background: linear-gradient(45deg, #f44336, #e57373);
+            box-shadow: 0px 4px 15px rgba(244, 67, 54, 0.4);
+        }
+
+        .badge .ti-alert {
+            margin-left: 5px;
+            animation: bounceIcon 1.5s infinite;
+        }
+
+        @keyframes bounceIcon {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+    </style>
 @endsection

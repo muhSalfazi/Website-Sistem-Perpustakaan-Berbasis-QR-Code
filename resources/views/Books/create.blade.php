@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('title', 'Tambah Buku')
 
 @section('content')
@@ -6,9 +7,8 @@
     <i class="ti ti-arrow-left"></i>
     Kembali
 </a>
-<div class="card">
-    <div class="card-header">Form Tambah Buku</div>
-
+<div class="card shadow-lg border-0 animate__animated animate__fadeInUp">
+    <div class="card-header bg-primary text-white">Form Tambah Buku</div>
     <div class="card-body">
         <form action="{{ route('books.store') }}" method="post" enctype="multipart/form-data">
             @csrf
@@ -92,8 +92,31 @@
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
-            <button type="submit" class="btn btn-primary">Simpan</button>
+            <button type="submit" class="btn btn-custom btn-primary">Simpan</button>
         </form>
     </div>
 </div>
+
+<!-- Custom CSS -->
+<style>
+    .btn-custom {
+        background: linear-gradient(90deg, rgba(58,123,213,1) 0%, rgba(0,212,255,1) 100%);
+        border: none;
+        color: white;
+        font-weight: bold;
+    }
+    .btn-custom:hover {
+        background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(58,123,213,1) 100%);
+    }
+    .card {
+        border-radius: 20px;
+    }
+    .card-body {
+        border-radius: 20px;
+        background: #f8f9fa;
+    }
+    .card-header {
+        border-radius: 20px 20px 0 0;
+    }
+</style>
 @endsection

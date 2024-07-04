@@ -5,9 +5,8 @@
 @section('content')
     <div class="card animate__animated animate__fadeIn">
         <div class="card-body">
-            @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show animate__animated animate__slideInDown"
-                    role="alert">
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show animate__animated animate__slideInDown" role="alert">
                     {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
@@ -20,8 +19,7 @@
                 <div class="col-12 col-lg-7">
                     <div class="d-flex gap-2 justify-content-md-end">
                         <div>
-                            <a href="{{ route('pengembalian.search') }}"
-                                class="btn btn-custom-new py-2 px-4 animate__animated animate__zoomIn">
+                            <a href="{{ route('pengembalian.search') }}" class="btn btn-custom-new py-2 px-4 animate__animated animate__zoomIn">
                                 <i class="ti ti-plus me-2"></i>
                                 Pengembalian Buku
                             </a>
@@ -45,7 +43,7 @@
                     </thead>
                     <tbody>
                         @foreach ($pengembalians as $key => $pengembalian)
-                            <tr class="animate__animated animate__fadeInUpBig">
+                            <tr class="animate__animated animate__fadeInUpBig" style="animation-duration: 1s; animation-delay: {{ $key * 0.2 }}s; animation-timing-function: ease-in-out;">
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $pengembalian->resi_pjmn ?? '-' }}</td>
                                 <td>
@@ -55,17 +53,14 @@
                                         Unknown
                                     @endif
                                 </td>
-                                <td>{{ isset($pengembalian->created_at) ? \Carbon\Carbon::parse($pengembalian->created_at)->format('d-m-Y') : '-' }}
-                                </td>
-                                <td>{{ isset($pengembalian->return_date) ? \Carbon\Carbon::parse($pengembalian->return_date)->format('d-m-Y') : '-' }}
-                                </td>
+                                <td>{{ isset($pengembalian->created_at) ? \Carbon\Carbon::parse($pengembalian->created_at)->format('d-m-Y') : '-' }}</td>
+                                <td>{{ isset($pengembalian->return_date) ? \Carbon\Carbon::parse($pengembalian->return_date)->format('d-m-Y') : '-' }}</td>
                                 <td>
                                     @php
                                         $returnDate = \Carbon\Carbon::parse($pengembalian->return_date);
-                                        $status = $returnDate->isToday() ? 'New' : 'old';
+                                        $status = $returnDate->isToday() ? 'New' : 'Old';
                                     @endphp
-                                    <span
-                                        class="badge bg-{{ $returnDate->isToday() ? 'success' : 'danger' }} animate__animated animate__bounce">
+                                    <span class="badge {{ $returnDate->isToday() ? 'badge-new' : 'badge-old' }} animate__animated animate__bounce">
                                         {{ $status }} <i class="ti-alert"></i>
                                     </span>
                                 </td>
@@ -81,8 +76,6 @@
                             </tr>
                         @endforeach
                     </tbody>
-
-
                 </table>
             </div>
         </div>
@@ -91,14 +84,14 @@
     <!-- Custom CSS -->
     <style>
         .btn-custom-new {
-            background: linear-gradient(90deg, rgba(58, 123, 213, 1) 0%, rgba(0, 212, 255, 1) 100%);
+            background: linear-gradient(90deg, rgba(58,123,213,1) 0%, rgba(0,212,255,1) 100%);
             border: none;
             color: white;
             font-weight: bold;
             padding: 10px 20px;
             border-radius: 30px;
             transition: all 0.3s ease;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
         }
 
         .btn-custom-new .ti {
@@ -108,12 +101,45 @@
         }
 
         .btn-custom-new:hover {
-            background: linear-gradient(90deg, rgba(0, 212, 255, 1) 0%, rgba(58, 123, 213, 1) 100%);
+            background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(58,123,213,1) 100%);
             transform: scale(1.05);
         }
 
         .btn-custom-new:hover .ti-plus {
             transform: rotate(90deg);
+        }
+
+        .badge {
+            padding: 5px 10px;  /* Reduced padding */
+            border-radius: 15px;  /* Smaller border-radius */
+            color: white;
+            font-weight: bold;
+            font-size: 12px;  /* Reduced font-size */
+            text-transform: uppercase;
+        }
+
+        .badge-new {
+            background: linear-gradient(45deg, #4caf50, #81c784);
+            box-shadow: 0px 4px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .badge-old {
+            background: linear-gradient(45deg, #f44336, #e57373);
+            box-shadow: 0px 4px 15px rgba(244, 67, 54, 0.4);
+        }
+
+        .badge .ti-alert {
+            margin-left: 5px;
+            animation: bounceIcon 1.5s infinite;
+        }
+
+        @keyframes bounceIcon {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
         }
     </style>
 
@@ -135,5 +161,5 @@
         });
     </script>
     <!-- Animate.css for additional animations -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 @endsection

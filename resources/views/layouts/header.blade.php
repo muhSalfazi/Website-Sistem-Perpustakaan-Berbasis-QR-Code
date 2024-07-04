@@ -4,10 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Header</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
+    <title>Header</title>
     <style>
         .app-header {
-            background-color: #fff;
+            background-color: #ffffff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
@@ -97,11 +99,26 @@
             background-color: #0056b3;
             color: #fff;
         }
+
+        .dropdown-menu-animate-up {
+            animation: fadeInUp 0.3s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 
 <body>
-    <header class="app-header">
+    <header class="app-header animate__animated animate__fadeInDown">
         <nav class="navbar navbar-expand-lg navbar-light">
             <ul class="navbar-nav">
                 <li class="nav-item d-block d-xl-none">
@@ -109,23 +126,22 @@
                         <i class="ti ti-menu-2"></i>
                     </a>
                 </li>
-                {{-- Uncomment this section if notifications are needed --}}
-                {{-- 
+                <!-- Uncomment this section if notifications are needed -->
+                <!-- 
                 <li class="nav-item">
                     <a class="nav-link nav-icon-hover" href="javascript:void(0)">
                         <i class="ti ti-bell-ringing"></i>
                         <div class="notification bg-primary rounded-circle"></div>
                     </a>
-                </li> 
-                --}}
+                </li>
+                -->
             </ul>
             <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
                 <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-                    {{-- Uncomment this line if you want to include the download button --}}
-                    {{-- 
-                    <a href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/" target="_blank"
-                        class="btn btn-primary btn-animated">Download Free</a> 
-                    --}}
+                    <!-- Uncomment this line if you want to include the download button -->
+                    <!-- 
+                    <a href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/" target="_blank" class="btn btn-primary btn-animated">Download Free</a> 
+                    -->
                     <li class="nav-item dropdown">
                         <a class="nav-link nav-icon-hover profile-icon" href="javascript:void(0)" id="drop2"
                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -147,12 +163,14 @@
         </nav>
     </header>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     <script>
-        function confirmLogout() {
-            if (confirm('Are you sure you want to log out?')) {
-                document.getElementById('logout-form').submit();
-            }
+    function confirmLogout() {
+        if (confirm('Are you sure you want to log out?')) {
+            document.getElementById('logout-form').submit();
         }
+    }
     </script>
 </body>
 

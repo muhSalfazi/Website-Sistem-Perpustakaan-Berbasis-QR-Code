@@ -94,6 +94,16 @@
         </div>
     </div>
 
+    <!-- CSS Styles -->
+    <style>
+        .profile-image {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    </style>
+
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
@@ -180,7 +190,7 @@
                             <td>${response.member.phone}</td>
                             <td>${response.member.address}</td>
                             <td>
-                                <img src="{{ asset('/profiles') }}/${response.member.imageProfile}" alt="Profile Image" width="50" class="rounded-circle">
+                                <img src="{{ asset('/profiles') }}/${response.member.imageProfile}" alt="Profile Image" class="profile-image">
                             </td>
                             <td>
                                 <form action="{{ route('search.book.page') }}" method="GET">
@@ -197,7 +207,7 @@
                             icon: 'success',
                             title: 'Member ditemukan',
                             showConfirmButton: true,
-                            timer: 1500
+                            timer: 2500
                         });
                         // Tampilkan kepala tabel
                         $('thead').removeClass('d-none');
@@ -210,7 +220,7 @@
                             title: 'Member tidak ditemukan',
                             text: 'Email member tidak terdaftar',
                             showConfirmButton: true,
-                            timer: 1500
+                            timer: 2500
                         });
                     }
                 },
@@ -226,23 +236,13 @@
         }
 
         function searchMemberByEmail() {
-            var email = $('#email').val();
-
-            if (email === '') {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Perhatian',
-                    text: 'Silakan masukkan email.',
-                });
-                return;
-            }
-
-            // Kosongkan isi tabel sebelum melakukan pencarian baru
+            const email = $('#email').val();
+            // Clear table content before displaying new search result
             $('#memberTableBody').empty();
-            // Sembunyikan alert jika sebelumnya ditampilkan
+            // Hide alert if previously shown
             $('#memberFoundAlert').addClass('d-none');
             $('#memberNotRegisteredAlert').addClass('d-none');
-            // Sembunyikan kepala tabel
+            // Hide table head if no result
             $('thead').addClass('d-none');
 
             $.ajax({
@@ -253,46 +253,46 @@
                 },
                 success: function(response) {
                     if (response.member) {
-                        // Member found, populate table row
-                        $('#memberTableBody').html(
-                            `<tr>
-                        <td>${response.member.id}</td>
-                        <td>${response.member.first_name} ${response.member.last_name}</td>
-                        <td>${response.member.email}</td>
-                        <td>${response.member.phone}</td>
-                        <td>${response.member.address}</td>
-                        <td>
-                            <img src="{{ asset('/profiles') }}/${response.member.imageProfile}" alt="Profile Image" width="50" class="rounded-circle">
-                        </td>
-                        <td>
-                            <form action="{{ route('search.book.page') }}" method="GET">
-                                <input type="hidden" name="member_id" value="${response.member.id}">
-                                <button type="submit" class="btn btn-outline-success animate__animated animate__heartBeat">
-                                    <i class="bi bi-check2-circle"></i> Pilih
-                                </button>
-                            </form>
-                        </td>
-                    </tr>`
-                        );
-                        // Show the "member found" alert
+                        // Display member data on the page
+                        $('#memberTableBody').html(`
+                        <tr>
+                            <td>${response.member.id}</td>
+                            <td>${response.member.first_name} ${response.member.last_name}</td>
+                            <td>${response.member.email}</td>
+                            <td>${response.member.phone}</td>
+                            <td>${response.member.address}</td>
+                            <td>
+                                <img src="{{ asset('/profiles') }}/${response.member.imageProfile}" alt="Profile Image" class="profile-image">
+                            </td>
+                            <td>
+                                <form action="{{ route('search.book.page') }}" method="GET">
+                                    <input type="hidden" name="member_id" value="${response.member.id}">
+                                    <button type="submit" class="btn btn-outline-success animate__animated animate__heartBeat">
+                                        <i class="bi bi-check2-circle"></i> Pilih
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    `);
+                        // Display alert that member was found
                         Swal.fire({
                             icon: 'success',
                             title: 'Member ditemukan',
                             showConfirmButton: true,
-                            timer: 1500
+                            timer: 2500
                         });
-                        // Show the table
-                        $('#memberTableContainer').removeClass('d-none');
-                        // Show the table head
+                        // Show table head
                         $('thead').removeClass('d-none');
+                        // Show table
+                        $('#memberTableContainer').removeClass('d-none');
                     } else {
-                        // Member not found, display alert
+                        // Display alert that email is not registered
                         Swal.fire({
                             icon: 'error',
                             title: 'Member tidak ditemukan',
                             text: 'Email member tidak terdaftar',
                             showConfirmButton: true,
-                            timer: 1500
+                            timer: 2500
                         });
                     }
                 },
@@ -306,16 +306,5 @@
                 }
             });
         }
-
-        function toggleSelect(button) {
-            if ($(button).hasClass('btn-outline-success')) {
-                $(button).removeClass('btn-outline-success').addClass('btn-success');
-                $(button).html('<i class="bi bi-check-circle"></i> Dipilih');
-            } else {
-                $(button).removeClass('btn-success').addClass('btn-outline-success');
-                $(button).html('<i class="bi bi-check2-circle"></i> Pilih');
-            }
-        }
     </script>
-
 @endsection

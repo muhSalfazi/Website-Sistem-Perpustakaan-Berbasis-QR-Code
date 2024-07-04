@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
@@ -75,7 +75,6 @@
         }
 
         @keyframes slide {
-
             0%,
             100% {
                 transform: translate(-50%, -50%) translateX(-20px);
@@ -87,7 +86,6 @@
         }
 
         @keyframes pulse {
-
             0%,
             100% {
                 transform: scale(1);
@@ -135,6 +133,62 @@
             border-radius: 50px;
             animation: rotate 1.5s linear infinite;
         }
+
+        .captcha-container {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .captcha {
+            display: inline-block;
+            padding: 10px;
+            border: 2px solid #03a9f4;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease-in-out;
+            background: linear-gradient(135deg, rgba(3, 169, 244, 0.2), rgba(2, 136, 209, 0.2));
+        }
+
+        .captcha img {
+            width: 180px;
+            height: auto;
+            display: block;
+            transition: opacity 0.3s ease-in-out;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, rgba(3, 169, 244, 0.4), rgba(2, 136, 209, 0.4));
+        }
+
+        .captcha:before,
+        .captcha:after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            top: 0;
+            transition: transform 0.3s ease-in-out;
+            z-index: -1;
+        }
+
+        .captcha:before {
+            left: 0;
+            background: rgba(3, 169, 244, 0.2);
+        }
+
+        .captcha:after {
+            right: 0;
+            background: rgba(2, 136, 209, 0.2);
+        }
+
+        .captcha:hover:before {
+            transform: translateX(100%);
+        }
+
+        .captcha:hover:after {
+            transform: translateX(-100%);
+        }
     </style>
 </head>
 
@@ -152,6 +206,15 @@
                 <div class="user-box">
                     <input type="password" name="password" placeholder="">
                     <label>Password</label>
+                </div>
+                <div class="user-box">
+                    <input type="text" name="captcha" placeholder="">
+                    <label>Captcha</label>
+                </div>
+                <div class="captcha-container">
+                    <div class="captcha">
+                        <img src="{{ captcha_src() }}" alt="Captcha Image">
+                    </div>
                 </div>
                 <button type="submit" class="btn">
                     <span>Login</span>
@@ -184,7 +247,7 @@
             return true; // Izinkan pengiriman formulir
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             @if (session('success'))
                 Swal.fire({
                     icon: 'success',

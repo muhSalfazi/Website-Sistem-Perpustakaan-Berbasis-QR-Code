@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\RateLimiter;
+use Mews\Captcha\Facades\Captcha;
 
 class AuthController extends Controller
 {
@@ -39,11 +40,12 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required',
+            'captcha' => 'required|captcha',
         ]);
 
         if ($validator->fails()) {
             RateLimiter::hit($key, 120); // Hit rate limit
-            session()->flash('error', 'Email atau password harus diisi.');
+            session()->flash('error', 'Email, password, dan captcha harus diisi.');
             return redirect()->route('login')
                 ->withErrors($validator)
                 ->withInput();
