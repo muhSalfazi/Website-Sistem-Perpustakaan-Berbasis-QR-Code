@@ -243,37 +243,18 @@
         </div>
     </div>
     <script>
-        function validateForm(event) {
-            const email = document.querySelector('input[name="email"]').value;
-            const password = document.querySelector('input[name="password"]').value;
-
-            if (!email || !password) {
-                event.preventDefault(); // Prevent form submission
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Email atau Kata Sandi diperlukan!',
-                    width: '300px', // Smaller width
-                    timer: 6000,
-                    showConfirmButton: true,
-                });
-                return false; // Cegah pengiriman formulir
+      function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const passwordType = passwordInput.getAttribute('type');
+            if (passwordType === 'password') {
+                passwordInput.setAttribute('type', 'text');
+                passwordInput.classList.add('password-visible');
+            } else {
+                passwordInput.setAttribute('type', 'password');
+                passwordInput.classList.remove('password-visible');
             }
-
-            const button = document.querySelector('.btn');
-            button.classList.add('loading');
-
-            // Trigger page transition
-            const pageTransition = document.getElementById('page-transition');
-            pageTransition.classList.add('active');
-
-            // Wait for the transition to complete before allowing form submission
-            setTimeout(function() {
-                document.getElementById('login-form').submit();
-            }, 500); // Duration of the transition
-
-            return false; // Temporarily prevent form submission
         }
+
 
         document.addEventListener('DOMContentLoaded', function () {
             @if (session('success'))

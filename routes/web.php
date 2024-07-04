@@ -25,20 +25,20 @@ use App\Http\Controllers\HistoryTransaksiController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware(['guest'])->group(function () {
-// Rute untuk menampilkan halaman login
-Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
+Route::middleware(['guest', 'throttle:10,1'])->group(function () {
+    // Rute untuk menampilkan halaman login
+    Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 
-// Rute untuk proses login
-Route::post('/', [AuthController::class, 'login']);
-Route::get('/captcha/refresh', function () {
-return response()->json(['captcha' => captcha_src()]);
+    // Rute untuk proses login
+    Route::post('/', [AuthController::class, 'login']);
+    Route::get('/captcha/refresh', function () {
+        return response()->json(['captcha' => captcha_src()]);
+    });
 });
-});
 
 
 
-Route::middleware(['auth', 'throttle:50,1',AdminMiddleware::class])->group(function () {
+Route::middleware(['auth', 'throttle:50,1', AdminMiddleware::class])->group(function () {
     // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -102,7 +102,7 @@ Route::middleware(['auth', 'throttle:50,1',AdminMiddleware::class])->group(funct
     // denda
     Route::get('/denda', [DendaController::class, 'index'])->name('denda');
     Route::post('/denda/bayar', [DendaController::class, 'bayarDenda'])->name('denda.bayar');
-    
+
     // history Transaksi
     Route::get('/history-transaksi', [HistoryTransaksiController::class, 'index'])->name('history.transaksi');
 });
