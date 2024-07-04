@@ -52,7 +52,8 @@ Tampilan desain web saat ini sedang dalam proses pengembangan. Berikut adalah pr
 
 ### Pratinjau Halaman Login
 
-![Login Page](https://github.com/muhSalfazi/project_E-library/assets/121502387/6674d9c5-a120-451a-9057-c1c30d30c603)
+![Halaman Dashboard](![image](https://github.com/muhSalfazi/project_E-library/assets/121502387/e1fae2a1-1605-4258-8087-a340450e7084)
+)
 
 ### Pratinjau Fitur Scan QR
 
@@ -85,6 +86,7 @@ Berikut adalah daftar dependensi yang digunakan dalam proyek ini:
 - **html5-qrcode**: Library untuk melakukan scanning QR Code menggunakan kamera. [GitHub](https://github.com/mebjas/html5-qrcode)
 - **endroid qrcode generator**: Library untuk membuat QR Code. [GitHub](https://github.com/endroid/qr-code)
 - **jquery**: Library JavaScript untuk memanipulasi DOM. [GitHub](https://github.com/jquery/jquery)
+- **mews/captcha**: Library untuk membuat CAPTCHA. [GitHub](https://github.com/mewebstudio/captcha)
 
 ---
 
