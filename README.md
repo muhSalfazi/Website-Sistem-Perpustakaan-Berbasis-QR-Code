@@ -10,11 +10,6 @@ Selamat datang di proyek **E-Library**. Ini adalah panduan lengkap untuk menjala
 
 <div align="center" style="margin: 20px; padding: 20px; border-radius: 15px; border: 2px solid #333; color: white; background-color: transparent; background-image: url('https://cdn.pixabay.com/photo/2016/12/26/17/28/background-1932466_960_720.png'); background-size: cover; background-blend-mode: multiply; animation: gradient-bg 15s ease infinite;">
 
-## 🔐 Informasi Login Admin
-
-- **Email**: admin@mail.com
-- **Password**: admin
-
 </div>
 
 ---
