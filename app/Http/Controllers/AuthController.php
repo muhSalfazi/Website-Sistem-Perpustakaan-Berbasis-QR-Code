@@ -32,7 +32,7 @@ class AuthController extends Controller
         $key = 'login-attempts:' . $ip;
 
         // Check rate limit
-        if (RateLimiter::tooManyAttempts($key, 3)) {
+        if (RateLimiter::tooManyAttempts($key, 4)) {
             return redirect()->route('login')->with('error', 'Terlalu banyak upaya login. Silakan coba lagi nanti.');
         }
 
@@ -44,8 +44,8 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            RateLimiter::hit($key, 120); // Hit rate limit
-            session()->flash('error', 'Email, password, dan captcha harus diisi.');
+            RateLimiter::hit($key, 60); // Hit rate limit
+            session()->flash('error', 'Email, password, atau CAPTCHA yang Anda masukkan salah.');
             return redirect()->route('login')
                 ->withErrors($validator)
                 ->withInput();
@@ -59,7 +59,7 @@ class AuthController extends Controller
             // Check role
             if ($user->role !== 'admin') {
                 Auth::logout();
-                RateLimiter::hit($key, 120); // Hit rate limit
+                RateLimiter::hit($key, 60); // Hit rate limit
                 session()->flash('error', 'Hanya admin yang dapat mengakses halaman ini.');
                 return redirect()->route('login');
             }
@@ -75,8 +75,8 @@ class AuthController extends Controller
             return redirect()->route('dashboard');
         }
 
-        // Failed login attempt
-        RateLimiter::hit($key, 120); // Hit rate limit
+        // Upaya login gagal
+        RateLimiter::hit($key, 60); // Batas kecepatan mencapai
         session()->flash('error', 'Email atau password salah');
         return redirect()->route('login')->withInput();
     }

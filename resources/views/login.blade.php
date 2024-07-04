@@ -12,13 +12,13 @@
         .btn {
             position: relative;
             display: inline-block;
-            padding: 18px 33px;
+            padding: 20px 40px; /* Adjusted padding */
             color: #fff;
             background: linear-gradient(90deg, #03a9f4, #0288d1);
             border: none;
             cursor: pointer;
             border-radius: 50px;
-            font-size: 18px;
+            font-size: 20px; /* Adjusted font size */
             font-weight: 600;
             text-transform: uppercase;
             transition: all 0.3s ease-in-out;
@@ -189,10 +189,29 @@
         .captcha:hover:after {
             transform: translateX(-100%);
         }
+
+        /* CSS for page transition */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .page-transition.active {
+            opacity: 1;
+        }
     </style>
 </head>
 
 <body>
+    <div class="page-transition" id="page-transition"></div>
     <div class="container">
         <div class="login-box">
             <img src="{{ asset('img/logo.png') }}" alt="Libra Nation Logo" class="logo">
@@ -244,7 +263,16 @@
             const button = document.querySelector('.btn');
             button.classList.add('loading');
 
-            return true; // Izinkan pengiriman formulir
+            // Trigger page transition
+            const pageTransition = document.getElementById('page-transition');
+            pageTransition.classList.add('active');
+
+            // Wait for the transition to complete before allowing form submission
+            setTimeout(function() {
+                document.getElementById('login-form').submit();
+            }, 500); // Duration of the transition
+
+            return false; // Temporarily prevent form submission
         }
 
         document.addEventListener('DOMContentLoaded', function () {

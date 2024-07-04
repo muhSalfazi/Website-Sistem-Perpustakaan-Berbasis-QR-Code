@@ -84,9 +84,9 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr class="animate__animated animate__fadeIn">
+                            {{-- <tr class="animate__animated animate__fadeIn">
                                 <td colspan="7" class="text-center">No books available</td>
-                            </tr>
+                            </tr> --}}
                         @endforelse
                     </tbody>
                 </table>

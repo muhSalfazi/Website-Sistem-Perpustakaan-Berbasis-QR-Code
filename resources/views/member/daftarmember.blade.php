@@ -67,9 +67,9 @@
                                         </td>
                                     </tr>
                                 @empty
-                                    <tr class="animate__animated animate__fadeIn">
+                                    {{-- <tr class="animate__animated animate__fadeIn">
                                         <td colspan="8" class="text-center">Tidak ada anggota terdaftar</td>
-                                    </tr>
+                                    </tr> --}}
                                 @endforelse
                             </tbody>
                         </table>
