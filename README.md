@@ -6,7 +6,6 @@ Selamat datang di proyek **E-Library**. Ini adalah panduan lengkap untuk menjala
   <img src="https://readme-typing-svg.herokuapp.com?font=Roboto&size=30&color=FFFFFF&center=true&vCenter=true&width=500&height=70&lines=Libranation+Perpustakaan" alt="Typing SVG">
 </p>
 
----
 
 <div align="center" style="margin: 20px; padding: 20px; border-radius: 15px; border: 2px solid #333; color: white; background-color: transparent; background-image: url('https://cdn.pixabay.com/photo/2016/12/26/17/28/background-1932466_960_720.png'); background-size: cover; background-blend-mode: multiply; animation: gradient-bg 15s ease infinite;">
 
@@ -47,8 +46,8 @@ Tampilan desain web saat ini sedang dalam proses pengembangan. Berikut adalah pr
 
 ### Pratinjau Halaman Login
 
-![Halaman Dashboard](![image](https://github.com/muhSalfazi/project_E-library/assets/121502387/e1fae2a1-1605-4258-8087-a340450e7084)
-)
+![Halaman Dashboard](![image](https://github.com/muhSalfazi/project_E-library/assets/121502387/9895d65b-d554-4294-81e1-4df5a144a9ef)
+
 
 ### Pratinjau Fitur Scan QR
 
