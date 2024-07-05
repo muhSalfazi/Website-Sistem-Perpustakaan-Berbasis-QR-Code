@@ -74,7 +74,7 @@
                                     <a class="btn btn-custom btn-sm mt-1 animate__animated animate__fadeIn" data-bs-toggle="modal" data-bs-target="#editBookModal" data-book="{{ json_encode($book) }}">
                                         <i class="ti ti-pencil"></i>
                                     </a>
-                                    <form action="{{ route('books.destroy', $book) }}" method="post" onsubmit="return confirm('Are you sure?');" style="display:inline-block;">
+                                    <form action="{{ route('books.destroy', $book) }}" method="post" onsubmit="return confirm('Apa kamu yakin?');" style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-custom btn-sm mt-1 animate__animated animate__fadeIn">

@@ -24,7 +24,7 @@ class ShowBookController extends Controller
                 'rack' => $book->rack,
                 'stock' => $book->bookStock,
                 'description' => $book->description,
-                'cover_link' => 'http://127.0.0.1:8000/' . $book->book_cover,
+                'cover_link' => 'https://lib.libranation.my.id/' . $book->book_cover,
             ];
         });
 
@@ -48,7 +48,7 @@ class ShowBookController extends Controller
             'rack' => $book->rack,
             'stock' => $book->bookStock,
             'description' => $book->description,
-            'cover_link' => 'http://127.0.0.1:8000/' . $book->book_cover,
+            'cover_link' => 'https://lib.libranation.my.id/' . $book->book_cover,
         ];
 
         return response()->json($transformedBook);
@@ -73,7 +73,7 @@ class ShowBookController extends Controller
                 'category' => $book->category,
                 'rack' => $book->rack,
                 'stock' => $book->bookStock,
-                'cover_link' => 'http://127.0.0.1:8000/' . $book->book_cover,
+                'cover_link' => 'https://lib.libranation.my.id/' . $book->book_cover,
             ];
         });
 
@@ -155,7 +155,7 @@ class ShowBookController extends Controller
                 'rack' => $book->rack,
                 'stock' => $book->bookStock,
                 'description' => $book->description,
-                'cover_link' => 'http://127.0.0.1:8000/' . $book->book_cover,
+                'cover_link' => 'https://lib.libranation.my.id/' . $book->book_cover,
             ];
         });
 

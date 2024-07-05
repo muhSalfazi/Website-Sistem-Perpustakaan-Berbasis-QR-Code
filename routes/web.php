@@ -38,7 +38,7 @@ Route::middleware(['guest', 'throttle:10,1'])->group(function () {
 
 
 
-Route::middleware(['auth', 'throttle:50,1', AdminMiddleware::class])->group(function () {
+Route::middleware(['auth', 'throttle:100,1', AdminMiddleware::class])->group(function () {
     // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -98,6 +98,7 @@ Route::middleware(['auth', 'throttle:50,1', AdminMiddleware::class])->group(func
     Route::post('/categories/create', [KategoriController::class, 'store'])->name('categories.store');
     Route::put('/categories/{category}', [KategoriController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{category}', [KategoriController::class, 'destroy'])->name('categories.destroy');
+    Route::get('/categories/show', [KategoriController::class, 'index'])->name('categories.show');
 
     // denda
     Route::get('/denda', [DendaController::class, 'index'])->name('denda');

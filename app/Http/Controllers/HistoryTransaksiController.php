@@ -12,7 +12,7 @@ class HistoryTransaksiController extends Controller
         // Mengambil hanya data Denda yang memiliki status 'lunas'
         $peminjamans = Denda::with('peminjaman.member', 'peminjaman.book')
             ->where('status', 'lunas')
-            ->paginate(10);
+            ->get();
 
         return view('Denda.history', compact('peminjamans'));
     }

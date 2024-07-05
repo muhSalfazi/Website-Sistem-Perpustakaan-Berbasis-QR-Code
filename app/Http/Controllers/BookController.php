@@ -14,7 +14,7 @@ class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::with(['category', 'rack', 'bookStock'])->paginate(10);
+         $books = Book::with(['category', 'rack', 'bookStock'])->get();
         return view('Books.daftarbook', compact('books'));
     }
 
@@ -25,39 +25,46 @@ class BookController extends Controller
         return view('Books.create', compact('categories', 'racks'));
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:157',
-            'author' => 'required|string|max:80',
-            'publisher' => 'required|string|max:80',
-            'isbn' => 'required|string|max:100|unique:tbl_books',
-            'year' => 'required|integer',
-            'rack_id' => 'required|exists:tbl_racks,id',
-            'category_id' => 'required|exists:tbl_categories,id',
-            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'description' => 'required|string',
-            'jmlh_tersedia' => 'required|integer',
-        ]);
+  public function store(Request $request)
+{
+    $request->validate([
+        'title' => 'required|string|max:157',
+        'author' => 'required|string|max:80',
+        'publisher' => 'required|string|max:80',
+        'isbn' => 'required|string|max:100|unique:tbl_books',
+        'year' => 'required|integer',
+        'rack_id' => 'required|exists:tbl_racks,id',
+        'category_id' => 'required|exists:tbl_categories,id',
+        'cover' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        'description' => 'required|string',
+        'jmlh_tersedia' => 'required|integer',
+    ]);
 
-        $book = new Book($request->all());
-
-        if ($request->hasFile('cover')) {
-            $imageFile = $request->file('cover');
-            $imageFileName = Str::random(10) . '.' . $imageFile->getClientOriginalExtension();
-            $imageFile->move(public_path('cover_book'), $imageFileName);
-            $book->book_cover = 'cover_book/' . $imageFileName;
-        }
-
-        $book->save();
-
-        $bookStock = new BookStock();
-        $bookStock->book_id = $book->id;
-        $bookStock->jmlh_tersedia = $request->input('jmlh_tersedia');
-        $bookStock->save();
-
-        return redirect()->route('books.index')->with('msg', 'Book added successfully')->with('error', false);
+    // Check if the book with the same ISBN already exists
+    $existingBook = Book::where('isbn', $request->isbn)->first();
+    if ($existingBook) {
+        return redirect()->back()->with('msg', 'A book with the same ISBN already exists.')->with('error', true);
     }
+
+    $book = new Book($request->all());
+
+    if ($request->hasFile('cover')) {
+        $imageFile = $request->file('cover');
+        $imageFileName = Str::random(10) . '.' . $imageFile->getClientOriginalExtension();
+        $imageFile->move(public_path('cover_book'), $imageFileName);
+        $book->book_cover = 'cover_book/' . $imageFileName;
+    }
+
+    $book->save();
+
+    $bookStock = new BookStock();
+    $bookStock->book_id = $book->id;
+    $bookStock->jmlh_tersedia = $request->input('jmlh_tersedia');
+    $bookStock->save();
+
+    return redirect()->route('books.index')->with('msg', 'Book added successfully')->with('error', false);
+}
+
 
     public function update(Request $request, Book $book)
     {

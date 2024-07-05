@@ -66,11 +66,15 @@ class RakbukuController extends Controller
 
     public function destroy($id)
     {
-        $rack = Rack::findOrFail($id);
-        $rack->delete();
+    $rack = Rack::findOrFail($id);
 
-        return redirect()->route('Rak.showdata')->with('msg', 'Rak berhasil dihapus');
+    if ($rack->books()->count() > 0) {
+    return redirect()->route('Rak.showdata')->with('error', 'Rak tidak dapat dihapus karena masih memiliki buku');
     }
 
+    $rack->delete();
+
+    return redirect()->route('Rak.showdata')->with('msg', 'Rak berhasil dihapus');
+    }
 
 }

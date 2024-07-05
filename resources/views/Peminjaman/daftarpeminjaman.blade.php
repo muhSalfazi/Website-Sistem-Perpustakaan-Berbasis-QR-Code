@@ -98,7 +98,6 @@
                     </tbody>
                 </table>
             </div>
-            {{ $peminjamans->links() }}
         </div>
     </div>
 

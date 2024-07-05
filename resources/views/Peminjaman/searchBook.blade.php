@@ -26,7 +26,7 @@
                 <input type="hidden" name="member_id" value="{{ $memberId }}">
 
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Cari berdasarkan judul, penulis, penerbit, atau ISBN" name="search" value="{{ request('search') }}">
+                    <input type="text" class="form-control" placeholder="Cari berdasarkan judul, penulis, penerbit,ISBN atau Kategori" name="search" value="{{ request('search') }}">
                     <button class="btn btn-primary" type="submit">Cari</button>
                 </div>
             </form>

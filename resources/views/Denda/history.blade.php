@@ -81,9 +81,6 @@
                     </table>
                 </div>
             </div>
-
-            <!-- Placeholder Paginasi -->
-            {{ $peminjamans->links() }}
         </div>
     </div>
 

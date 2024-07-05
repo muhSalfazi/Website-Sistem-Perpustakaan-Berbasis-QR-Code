@@ -55,7 +55,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-custom btn-sm btn-danger mt-1"
-                                            onclick="return confirm('Are you sure you want to delete this category?')">Delete</button>
+                                            onclick="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">Delete</button>
                                     </form>
                                 </td>
                             </tr>

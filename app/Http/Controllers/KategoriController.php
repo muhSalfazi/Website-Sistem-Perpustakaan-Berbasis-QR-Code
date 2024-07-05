@@ -38,6 +38,11 @@ class KategoriController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        // Check if the category name already exists
+        if (Kategori::where('name', $request->input('name'))->exists()) {
+            return redirect()->back()->with('msg', 'Nama kategori sudah ada')->withInput();
+        }
+
         Kategori::create([
             'name' => $request->input('name'),
         ]);
@@ -65,6 +70,9 @@ class KategoriController extends Controller
     public function destroy($id)
     {
         $category = Kategori::findOrFail($id);
+        if ($category->books()->count() > 0) {
+        return redirect()->route('categories.index')->with('error', 'Kategori tidak dapat dihapus karena masih memiliki buku');
+        }
         $category->delete();
 
         return redirect()->route('categories.index')->with('msg', 'Kategori berhasil dihapus');

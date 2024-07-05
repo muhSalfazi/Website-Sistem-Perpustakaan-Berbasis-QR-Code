@@ -11,7 +11,7 @@ class DendaController extends Controller
    public function index(Request $request)
    {
       // Fetch Peminjaman data along with related member, book, and denda information
-      $peminjamans = Peminjaman::with('member', 'book', 'denda')->paginate(10);
+      $peminjamans = Peminjaman::with('member', 'book', 'denda')->get();
 
       return view('Denda.daftardenda', compact('peminjamans'));
    }

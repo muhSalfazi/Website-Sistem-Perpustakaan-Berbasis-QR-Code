@@ -3,15 +3,21 @@
 @section('title', 'Daftar Rak Buku')
 
 @section('content')
-    <div class="pb-2">
-        @if (session('msg'))
-            <div class="alert {{ session('error') ? 'alert-danger' : 'alert-success' }} alert-dismissible fade show animate__animated animate__fadeInDown"
-                role="alert">
-                {{ session('msg') }}
-                <button type="button" class="btn-close btn-custom" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-    </div>
+ <div class="pb-2">
+    @if (session('msg'))
+        <div class="alert {{ session('error') ? 'alert-danger' : 'alert-success' }} alert-dismissible fade show animate__animated animate__fadeInDown"
+            role="alert">
+            {{ session('msg') }}
+            <button type="button" class="btn-close btn-custom" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @elseif (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show animate__animated animate__fadeInDown" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close btn-custom" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+</div>
+
 
     <div class="card animate__animated animate__fadeIn">
         <div class="card-body">
@@ -22,7 +28,8 @@
                 <div class="col-12 col-lg-7">
                     <div class="d-flex gap-2 justify-content-md-end animate__animated animate__fadeInRight">
                         <div>
-                            <a href="{{ route('Rak.createRak') }}" class="btn btn-custom btn-sm py-2 mt-1 btn-pulse animate__animated animate__bounceIn">
+                            <a href="{{ route('Rak.createRak') }}"
+                                class="btn btn-custom btn-sm py-2 mt-1 btn-pulse animate__animated animate__bounceIn">
                                 <i class="ti ti-plus"></i> Tambah Rak
                             </a>
                         </div>
@@ -44,23 +51,24 @@
                     <tbody>
                         @php $counter = 0 @endphp
                         @foreach ($racks as $rack)
-                            <tr class="animate__animated animate__fadeIn" style="animation-duration: 1s; animation-delay: {{ $counter * 0.2 }}s; animation-timing-function: ease-in-out;">
+                            <tr class="animate__animated animate__fadeIn"
+                                style="animation-duration: 1s; animation-delay: {{ $counter * 0.2 }}s; animation-timing-function: ease-in-out;">
                                 @php $counter++ @endphp
                                 <td class="text-center">{{ $loop->iteration }}</td>
                                 <td class="text-center animate__animated animate__fadeInLeft">{{ $rack->name }}</td>
                                 <td class="text-center animate__animated animate__fadeInRight">{{ $rack->rak }}</td>
                                 <td class="text-center animate__animated animate__fadeInLeft">{{ $rack->books_count }}</td>
                                 <td class="text-center animate__animated animate__fadeInRight">
-                                    <a href="#" class="btn btn-custom btn-sm mt-1 edit-rack"
-                                        data-bs-toggle="modal" data-bs-target="#editRackModal"
-                                        data-id="{{ $rack->id }}" data-name="{{ $rack->name }}" data-rak="{{ $rack->rak }}">
+                                    <a href="#" class="btn btn-custom btn-sm mt-1 edit-rack" data-bs-toggle="modal"
+                                        data-bs-target="#editRackModal" data-id="{{ $rack->id }}"
+                                        data-name="{{ $rack->name }}" data-rak="{{ $rack->rak }}">
                                         <i class="ti ti-pencil"></i> Edit
                                     </a>
                                     <form action="{{ route('racks.destroy', $rack->id) }}" method="post" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-custom btn-sm btn-danger mt-1"
-                                            onclick="return confirm('Are you sure you want to delete this rack?')">
+                                            onclick="return confirm('Apakah Anda yakin ingin menghapus rak ini?')">
                                             <i class="ti ti-trash"></i> Delete
                                         </button>
                                     </form>
@@ -83,7 +91,8 @@
                     <input type="hidden" name="rack_id" id="rack_id">
                     <div class="modal-header">
                         <h5 class="modal-title" id="editRackModalLabel">Edit Rak Buku</h5>
-                        <button type="button" class="btn-close btn-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close btn-custom" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
@@ -96,7 +105,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-custom btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-custom btn-secondary"
+                            data-bs-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-custom btn-primary">Simpan Perubahan</button>
                     </div>
                 </form>
@@ -131,9 +141,11 @@
             0% {
                 transform: scale(1);
             }
+
             50% {
                 transform: scale(1.1);
             }
+
             100% {
                 transform: scale(1);
             }
