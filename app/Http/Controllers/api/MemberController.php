@@ -15,6 +15,7 @@ use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use App\Events\UserCreated;
 use App\Mail\VerifyEmail; // Import VerifyEmail Mailable
+use Illuminate\Support\Facades\File;
 
 class MemberController extends Controller
 {
@@ -116,6 +117,11 @@ class MemberController extends Controller
             return response()->json(['message' => 'Pengguna tidak ditemukan'], 404);
         }
 
+        $user = User::find($user_id);
+        if (!$user) {
+            return response()->json(['message' => 'User tidak ditemukan'], 404);
+        }
+
         // Check if user is trying to change readonly fields
         if ($request->has('first_name') && $request->first_name !== $member->first_name) {
             return response()->json(['message' => 'Nama depan tidak dapat diubah'], 400);
@@ -185,6 +191,15 @@ class MemberController extends Controller
 
         $member->save();
 
+        // Generate new QR code for the user
+        $qrCodeData = $this->generateEncryptedQRCodeData($user->id);
+        $user->qr_code = $qrCodeData;
+        $user->save();
+
+        // Update QR code in the member model
+        $member->qr_code = $qrCodeData;
+        $member->save();
+
         // Buat URL untuk gambar profil dan QR code
         $qrCodeUrl = url('qrcodes/' . $member->qr_code);
         $imageProfileUrl = url('profiles/' . $member->imageProfile);
@@ -197,7 +212,8 @@ class MemberController extends Controller
         ], 200);
     }
 
-    
+
+
 
     public function show(Request $request, $user_id)
     {
@@ -219,32 +235,72 @@ class MemberController extends Controller
         ], 200);
     }
 
-    private function generateEncryptedQRCodeData($memberId)
+   public function updateQrCodes(Request $request, $user_id)
+   {
+   // Find the member based on the given user_id
+   $member = Member::where('user_id', $user_id)->first();
+
+   if (!$member) {
+   return response()->json(['message' => 'Member not found.'], 404);
+   }
+
+   // Find the user based on the user_id from the member
+   $user = User::find($user_id);
+
+   if (!$user) {
+   return response()->json(['message' => 'User not found.'], 404);
+   }
+
+   // Calculate time difference between current time and last updated time
+   $currentTime = now();
+   $lastUpdated = $user->updated_at;
+   $timeDifference = $currentTime->diffInSeconds($lastUpdated);
+
+   // Update QR code if last update was more than 60 seconds ago
+   if ($timeDifference >= 60) {
+   // Delete the old QR code file
+   $oldQrCodePath = public_path('qrcodes/' . basename($user->qr_code));
+   if (File::exists($oldQrCodePath)) {
+   File::delete($oldQrCodePath);
+   }
+
+   // Generate new QR code data and update the user and member records
+   $qrCodeData = $this->generateEncryptedQRCodeData($user->id);
+   $user->qr_code = $qrCodeData;
+   $user->save();
+
+   $member->qr_code = $qrCodeData;
+   $member->save();
+   }
+
+   return response()->json(['message' => 'QR codes updated successfully.'], 200);
+   }
+
+
+
+    private function generateEncryptedQRCodeData($userId)
     {
-        $member = User::find($memberId);
+        $user = User::find($userId);
 
         $data = [
-            'first_name' => $member->first_name,
-            'last_name' => $member->last_name,
-            'email' => $member->email,
-            'imageProfile' => $member->imageProfile ? asset('profiles/' . $member->imageProfile) : null,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'email' => $user->email,
+            'imageProfile' => $user->imageProfile ? asset('profiles/' . $user->imageProfile) : null,
         ];
-        
 
         $encryptedData = Crypt::encryptString(json_encode($data));
         $qrCode = new QrCode($encryptedData);
         $writer = new PngWriter();
 
-        // Hasilkan nama file acak unik untuk kode QR
         $qrCodeFileName = Str::random(5) . '.png';
-
-        $qrCodePath = 'qrcodes/' . $qrCodeFileName; // Set the path to save the QR code
+        $qrCodePath = public_path('qrcodes/' . $qrCodeFileName);
 
         $qrCodeData = $writer->write($qrCode)->getString();
-
-        file_put_contents(public_path($qrCodePath), $qrCodeData);
+        file_put_contents($qrCodePath, $qrCodeData);
 
         return $qrCodeFileName;
     }
+
 
 }

@@ -29,9 +29,16 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/forget-password', [AuthController::class, 'forgetPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
+
+
+// Rute untuk memperbarui QR code
+// Route::get('update-qrcodes', [MemberController::class, 'updateQrCodes']);
+
 // Protected Routes
 Route::middleware(['jwt.auth'])->group(function () {
-
+    
+    // udpate qrcodes
+    Route::post('update-qrcodes/{user_id}', [MemberController::class, 'updateQrCodes']);
     // show profile
     Route::get('members/{id}', [MemberController::class, 'show']);
     // meember
@@ -56,5 +63,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     // show kategori
     Route::get('kategori', [showKategori::class, 'index']);
     Route::get('kategori/{id}', [showKategori::class, 'show']);
+
+
 
 });
