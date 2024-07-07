@@ -9,6 +9,7 @@ use App\Models\Peminjaman;
 use App\Models\Book;
 use App\Models\Kategori;
 use App\Models\Denda;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -83,17 +84,33 @@ class PeminjamanController extends Controller
             return response()->json(['error' => 'Invalid QR code'], 400);
         }
 
-        // Lakukan pencarian anggota berdasarkan data yang didekripsi
-        $member = Member::where('email', $data['email'])->get();
+        // Lakukan pencarian anggota berdasarkan user_id
+        $member = Member::where('user_id', $data['user_id'])->first();
 
-        // Jika anggota ditemukan, kembalikan data anggota
-        if ($member->isNotEmpty()) {
-            // Menggunakan get() untuk mendapatkan satu hasil
-            return response()->json(['member' => $member->first()]);
+        if ($member) {
+            $user = User::find($data['user_id']);
+
+            if ($user->qr_code !== $data['qr_code']) {
+                return response()->json(['error' => 'QR code expired or invalid'], 400);
+            }
+
+            $updatedAt = new \DateTime($data['updated_at']);
+            $now = new \DateTime();
+            $timeDifference = $now->getTimestamp() - $updatedAt->getTimestamp();
+            $minuteDifference = floor($timeDifference / 60);
+
+            if ($minuteDifference > 1) {
+                return response()->json(['error' => 'QR code expired'], 400);
+            }
+
+            // Kembalikan data anggota
+            return response()->json(['member' => $member], 200);
         } else {
             return response()->json(['error' => 'Member not found'], 404);
         }
     }
+
+
 
     public function searchBookPage(Request $request)
     {

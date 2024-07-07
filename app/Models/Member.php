@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 class Member extends Model
 {
 use HasFactory;
@@ -39,4 +40,12 @@ use HasFactory;
         return $this->belongsToMany(Book::class, 'favorite_books')->withTimestamps();
     }
     
+     public function isQrCodeExpired()
+     {
+     $updatedAt = $this->updated_at;
+     $now = Carbon::now();
+     $timeDifference = $now->diffInMinutes($updatedAt);
+
+     return $timeDifference > 1;
+     }
 }

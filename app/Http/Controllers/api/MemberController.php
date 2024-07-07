@@ -235,72 +235,70 @@ class MemberController extends Controller
         ], 200);
     }
 
-   public function updateQrCodes(Request $request, $user_id)
-   {
-   // Find the member based on the given user_id
-   $member = Member::where('user_id', $user_id)->first();
+    public function updateQrCodes(Request $request, $user_id)
+    {
+        // Find the member based on the given user_id
+        $member = Member::where('user_id', $user_id)->first();
 
-   if (!$member) {
-   return response()->json(['message' => 'Member not found.'], 404);
-   }
+        if (!$member) {
+            return response()->json(['message' => 'Member not found.'], 404);
+        }
 
-   // Find the user based on the user_id from the member
-   $user = User::find($user_id);
+        // Find the user based on the user_id from the member
+        $user = User::find($user_id);
 
-   if (!$user) {
-   return response()->json(['message' => 'User not found.'], 404);
-   }
+        if (!$user) {
+            return response()->json(['message' => 'User not found.'], 404);
+        }
 
-   // Calculate time difference between current time and last updated time
-   $currentTime = now();
-   $lastUpdated = $user->updated_at;
-   $timeDifference = $currentTime->diffInSeconds($lastUpdated);
+        // Delete the old QR code file
+        $oldQrCodePath = public_path('qrcodes/' . basename($user->qr_code));
+        if (File::exists($oldQrCodePath)) {
+            File::delete($oldQrCodePath);
+        }
 
-   // Update QR code if last update was more than 60 seconds ago
-   if ($timeDifference >= 60) {
-   // Delete the old QR code file
-   $oldQrCodePath = public_path('qrcodes/' . basename($user->qr_code));
-   if (File::exists($oldQrCodePath)) {
-   File::delete($oldQrCodePath);
-   }
+        // Generate new QR code data and update the user and member records
+        $qrCodeFileName = $this->generateEncryptedQRCodeData($user->id);
+        $user->qr_code = $qrCodeFileName;
+        $user->save();
 
-   // Generate new QR code data and update the user and member records
-   $qrCodeData = $this->generateEncryptedQRCodeData($user->id);
-   $user->qr_code = $qrCodeData;
-   $user->save();
+        $member->qr_code = $qrCodeFileName;
+        $member->save();
 
-   $member->qr_code = $qrCodeData;
-   $member->save();
-   }
-
-   return response()->json(['message' => 'QR codes updated successfully.'], 200);
-   }
-
-
+        $qrCodeUrl = url('qrcodes/' . $qrCodeFileName);
+        return response()->json([
+            'message' => 'QR codes updated successfully.',
+            'qr_code_url' => $qrCodeUrl,
+        ], 200);
+    }
 
     private function generateEncryptedQRCodeData($userId)
     {
         $user = User::find($userId);
 
+        $qrCodeFileName = Str::random(5) . '.png';
+        $qrCodePath = public_path('qrcodes/' . $qrCodeFileName);
+
         $data = [
+            'user_id' => $user->id,
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
             'email' => $user->email,
             'imageProfile' => $user->imageProfile ? asset('profiles/' . $user->imageProfile) : null,
+            'updated_at' => now()->toDateTimeString(), // Tambahkan timestamp
+            'qr_code' => $qrCodeFileName // Tambahkan nama file QR code
         ];
 
         $encryptedData = Crypt::encryptString(json_encode($data));
         $qrCode = new QrCode($encryptedData);
         $writer = new PngWriter();
 
-        $qrCodeFileName = Str::random(5) . '.png';
-        $qrCodePath = public_path('qrcodes/' . $qrCodeFileName);
-
         $qrCodeData = $writer->write($qrCode)->getString();
         file_put_contents($qrCodePath, $qrCodeData);
 
         return $qrCodeFileName;
     }
+
 
 
 }

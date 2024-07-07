@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,6 +7,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use App\Events\UserCreated;
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
@@ -36,7 +36,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-
     protected static function boot()
     {
         parent::boot();
@@ -61,5 +60,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function favoriteBooks()
     {
         return $this->belongsToMany(Book::class, 'favorite_books')->withTimestamps();
+    }
+
+    public function isQrCodeExpired()
+    {
+        $updatedAt = $this->updated_at;
+        // $now = Carbon::now();
+        $timeDifference = $updatedAt->diffInMinutes($updatedAt);
+
+        return $timeDifference > 1;
     }
 }
