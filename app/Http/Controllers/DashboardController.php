@@ -83,4 +83,68 @@ class DashboardController extends Controller
 
         return view('dashboard', $data);
     }
+
+    public function team()
+    {
+    $members = [
+    [
+    'id' => 'salman',
+    'name' => 'M. Salman Fauzi',
+    'role' => 'Back End Web Developer',
+    'image' => 'salman.jpg',
+    'instagram' => 'https://www.instagram.com/muh.salfazi/',
+    'nim' => '22416255201063',
+    'github' => 'https://github.com/MuhSalfazi',
+    ],
+     [
+     'id' => 'dewi',
+     'name' => 'Dewi Puspa Ningrum',
+     'role' => 'Back End Mobile Developer',
+     'image' => 'dewi.jpg',
+     'instagram' => 'https://www.instagram.com/rangga/',
+     'nim' => '22416255201276',
+     'github' => 'https://github.com/rangga',
+     ],
+   
+     [
+     'id' => 'amir',
+     'name' => 'Amir Syahrul Ramadhan',
+     'role' => 'Front End Mobile Developer',
+     'image' => 'amir.jpg',
+     'instagram' => 'https://www.instagram.com/Amir Syahrul Ramadhan/',
+    'nim' => '22416255201098',
+     'github' => 'https://github.com/amirsr43',
+     ],
+      [
+    'id' => 'nizar',
+    'name' => 'Nizar Zul Islami',
+  'role' => 'Systems design',
+    'image' => 'nizar.jpg',
+    'instagram' => 'https://www.instagram.com/nizarzull31/',
+    'nim' => '22416255201074',
+    'github' => 'https://github.com/nizar-art',
+    ],
+     [
+     'id' => 'pipit',
+     'name' => 'Pipit Fitria Zahara',
+     'role' => 'Systems analysis',
+     'image' => 'pipit.jpg',
+     'instagram' => 'https://www.instagram.com//',
+     'nim' => '22416255201126',
+     'github' => 'https://github.com/rangga',
+     ],
+      [
+      'id' => 'rangga',
+      'name' => 'Rangga Egha Permana',
+      'role' => 'Front End Web Developer',
+      'image' => 'Rangga.jpg',
+      'instagram' => 'https://www.instagram.com/rangga.eghaa_/',
+      'nim' => '22416255201038',
+      'github' => 'https://github.com/RanggaEgha',
+      ],
+     
+    // Tambahkan anggota lainnya di sini
+];
+      return view('team', compact('members'));
+    }
 }

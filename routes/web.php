@@ -44,6 +44,7 @@ Route::middleware(['auth', 'throttle:100,1', AdminMiddleware::class])->group(fun
 
     // Halaman dashboard hanya dapat diakses setelah login
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/Team', [DashboardController::class, 'team'])->name('teamFp');
 
     //route member
     Route::get('/member', [MemberController::class, 'index'])->name('member');

@@ -285,8 +285,8 @@ class MemberController extends Controller
             'last_name' => $user->last_name,
             'email' => $user->email,
             'imageProfile' => $user->imageProfile ? asset('profiles/' . $user->imageProfile) : null,
-            'updated_at' => now()->toDateTimeString(), // Tambahkan timestamp
-            'qr_code' => $qrCodeFileName // Tambahkan nama file QR code
+            'updated_at' => now()->toDateTimeString(),
+            'qr_code' => $qrCodeFileName 
         ];
 
         $encryptedData = Crypt::encryptString(json_encode($data));

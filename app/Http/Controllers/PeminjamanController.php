@@ -99,7 +99,7 @@ class PeminjamanController extends Controller
             $timeDifference = $now->getTimestamp() - $updatedAt->getTimestamp();
             $minuteDifference = floor($timeDifference / 60);
 
-            if ($minuteDifference > 1) {
+            if ($minuteDifference >= 1) {
                 return response()->json(['error' => 'QR code expired'], 400);
             }
 

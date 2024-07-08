@@ -1,8 +1,8 @@
 <!-- resources/views/layouts/footer.blade.php -->
 <footer class="py-6 px-6 text-center animate-fade-in">
-    <p class="mb-0 fs-4">Design and Developed by 
-        <a href="https://ubpkarawang.ac.id/" rel="noopener noreferrer" target="_blank" 
-           class="pe-1 text-primary animate-hover">MhsYubifiKRW</a>
+    <p class="mb-0 fs-4">Design and Developed by
+        <a href="{{ route('teamFp') }}" rel="noopener noreferrer" target="_blank"
+            class="pe-1 text-primary animate-hover">Kelompok 5 | Teknik Informatika</a>
     </p>
 </footer>
 
@@ -85,6 +85,7 @@
         from {
             transform: translateY(0);
         }
+
         to {
             transform: translateY(-5px);
         }
@@ -99,6 +100,7 @@
             opacity: 0;
             transform: translateY(20px);
         }
+
         100% {
             opacity: 1;
             transform: translateY(0);
@@ -106,4 +108,5 @@
     }
 </style>
 </body>
+
 </html>
