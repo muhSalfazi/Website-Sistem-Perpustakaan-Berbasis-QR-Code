@@ -125,13 +125,16 @@ class PeminjamanController extends Controller
         $query = Book::query();
 
         if ($search) {
-            $query->where('title', 'like', "%$search%")
-                ->orWhere('publisher', 'like', "%$search%")
-                ->orWhere('author', 'like', "%$search%")
-                ->orWhereHas('category', function ($q) use ($search) {
-                    $q->where('name', 'like', "%$search%");
-                });
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', '%' . $search . '%')
+                    ->orWhere('publisher', 'like', '%' . $search . '%')
+                    ->orWhere('author', 'like', '%' . $search . '%')
+                    ->orWhereHas('category', function ($q) use ($search) {
+                        $q->where('name', 'like', '%' . $search . '%');
+                    });
+            });
         }
+
 
         $books = $query->paginate(10);
 
