@@ -80,7 +80,7 @@
                             <table class="table text-center table-hover table-striped">
                                 <thead class="table-white">
                                     <tr>
-                                        <th scope="col">ID</th>
+                                        <!--<th scope="col">ID</th>-->
                                         <th scope="col">Nama</th>
                                         <th scope="col">Email</th>
                                         <th scope="col">Telepon</th>
@@ -249,7 +249,7 @@
                         // Display member data on the page
                         $('#memberTableBody').html(`
                         <tr>
-                            <td>${response.member.id}</td>
+                            <td style="display: none;">${response.member.id}</td>
                             <td>${response.member.first_name} ${response.member.last_name}</td>
                             <td>${response.member.email}</td>
                             <td>${response.member.phone}</td>
@@ -336,7 +336,8 @@
                     // Display member data on the page
                     $('#memberTableBody').html(`
                     <tr>
-                        <td>${response.member.id}</td>
+                        <td style="display: none;">${response.member.id}</td>
+
                         <td>${response.member.first_name} ${response.member.last_name}</td>
                         <td>${response.member.email}</td>
                         <td>${response.member.phone}</td>
@@ -382,8 +383,6 @@
                     icon: 'error',
                     title: 'Member tidak terdaftar',
                     text: 'Silakan coba lagi.',
-                        showConfirmButton: true,
-                        timer: 2500
                 });
             }
         });

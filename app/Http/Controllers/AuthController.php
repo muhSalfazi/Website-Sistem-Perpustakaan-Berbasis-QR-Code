@@ -45,7 +45,7 @@ class AuthController extends Controller
 
         if ($validator->fails()) {
             RateLimiter::hit($key, 60); // Hit rate limit
-            session()->flash('error', 'Email, password, atau CAPTCHA yang Anda masukkan salah.');
+            session()->flash('error', 'Email, password, atau CAPTCHA yang Anda masukkan salah!.');
             return redirect()->route('login')
                 ->withErrors($validator)
                 ->withInput();
@@ -77,7 +77,7 @@ class AuthController extends Controller
 
         // Upaya login gagal
         RateLimiter::hit($key, 60); // Batas kecepatan mencapai
-        session()->flash('error', 'Email atau password salah');
+        session()->flash('error', 'Email, password, atau CAPTCHA diperlukan!');
         return redirect()->route('login')->withInput();
     }
 

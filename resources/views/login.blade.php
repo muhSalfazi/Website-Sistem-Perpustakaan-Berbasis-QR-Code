@@ -2,9 +2,13 @@
 <html lang="id">
 
 <head>
-    <meta charset="UTF-8">
+   <meta charset="UTF-8">
+   
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Libration Perpustakaan</title>
-    <link href="{{ asset('img/logoTitle.png') }}" rel="icon" />
+    <link rel="icon" href="{{ asset('img/logoTitle.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -152,7 +156,7 @@
         }
 
         .captcha img {
-            width: 180px;
+            width: 250px;
             height: auto;
             display: block;
             transition: opacity 0.3s ease-in-out;
@@ -207,7 +211,37 @@
         .page-transition.active {
             opacity: 1;
         }
+
+        /* Styles for eye icon */
+        .eye-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 24px;
+            color: #999;
+            transition: opacity 0.3s ease;
+        }
+
+        .eye-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .user-box {
+            position: relative;
+        }
+
+        .password-input {
+            transition: opacity 0.3s ease;
+        }
+
+        .password-visible {
+            opacity: 0.5;
+        }
     </style>
+    
 </head>
 
 <body>
@@ -223,16 +257,25 @@
                     <label>Email</label>
                 </div>
                 <div class="user-box">
-                    <input type="password" name="password" placeholder="">
+                    <input type="password" name="password" placeholder="" id="password" class="password-input">
                     <label>Password</label>
+                    <span class="eye-icon" onclick="togglePasswordVisibility()">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 12c-2.57 0-4.67-2.07-4.67-4.63S9.43 7.37 12 7.37s4.67 2.07 4.67 4.63S14.57 16.5 12 16.5zm0-7.13c-1.34 0-2.43 1.08-2.43 2.4s1.09 2.4 2.43 2.4 2.43-1.08 2.43-2.4-1.09-2.4-2.43-2.4z" fill="currentColor"/>
+                            <path d="M0 0h24v24H0z" fill="none"/>
+                        </svg>
+                    </span>
                 </div>
                 <div class="user-box">
                     <input type="text" name="captcha" placeholder="">
                     <label>Captcha</label>
                 </div>
-                <div class="captcha-container">
+               <div class="captcha-container">
                     <div class="captcha">
-                        <img src="{{ captcha_src() }}" alt="Captcha Image">
+                        <img src="{{ captcha_src() }}" alt="captcha">
+                    </div>
+                    <div class="countdown">
+                        <span id="countdown-timer">60</span> detik sebelum captcha diperbarui.
                     </div>
                 </div>
                 <button type="submit" class="btn">
@@ -243,7 +286,23 @@
         </div>
     </div>
     <script>
-      function togglePasswordVisibility() {
+        document.addEventListener("DOMContentLoaded", function() {
+            var countdownElement = document.getElementById('countdown-timer');
+            var countdown = 60;
+            var interval = setInterval(function() {
+                countdown--;
+                countdownElement.textContent = countdown;
+                if (countdown <= 0) {
+                    var captchaImage = document.querySelector('img[alt="captcha"]');
+                    if (captchaImage) {
+                        captchaImage.src = captchaImage.src.split('?')[0] + '?' + new Date().getTime();
+                    }
+                    countdown = 60;
+                }
+            }, 1000); // Update every second
+        });
+
+        function togglePasswordVisibility() {
             const passwordInput = document.getElementById('password');
             const passwordType = passwordInput.getAttribute('type');
             if (passwordType === 'password') {
@@ -254,7 +313,6 @@
                 passwordInput.classList.remove('password-visible');
             }
         }
-
 
         document.addEventListener('DOMContentLoaded', function () {
             @if (session('success'))
@@ -276,6 +334,13 @@
                     showConfirmButton: true,
                 });
             @endif
+        });
+
+        document.getElementById('login-form').addEventListener('submit', function (event) {
+            const btn = document.querySelector('.btn');
+            btn.classList.add('loading');
+            btn.querySelector('span').style.display = 'none';
+            btn.querySelector('.loader').style.display = 'block';
         });
     </script>
 </body>
