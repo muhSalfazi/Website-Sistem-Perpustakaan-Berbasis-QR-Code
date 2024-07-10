@@ -2,18 +2,18 @@
 
 return [
     'disable' => env('CAPTCHA_DISABLE', false),
-    'characters' => ['2', '3', '4', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'm', 'n', 'p', 'q', 'r', 't', 'u', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'M', 'N', 'P', 'Q', 'R', 'T', 'U', 'X', 'Y', 'Z'],
+    'characters' => ['2', '3', '4', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'm', 'n', 'p', 'q', 'r', 't', 'u', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'M', 'N', 'P', 'Q', 'R', 'T', 'U', 'X', 'Y', 'Z'],
     'default' => [
-       'length' => 4,
-       'width' => 180,
-       'height' => 60,
+         'length' => 5,
+        'width' => 120,
+        'height' => 36,
         'quality' => 90,
         'math' => false,
         'expire' => 60,
         'encrypt' => false,
     ],
     'math' => [
-      'length' => 6,
+      'length' => 4,
         'width' => 120,
         'height' => 36,
         'quality' => 90,
@@ -21,7 +21,7 @@ return [
     ],
 
     'flat' => [
-        'length' => 6,
+        'length' => 4,
         'width' => 160,
         'height' => 46,
         'quality' => 90,
@@ -42,9 +42,9 @@ return [
         'height' => 36,
         'quality' => 90,
         'sensitive' => true,
-        'angle' => 12,
+        'angle' => 14,
         'sharpen' => 10,
-        'blur' => 2,
+        'blur' => 1,
         'invert' => true,
         'contrast' => -5,
     ]

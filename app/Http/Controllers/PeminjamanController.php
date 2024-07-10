@@ -62,7 +62,7 @@ class PeminjamanController extends Controller
         return response()->json(['member' => $member]);
     }
 
-    // Metode untuk memproses hasil pemindaian QR code dan pencarian berdasarkan email
+    // Metode untuk memproses hasil pemindaian QR code
     public function scanMemberByQRCode(Request $request)
     {
         // Validasi input QR code
@@ -90,18 +90,10 @@ class PeminjamanController extends Controller
         if ($member) {
             $user = User::find($data['user_id']);
 
-            if ($user->qr_code !== $data['qr_code']) {
-                return response()->json(['error' => 'QR code expired or invalid'], 400);
-            }
+            // if ($user->qr_code !== $data['qr_code']) {
+            //     return response()->json(['error' => 'QR code expired or invalid'], 400);
+            // }
 
-            $updatedAt = new \DateTime($data['updated_at']);
-            $now = new \DateTime();
-            $timeDifference = $now->getTimestamp() - $updatedAt->getTimestamp();
-            $minuteDifference = floor($timeDifference / 60);
-
-            if ($minuteDifference >= 1) {
-                return response()->json(['error' => 'QR code expired'], 400);
-            }
 
             // Kembalikan data anggota
             return response()->json(['member' => $member], 200);

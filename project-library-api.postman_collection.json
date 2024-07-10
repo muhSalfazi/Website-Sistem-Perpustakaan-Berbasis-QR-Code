@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "6cf902d0-b606-4db9-ba92-74734bc020e0",
-		"name": "project-library",
+		"_postman_id": "d5120bee-24c3-4ff7-a0d7-e8483b2b8948",
+		"name": "project-library-api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "33238607"
 	},
@@ -48,7 +48,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b3VyLWlzc3VlciIsInN1YiI6MSwiaWF0IjoxNzE4NzMwOTA0LCJleHAiOjE3MTg3MzQ1MDR9.0EyqHUqL_l8v8c9Tc6UzQxQsWfCvZ4C5pvnJNv6kJHM",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b3VyLWlzc3VlciIsInN1YiI6MiwiaWF0IjoxNzE5OTI4NTk2LCJleHAiOjE3MTk5MzkzOTZ9.FEwfysj-308Px6or3kZimW3N8XqpEIw9rYDHpc-WH9M",
 									"type": "string"
 								}
 							]
@@ -72,7 +72,7 @@
 								},
 								{
 									"key": "phone",
-									"value": "081389716989",
+									"value": "081389716910",
 									"type": "text"
 								},
 								{
@@ -144,13 +144,46 @@
 					"response": []
 				},
 				{
+					"name": "updateqrcodeID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b3VyLWlzc3VlciIsInN1YiI6NSwiaWF0IjoxNzIwMzY2NjQxLCJleHAiOjE3MjAzNzc0NDF9.aLakPLa1m-VKNtfMkX9OGtCSz7KSgXZlwJj8cbLjqA8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://lib.libranation.my.id/api/update-qrcodes/5",
+							"protocol": "https",
+							"host": [
+								"lib",
+								"libranation",
+								"my",
+								"id"
+							],
+							"path": [
+								"api",
+								"update-qrcodes",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "verifikasiOTP",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"otp\": \"95330\"\r\n}\r\n",
+							"raw": "{\r\n    \"otp\": \"99454\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -262,15 +295,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/books/category/novel",
-							"protocol": "http",
+							"raw": "https://lib.libranation.my.id/api/books/category/novel",
+							"protocol": "https",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"lib",
+								"libranation",
+								"my",
+								"id"
 							],
-							"port": "8000",
 							"path": [
 								"api",
 								"books",
@@ -616,7 +648,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"slmnstudy@gmail.com\",\r\n    \"password\":\"password123\"\r\n}\r\n",
+					"raw": "{\r\n    \"email\":\"slmnstudy@gmail.com\",\r\n    \"password\":\"slmn123\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -624,15 +656,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/login",
-					"protocol": "http",
+					"raw": "https://lib.libranation.my.id/api/login",
+					"protocol": "https",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"lib",
+						"libranation",
+						"my",
+						"id"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"login"
