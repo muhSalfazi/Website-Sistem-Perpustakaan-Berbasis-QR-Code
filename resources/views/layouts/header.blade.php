@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://stackpath.bootstrapcdn.com; script-src 'self' 'unsafe-inline' https://code.jquery.com https://stackpath.bootstrapcdn.com;">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
     <title>Header</title>
+
     <style>
         .app-header {
             background-color: #ffffff;
@@ -109,6 +111,7 @@
                 opacity: 0;
                 transform: translateY(10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -127,7 +130,7 @@
                     </a>
                 </li>
                 <!-- Uncomment this section if notifications are needed -->
-                <!-- 
+                <!--
                 <li class="nav-item">
                     <a class="nav-link nav-icon-hover" href="javascript:void(0)">
                         <i class="ti ti-bell-ringing"></i>
@@ -139,14 +142,14 @@
             <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
                 <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
                     <!-- Uncomment this line if you want to include the download button -->
-                    <!-- 
-                    <a href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/" target="_blank" class="btn btn-primary btn-animated">Download Free</a> 
+                    <!--
+                    <a href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/" target="_blank" class="btn btn-primary btn-animated">Download Free</a>
                     -->
                     <li class="nav-item dropdown">
                         <a class="nav-link nav-icon-hover profile-icon" href="javascript:void(0)" id="drop2"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="../assets/images/profile/user-1.jpg" alt="User Profile" width="35" height="35"
-                                class="rounded-circle profile-image">
+                            <img src="../assets/images/profile/user-1.jpg" alt="User Profile" width="35"
+                                height="35" class="rounded-circle profile-image">
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                             <div class="message-body">

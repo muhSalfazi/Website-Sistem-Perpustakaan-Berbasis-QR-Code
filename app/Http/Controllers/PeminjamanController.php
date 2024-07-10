@@ -104,38 +104,28 @@ class PeminjamanController extends Controller
 
 
 
-    public function searchBookPage(Request $request)
-    {
-        // Mendapatkan nama anggota dari member_id yang diterima dari request
-        $memberId = $request->input('member_id');
-        $member = Member::find($memberId);
+     public function searchBookPage(Request $request)
+     {
+     $searchTerm = $request->input('search');
+     $memberId = $request->input('member_id');
 
-        // Mendapatkan input pencarian
-        $search = $request->input('search');
+     if ($searchTerm) {
+     $books = Book::where('title', 'LIKE', '%' . $searchTerm . '%')
+     ->orWhere('author', 'LIKE', '%' . $searchTerm . '%')
+     ->orWhere('publisher', 'LIKE', '%' . $searchTerm . '%')
+     ->orWhere('isbn', 'LIKE', '%' . $searchTerm . '%')
+     ->orWhereHas('category', function($query) use ($searchTerm) {
+     $query->where('name', 'LIKE', '%' . $searchTerm . '%');
+     })
+     ->get();
+     } else {
+     $books = collect();
+     }
 
-        // Membangun query untuk pencarian buku
-        $query = Book::query();
+     $member = Member::find($memberId);
 
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', '%' . $search . '%')
-                    ->orWhere('publisher', 'like', '%' . $search . '%')
-                    ->orWhere('author', 'like', '%' . $search . '%')
-                    ->orWhereHas('category', function ($q) use ($search) {
-                        $q->where('name', 'like', '%' . $search . '%');
-                    });
-            });
-        }
-
-
-        $books = $query->paginate(10);
-
-        // Mendapatkan semua kategori untuk dropdown filter
-        $categories = Kategori::all();
-
-        return view('Peminjaman.searchBook', compact('memberId', 'member', 'books', 'categories'));
-    }
-
+     return view('books.search', compact('books', 'member', 'memberId'));
+     }
     // Metode pengontrol untuk menangani peminjaman buku
     public function storePeminjaman(Request $request)
     {

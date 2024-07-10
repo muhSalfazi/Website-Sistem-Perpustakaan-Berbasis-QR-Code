@@ -76,7 +76,6 @@
                             </div>
                         @endforeach
                     </div>
-                    {{ $books->links() }}
                 @else
                     <p class="text-muted text-center mt-4">-- Buku yang dicari tidak tersedia --</p>
                 @endif

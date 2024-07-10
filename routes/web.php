@@ -5,15 +5,12 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\BookController; // Perbaiki namespace disini
+use App\Http\Controllers\BookController; // Sudah benar
 use App\Http\Controllers\DendaController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\RakbukuController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\HistoryTransaksiController;
-
-
-
 
 /*
 |--------------------------------------------------------------------------
@@ -25,18 +22,19 @@ use App\Http\Controllers\HistoryTransaksiController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::middleware(['guest', 'throttle:10,1'])->group(function () {
     // Rute untuk menampilkan halaman login
     Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 
     // Rute untuk proses login
     Route::post('/', [AuthController::class, 'login']);
-    Route::get('/captcha/refresh', function () {
+
+    // Rute untuk refresh CAPTCHA
+    Route::get('/tchacap/refresh', function () {
         return response()->json(['captcha' => captcha_src()]);
     });
 });
-
-
 
 Route::middleware(['auth', 'throttle:100,1', AdminMiddleware::class])->group(function () {
     // Logout
@@ -46,11 +44,11 @@ Route::middleware(['auth', 'throttle:100,1', AdminMiddleware::class])->group(fun
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/Team', [DashboardController::class, 'team'])->name('teamFp');
 
-    //route member
+    // Route member
     Route::get('/member', [MemberController::class, 'index'])->name('member');
     Route::delete('/members/{id}', [MemberController::class, 'destroy'])->name('member.destroy');
 
-    // peminjaman buku
+    // Peminjaman buku
     Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman');
     Route::get('/peminjaman/search', [PeminjamanController::class, 'search'])->name('Peminjaman.search');
     Route::get('/search-member-by-email', [PeminjamanController::class, 'searchMemberByEmail'])->name('search.member.by.email');
@@ -59,20 +57,14 @@ Route::middleware(['auth', 'throttle:100,1', AdminMiddleware::class])->group(fun
     Route::post('/store-peminjaman', [PeminjamanController::class, 'storePeminjaman'])->name('createPinjaman');
     Route::delete('/peminjaman/{id}', [PeminjamanController::class, 'destroy'])->name('peminjaman.destroy');
 
-
-
-
-    // pengembalian buku
+    // Pengembalian buku
     Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian');
     Route::get('/pengembalian/search', [PengembalianController::class, 'search'])->name('pengembalian.search');
     Route::get('/pengembalian/cari', [PengembalianController::class, 'cari'])->name('pengembalian.cari');
     Route::put('/pengembalian/simpan', [PengembalianController::class, 'simpan'])->name('pengembalian.simpan');
     Route::delete('pengembalian/hapus/{id}', [PengembalianController::class, 'hapus'])->name('pengembalian.hapus');
 
-
-
-
-    //daftar buku
+    // Daftar buku
     Route::get('/books', [BookController::class, 'index'])->name('books.index');
     Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
     Route::get('/book/{id}/', [BookController::class, 'showDetail'])->name('Books.showDetail');
@@ -81,19 +73,14 @@ Route::middleware(['auth', 'throttle:100,1', AdminMiddleware::class])->group(fun
     Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
     Route::put('/books/{book}', [BookController::class, 'update'])->name('books.books.update');
 
-
-
-    // rakbuku
+    // Rak buku
     Route::get('/rak', [RakbukuController::class, 'index'])->name('Rak.showdata');
     Route::get('/rak/create', [RakbukuController::class, 'create'])->name('Rak.createRak');
     Route::post('/rak/create', [RakbukuController::class, 'store'])->name('Rak.storeRak');
     Route::delete('/racks/{rack}', [RakbukuController::class, 'destroy'])->name('racks.destroy');
-    Route::get('/books/{id}', [BookController::class, 'getBook']);
     Route::put('/racks/{rack}', [RakbukuController::class, 'update'])->name('racks.update');
 
-
-    // kategori 
-
+    // Kategori
     Route::get('/categories', [KategoriController::class, 'index'])->name('categories.index');
     Route::get('/categories/create', [KategoriController::class, 'create'])->name('categories.create');
     Route::post('/categories/create', [KategoriController::class, 'store'])->name('categories.store');
@@ -101,10 +88,10 @@ Route::middleware(['auth', 'throttle:100,1', AdminMiddleware::class])->group(fun
     Route::delete('/categories/{category}', [KategoriController::class, 'destroy'])->name('categories.destroy');
     Route::get('/categories/show', [KategoriController::class, 'index'])->name('categories.show');
 
-    // denda
+    // Denda
     Route::get('/denda', [DendaController::class, 'index'])->name('denda');
     Route::post('/denda/bayar', [DendaController::class, 'bayarDenda'])->name('denda.bayar');
 
-    // history Transaksi
+    // History Transaksi
     Route::get('/history-transaksi', [HistoryTransaksiController::class, 'index'])->name('history.transaksi');
 });
