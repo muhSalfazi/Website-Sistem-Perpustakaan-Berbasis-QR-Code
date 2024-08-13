@@ -2,8 +2,8 @@
 <html lang="id">
 
 <head>
-   <meta charset="UTF-8">
-   
+    <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -16,13 +16,15 @@
         .btn {
             position: relative;
             display: inline-block;
-            padding: 20px 40px; /* Adjusted padding */
+            padding: 20px 40px;
+            /* Adjusted padding */
             color: #fff;
             background: linear-gradient(90deg, #03a9f4, #0288d1);
             border: none;
             cursor: pointer;
             border-radius: 50px;
-            font-size: 20px; /* Adjusted font size */
+            font-size: 20px;
+            /* Adjusted font size */
             font-weight: 600;
             text-transform: uppercase;
             transition: all 0.3s ease-in-out;
@@ -79,6 +81,7 @@
         }
 
         @keyframes slide {
+
             0%,
             100% {
                 transform: translate(-50%, -50%) translateX(-20px);
@@ -90,6 +93,7 @@
         }
 
         @keyframes pulse {
+
             0%,
             100% {
                 transform: scale(1);
@@ -241,7 +245,7 @@
             opacity: 0.5;
         }
     </style>
-    
+
 </head>
 
 <body>
@@ -261,8 +265,10 @@
                     <label>Password</label>
                     <span class="eye-icon" onclick="togglePasswordVisibility()">
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 12c-2.57 0-4.67-2.07-4.67-4.63S9.43 7.37 12 7.37s4.67 2.07 4.67 4.63S14.57 16.5 12 16.5zm0-7.13c-1.34 0-2.43 1.08-2.43 2.4s1.09 2.4 2.43 2.4 2.43-1.08 2.43-2.4-1.09-2.4-2.43-2.4z" fill="currentColor"/>
-                            <path d="M0 0h24v24H0z" fill="none"/>
+                            <path
+                                d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 12c-2.57 0-4.67-2.07-4.67-4.63S9.43 7.37 12 7.37s4.67 2.07 4.67 4.63S14.57 16.5 12 16.5zm0-7.13c-1.34 0-2.43 1.08-2.43 2.4s1.09 2.4 2.43 2.4 2.43-1.08 2.43-2.4-1.09-2.4-2.43-2.4z"
+                                fill="currentColor" />
+                            <path d="M0 0h24v24H0z" fill="none" />
                         </svg>
                     </span>
                 </div>
@@ -270,7 +276,7 @@
                     <input type="text" name="captcha" placeholder="">
                     <label>Captcha</label>
                 </div>
-               <div class="captcha-container">
+                <div class="captcha-container">
                     <div class="captcha">
                         <img src="{{ captcha_src() }}" alt="captcha">
                     </div>
@@ -314,7 +320,7 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             @if (session('success'))
                 Swal.fire({
                     icon: 'success',
@@ -336,13 +342,38 @@
             @endif
         });
 
-        document.getElementById('login-form').addEventListener('submit', function (event) {
+        document.getElementById('login-form').addEventListener('submit', function(event) {
             const btn = document.querySelector('.btn');
             btn.classList.add('loading');
             btn.querySelector('span').style.display = 'none';
             btn.querySelector('.loader').style.display = 'block';
         });
     </script>
+
+    <script>
+        // Cegah klik kanan
+        document.addEventListener("contextmenu", function(event) {
+            alert("Inspect element tidak diizinkan!");
+            event.preventDefault();
+        });
+
+        // Cegah tombol F12
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "F12" || event.keyCode === 123) {
+                alert("Inspect element tidak diizinkan!");
+                event.preventDefault();
+            }
+        });
+
+        // Cegah tombol ctrl+shift+i
+        document.addEventListener("keydown", function(event) {
+            if (event.ctrlKey && event.shiftKey && event.key === "I") {
+                alert("Inspect element tidak diizinkan!");
+                event.preventDefault();
+            }
+        });
+    </script>
+
 </body>
 
 </html>

@@ -13,7 +13,7 @@
 <script src="{{ asset('assets/js/sidebarmenu.js') }}"></script>
 <script src="{{ asset('assets/js/app.min.js') }}"></script>
 <script src="{{ asset('assets/js/dashboard.js') }}"></script>
-
+{{-- code js buat datatables --}}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Santai, ini hanya kode javascript sederhana
@@ -28,6 +28,32 @@
         }
     }
 </script>
+{{-- end --}}
+<script>
+    // Cegah klik kanan
+    document.addEventListener("contextmenu", function(event) {
+        alert("Inspect element tidak diizinkan!");
+        event.preventDefault();
+    });
+
+    // Cegah tombol F12
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "F12" || event.keyCode === 123) {
+            alert("Inspect element tidak diizinkan!");
+            event.preventDefault();
+        }
+    });
+
+    // Cegah tombol ctrl+shift+i
+    document.addEventListener("keydown", function(event) {
+        if (event.ctrlKey && event.shiftKey && event.key === "I") {
+            alert("Inspect element tidak diizinkan!");
+            event.preventDefault();
+        }
+    });
+</script>
+
+
 
 <!-- Custom CSS for animations and modern look -->
 <style>

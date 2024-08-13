@@ -49,7 +49,7 @@
             </div>
             <div class="mb-3">
                 <label for="cover" class="form-label">Gambar Sampul Buku</label>
-                <input type="file" class="form-control" id="cover" name="cover">
+                <input type="file" class="form-control" id="cover" name="cover"  accept=".jpeg,.jpg,.png,.gif">
                 @error('cover')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror

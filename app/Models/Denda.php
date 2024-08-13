@@ -17,7 +17,10 @@ class Denda extends Model
         'uang_yg_dibyrkn',
         'status',
     ];
-
+ protected $casts = [
+ 'created_at' => 'datetime',
+ 'return_date' => 'datetime',
+ ];
     public function peminjaman()
     {
         return $this->belongsTo(Peminjaman::class, 'resi_pjmn', 'resi_pjmn');

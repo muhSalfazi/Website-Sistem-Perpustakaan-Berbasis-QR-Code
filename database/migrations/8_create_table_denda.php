@@ -21,31 +21,34 @@ return new class extends Migration {
 
             $table->foreign('resi_pjmn')->references('resi_pjmn')->on('tbl_peminjaman')->onDelete('cascade');
         });
+DB::unprepared('
+CREATE TRIGGER trg_after_update_peminjaman
+AFTER UPDATE ON tbl_peminjaman
+FOR EACH ROW
+BEGIN
+DECLARE overdue_days INT;
+DECLARE denda_per_hari INT;
+DECLARE total_denda INT;
 
-        DB::unprepared('
-            CREATE TRIGGER trg_after_update_peminjaman
-            AFTER UPDATE ON tbl_peminjaman
-            FOR EACH ROW
-            BEGIN
-                DECLARE overdue_days INT;
-                DECLARE denda_per_hari INT;
-                DECLARE total_denda INT;
+SET denda_per_hari = 5000;
+SET overdue_days = DATEDIFF(NEW.return_date, NEW.created_at);
 
-                SET denda_per_hari = 5000;
-                SET overdue_days = DATEDIFF(NEW.return_date, NEW.created_at);
+IF overdue_days > 7 THEN
+-- Menghitung jumlah hari terlambat di luar 7 hari yang diberikan
+SET overdue_days = overdue_days - 7;
+-- Menghitung total denda berdasarkan hari terlambat
+SET total_denda = overdue_days * denda_per_hari;
 
-                IF overdue_days > 7 THEN
-                    SET total_denda = (overdue_days - 7) * denda_per_hari;
+INSERT INTO tbl_denda (resi_pjmn, denda_yg_dibyr, uang_yg_dibyrkn, status, created_at, updated_at)
+VALUES (NEW.resi_pjmn, total_denda, 0, "belum lunas", NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+denda_yg_dibyr = total_denda,
+status = "belum lunas",
+updated_at = NOW();
+END IF;
+END;
+');
 
-                    INSERT INTO tbl_denda (resi_pjmn, denda_yg_dibyr, uang_yg_dibyrkn, status, created_at, updated_at)
-                    VALUES (NEW.resi_pjmn, total_denda, 0, "belum lunas", NOW(), NOW())
-                    ON DUPLICATE KEY UPDATE
-                        denda_yg_dibyr = total_denda,
-                        status = "belum lunas",
-                        updated_at = NOW();
-                END IF;
-            END;
-        ');
     }
 
     /**

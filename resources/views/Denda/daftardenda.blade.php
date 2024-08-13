@@ -23,9 +23,9 @@
                         <!-- Tambahkan elemen tambahan jika diperlukan -->
                     </div>
                 </div>
-                <div class="table-responsive animate__animated animate__fadeInUp">
+               <div class="table-responsive animate__animated animate__fadeIn" style="animation-duration: 1.5s; animation-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55); animation-fill-mode: both;">
                     <table class="table datatable table-hover table-striped">
-                        <thead class="custom-thead animate__animated animate__fadeInDown">
+                        <thead class="table-white animate__animated animate__fadeIn" style="animation-duration: 1.5s; animation-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55); animation-fill-mode: both;">
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Resi Peminjaman</th>
@@ -57,7 +57,7 @@
                                 @endphp
 
                                 @if ($telatHari > 0 && $status == 'belum bayar')
-                                    <tr class="animate__animated animate__fadeInUpBig" style="animation-duration: 1s; animation-delay: {{ $counter * 0.2 }}s; animation-timing-function: ease-in-out;">
+                                   <tr class="animate__animated animate__fadeIn" style="animation-duration: 1.5s; animation-delay: {{ $counter * 0.2 }}s; animation-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55); animation-fill-mode: both;">
                                         @php $counter++ @endphp
                                         <td>{{ $counter }}</td>
                                         <td>{{ $peminjaman->resi_pjmn }}</td>
@@ -88,10 +88,11 @@
             if (!$peminjaman->return_date) {
                 continue;
             }
-            $createdAt = \Carbon\Carbon::parse($peminjaman->created_at);
-            $returnDate = \Carbon\Carbon::parse($peminjaman->return_date);
-            $telatHari = max(0, $returnDate->diffInDays($createdAt) - 7); // Menentukan telat, jika kurang dari 7 hari, dianggap 0 hari telat
-            $totalDenda = $telatHari * 5000;
+        $createdAt = new DateTime($peminjaman->created_at);
+$returnDate = new DateTime($peminjaman->return_date);
+$interval = $returnDate->diff($createdAt);
+$telatHari = max(0, $interval->days - 7); // Menghitung keterlambatan
+$totalDenda = $telatHari * 5000;
 
             // Periksa apakah ada data denda yang sudah dibayar
             $status = 'belum bayar';
@@ -144,6 +145,37 @@
                 </div>
             </div>
         </div>
+        
+        
+    <style>
+        .btn {
+            background: linear-gradient(90deg, rgba(58, 123, 213, 1) 0%, rgba(0, 212, 255, 1) 100%);
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn {
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            background: linear-gradient(90deg, rgba(0, 212, 255, 1) 0%, rgba(58, 123, 213, 1) 100%);
+            transform: scale(1.05);
+        }
+
+        .btn:hover .ti-plus {
+            transform: rotate(90deg);
+        }
+    </style>
+    
+
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 var inputUangDibayarkan = document.getElementById("uang_dibayarkan_{{ $peminjaman->id }}");
